@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SocialSport</string>
+    <string name="error_inicio_sesion">Lo sentimos, ha ocurrido un error</string>
+    <string name="facebook_app_id">1069621269850499</string>
+</resources>
