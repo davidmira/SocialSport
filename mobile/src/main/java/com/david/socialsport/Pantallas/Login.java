@@ -191,7 +191,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .addApi(Auth.GOOGLE_SIGN_IN_API, opcionesInicioSesionGoogle)
                 .build();
     }
-
     /**
      * Método donde se inicializan los objetos de Facebook.
      */
