@@ -245,7 +245,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     AccessToken tokenDeAccesoActual) {
 
                 if (tokenDeAccesoActual == null) {
-                    cerrarSesionFirebase();
+                   //  cerrarSesionFirebase();
                 }
             }
         };
@@ -288,9 +288,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     /**
      * Método para cerrar sesión con Firebase.
      */
-    private void cerrarSesionFirebase() {
+   /* private void cerrarSesionFirebase() {
         autenticacionFirebase.signOut();
-    }
+    }*/
 
     /**
      * Este método inicia la actividad para iniciar sesión con Google. Esta actividad es donde
