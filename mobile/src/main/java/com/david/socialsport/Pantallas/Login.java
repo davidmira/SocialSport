@@ -272,7 +272,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                      */
                     botonIniciarSesionGoogle.setEnabled(false);
                     finish();
-                    startActivity(new Intent(Login.this, Pruebas.class));
+                    startActivity(new Intent(Login.this, PantallaPrincipal.class));
                     Toast.makeText(Login.this, "Usuario: " + usuario.getEmail(), Toast.LENGTH_SHORT).show();
                 } else {
                     /**

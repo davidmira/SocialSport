@@ -1,8 +1,11 @@
 package com.david.socialsport.Pantallas;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Layout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,10 +15,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+
 import com.david.socialsport.R;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class PantallaPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private TextView nombreUsuario;
+    private TextView correoUsuario;
+    private ImageView imagenUsuario;
+    private ImageView imagenCover;
+
+
+    /**
+     * Objeto Cliente API de Google.
+     */
+    private GoogleApiClient clienteApiGoogle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +50,9 @@ public class PantallaPrincipal extends AppCompatActivity
         setContentView(R.layout.activity_pantalla_principal);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +71,23 @@ public class PantallaPrincipal extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (firebaseUser != null) {
+
+            View header = navigationView.getHeaderView(0);
+
+            Uri imagenPerfil = firebaseUser.getPhotoUrl();
+            imagenUsuario = (ImageView) header.findViewById(R.id.imagenUsuario);
+            Glide.with(this).load(imagenPerfil).into(imagenUsuario);
+
+            nombreUsuario = (TextView) header.findViewById(R.id.textViewNombreUsuario);
+            nombreUsuario.setText(firebaseUser.getDisplayName());
+
+            correoUsuario = (TextView) header.findViewById(R.id.textViewCorreoUsuario);
+            correoUsuario.setText(firebaseUser.getEmail());
+
+        }
+
     }
 
     @Override
@@ -68,7 +115,8 @@ public class PantallaPrincipal extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_exit) {
+            signOut();
             return true;
         }
 
@@ -99,4 +147,16 @@ public class PantallaPrincipal extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(clienteApiGoogle).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        startActivity(new Intent(PantallaPrincipal.this, Login.class));
+                        finish();
+                    }
+                });
+    }
+
 }
