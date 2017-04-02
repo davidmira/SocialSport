@@ -1,6 +1,7 @@
 package com.david.socialsport.Pantallas;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -36,7 +37,7 @@ public class PantallaPrincipal extends AppCompatActivity
     private TextView nombreUsuario;
     private TextView correoUsuario;
     private ImageView imagenUsuario;
-    private ImageView imagenCover;
+    private LinearLayout imagenFondo;
 
 
     /**
@@ -66,7 +67,7 @@ public class PantallaPrincipal extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -85,6 +86,9 @@ public class PantallaPrincipal extends AppCompatActivity
 
             correoUsuario = (TextView) header.findViewById(R.id.textViewCorreoUsuario);
             correoUsuario.setText(firebaseUser.getEmail());
+
+           /* imagenFondo= (LinearLayout)header.findViewById(R.id.cov);
+            sideNavLayout.setBackgroundResource(R.drawable.my_side_nav_bar);*/
 
         }
 
@@ -125,7 +129,7 @@ public class PantallaPrincipal extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -152,7 +156,7 @@ public class PantallaPrincipal extends AppCompatActivity
         Auth.GoogleSignInApi.signOut(clienteApiGoogle).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
-                    public void onResult(Status status) {
+                    public void onResult(@NonNull Status status) {
                         startActivity(new Intent(PantallaPrincipal.this, Login.class));
                         finish();
                     }
