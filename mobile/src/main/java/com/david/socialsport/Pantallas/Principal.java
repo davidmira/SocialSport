@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.text.Layout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,28 +16,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import com.david.socialsport.R;
-import com.google.android.gms.auth.api.Auth;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class PantallaPrincipal extends AppCompatActivity
+public class Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView nombreUsuario;
     private TextView correoUsuario;
     private ImageView imagenUsuario;
-    private LinearLayout imagenFondo;
-
 
     /**
      * Objeto Cliente API de Google.
@@ -86,9 +82,6 @@ public class PantallaPrincipal extends AppCompatActivity
 
             correoUsuario = (TextView) header.findViewById(R.id.textViewCorreoUsuario);
             correoUsuario.setText(firebaseUser.getEmail());
-
-           /* imagenFondo= (LinearLayout)header.findViewById(R.id.cov);
-            sideNavLayout.setBackgroundResource(R.drawable.my_side_nav_bar);*/
 
         }
 
@@ -152,15 +145,15 @@ public class PantallaPrincipal extends AppCompatActivity
         return true;
     }
 
+
     private void signOut() {
-        Auth.GoogleSignInApi.signOut(clienteApiGoogle).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        startActivity(new Intent(PantallaPrincipal.this, Login.class));
-                        finish();
-                    }
-                });
+        AuthUI.getInstance().signOut(Principal.this).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                startActivity(new Intent(Principal.this, Login.class));
+                finish();
+            }
+        });
     }
 
 }

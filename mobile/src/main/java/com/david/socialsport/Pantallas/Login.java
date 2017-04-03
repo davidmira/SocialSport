@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.david.socialsport.Pruebas;
 import com.david.socialsport.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -77,7 +76,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
         inicializarVistas();
@@ -272,7 +270,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                      */
                     botonIniciarSesionGoogle.setEnabled(false);
                     finish();
-                    startActivity(new Intent(Login.this, PantallaPrincipal.class));
+                    startActivity(new Intent(Login.this, Principal.class));
                     Toast.makeText(Login.this, "Usuario: " + usuario.getEmail(), Toast.LENGTH_SHORT).show();
                 } else {
                     /**
