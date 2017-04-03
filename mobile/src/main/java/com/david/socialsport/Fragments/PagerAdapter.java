@@ -1,8 +1,11 @@
 package com.david.socialsport.Fragments;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.david.socialsport.R;
 
 /**
  * Created by david on 03/04/2017.
@@ -12,9 +15,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int numeroTabs;
 
+
     public PagerAdapter(FragmentManager fm, int numeroTabs) {
         super(fm);
         this.numeroTabs = numeroTabs;
+
     }
 
     @Override
