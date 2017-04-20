@@ -8,4 +8,13 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_exit">Cerrar Sesión</string>
+    <string name="buscar_ubicacion">Buscar Ubicacion</string>
+    <string name="normal">Normal</string>
+    <string name="tierra">Tierra</string>
+    <string name="hibrido">Hibrido</string>
+    <string name="satellite">Satellite</string>
+    <string name="ubicacion">Ubicación</string>
+    <string name="crearEvento">Crear Evento</string>
+    <string name="title_activity_crear_evento">Map</string>
+
 </resources>

@@ -25,7 +25,6 @@ import com.bumptech.glide.Glide;
 import com.david.socialsport.Fragments.PagerAdapter;
 import com.david.socialsport.R;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,10 +38,6 @@ public class Principal extends AppCompatActivity
     private TextView correoUsuario;
     private ImageView imagenUsuario;
 
-    /**
-     * Objeto Cliente API de Google.
-     */
-    private GoogleApiClient clienteApiGoogle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +57,7 @@ public class Principal extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                startActivity(new Intent(Principal.this, CrearEvento.class));
             }
         });
 
@@ -178,6 +174,11 @@ public class Principal extends AppCompatActivity
             }
         });
     }
+
+
+    /**
+     * Método para cerrar sesión con Firebase.
+     */
     private void signOut() {
         AuthUI.getInstance().signOut(Principal.this).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

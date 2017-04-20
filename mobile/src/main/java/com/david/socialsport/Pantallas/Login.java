@@ -13,7 +13,6 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -281,14 +280,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         };
     }
-
-
-    /**
-     * Método para cerrar sesión con Firebase.
-     */
-   /* private void cerrarSesionFirebase() {
-        autenticacionFirebase.signOut();
-    }*/
 
     /**
      * Este método inicia la actividad para iniciar sesión con Google. Esta actividad es donde
