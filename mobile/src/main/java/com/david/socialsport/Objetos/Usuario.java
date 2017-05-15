@@ -1,8 +1,49 @@
 package com.david.socialsport.Objetos;
 
+import java.util.HashMap;
+
 /**
  * Created by david on 03/04/2017.
  */
 
 public class Usuario {
+    private String nombre;
+    private String imagen;
+    HashMap<String,Boolean> eventos;
+
+    public Usuario() {
+    }
+
+    public Usuario(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Usuario(String nombre, String imagen) {
+        this.nombre = nombre;
+        this.imagen = imagen;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public HashMap<String, Boolean> getEventos() {
+        return eventos;
+    }
+
+    public void setEventos(HashMap<String, Boolean> eventos) {
+        this.eventos = eventos;
+    }
 }

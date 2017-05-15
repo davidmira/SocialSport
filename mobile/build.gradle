@@ -41,5 +41,13 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.2.1'
     compile 'com.google.android.gms:play-services-places:10.2.1'
     testCompile 'junit:junit:4.12'
+
+    compile 'com.google.firebase:firebase-core:10.2.1'
+
+    //Librería de Firebase (para Base de Datos)
+    compile 'com.google.firebase:firebase-database:10.2.1'
+
+    //Librería de FirebaseUI (para Base de Datos)
+    compile 'com.firebaseui:firebase-ui-database:1.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -1,21 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/srlContainer"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Pantallas.Principal">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="7dp"
+    android:layout_marginRight="7dp"
+    android:layout_marginTop="7dp"
+    android:background="@drawable/redondeo_layout"
+    android:orientation="horizontal"
+    android:padding="10dp">
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <ListView
-            android:id="@+id/listView"
+        <ImageView
+            android:id="@+id/evento_icono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@android:drawable/sym_def_app_icon" />
+
+        <TextView
+            android:id="@+id/evento_deporte"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:dividerHeight="10dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            android:text="Fútbol"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/evento_localizacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/evento_deporte"
+            android:layout_marginRight="60dp"
+            android:text="A Coruña"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/evento_ubicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/evento_localizacion"
+            android:layout_marginRight="60dp"
+            android:text="Pabellón inventado"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/evento_tipo_lugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/evento_ubicacion"
+            android:layout_marginRight="60dp"
+            android:text="Interior"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/evento_coste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/evento_tipo_lugar"
+            android:text="Coste por jugador:"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="15dp" />
+
+
+        <TextView
+            android:id="@+id/evento_precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/evento_tipo_lugar"
+            android:layout_toRightOf="@+id/evento_coste"
+            android:paddingLeft="10dp"
+            android:text="5 €"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/evento_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/evento_ubicacion"
+            android:paddingLeft="10dp"
+            android:text="10/06/2017"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/evento_hora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/evento_tipo_lugar"
+            android:paddingLeft="10dp"
+            android:text="20:00"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="15dp" />
+
     </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

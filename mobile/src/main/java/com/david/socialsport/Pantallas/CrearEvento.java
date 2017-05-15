@@ -23,6 +23,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -38,12 +40,20 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.model.Marker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback, PlaceSelectionListener {
@@ -55,8 +65,21 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     double lng = 0.0;
     ActionBar menuBar;
     LinearLayout mapa;
-    Button mostraMapa;
     int click;
+
+
+    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+
+    Button crear, mostraMapa;
+    EditText deporte, localizacion, ubicacionEvento, tipoLugar, comentario;
+    Date fecha_hora;
+    Float precio;
+
+    private static final int OPEN_REQUEST_CODE = 41;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +93,28 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         menuBar = getSupportActionBar();
         menuBar.setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.crearEvento));
+
+        deporte = (EditText) findViewById(R.id.crear_deporte);
+        //localizacion
+        //ubicacionEvento
+        tipoLugar = (EditText) findViewById(R.id.crear_tipo);
+        comentario =(EditText) findViewById(R.id.crear_comentario);
+
+        //precio=(EditText) findViewById(R.id.crear_coste);
+
+        crear =(Button) findViewById(R.id.crear_aceptar);
+
+        crear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deporte.getText() != null && !deporte.getText().toString().trim().isEmpty()) {
+                    crearEvento();
+                } else {
+                    Snackbar.make(v, "Revisa la información introducida", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        });
 
         mapa = (LinearLayout) findViewById(R.id.mapa);
         mapa.setVisibility(View.GONE);
@@ -96,6 +141,22 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
 
     }
+
+    private void crearEvento() {
+        final String key = myRef.child("evento").push().getKey();
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        myRef.child("evento").child(key).child("deporte").setValue(deporte.getText().toString());
+        myRef.child("evento").child(key).child("tipoLugar").setValue(tipoLugar.getText().toString());
+        myRef.child("evento").child(key).child("comentario").setValue(comentario.getText().toString());
+        myRef.child("evento").child(key).child("creadoPor").setValue(firebaseUser.getDisplayName());
+        myRef.child("usuario").child(userID).child("evento").child(key).setValue(true);
+        Toast.makeText(getBaseContext(), "EXITO", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
 
     /**
      * Manipulates the map once available.

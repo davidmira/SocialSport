@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SocialSport</string>
     <string name="error_inicio_sesion">Lo sentimos, ha ocurrido un error</string>
-    <string name="facebook_app_id">1069621269850499</string>
+    <string name="facebook_app_id">1059154417554118</string>
     <string name="title_activity_pantalla_principal">PantallaPrincipal</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
