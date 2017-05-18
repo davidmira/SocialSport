@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#00695C</color>
     <color name="colorPrimaryDark">#00695C</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#004D40</color>
     <color name="verdeFondo">#00897B</color>
     <color name="verdeTimeLine">#00796B</color>
     <color name="verdeAppBar">#00695C</color>
-    <color name="blancoTransparente">#83ffffff</color>
+    <color name="transparente">#00000000</color>
 </resources>

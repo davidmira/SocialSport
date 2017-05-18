@@ -4,23 +4,28 @@
     android:id="@+id/refrescar_eventos"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Pantallas.Principal"
-    android:background="@color/verdeFondo">
+    android:background="@color/verdeFondo"
+    tools:context=".Pantallas.Principal">
 
-
-    <ListView
-        android:id="@+id/listaEventos"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:dividerHeight="10dp" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lo sentimos, aún no disponemos de ningún evento con esas características" />
+        <ListView
+            android:id="@+id/listaEventos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:dividerHeight="10dp"
+            android:divider="@color/transparente"/>
 
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Lo sentimos, aún no disponemos de ningún evento con esas características" />
+
+    </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

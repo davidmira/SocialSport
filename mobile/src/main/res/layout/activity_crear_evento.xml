@@ -34,6 +34,7 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.CardView
+                android:id="@+id/crear_buscador_mapa"
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
@@ -98,14 +99,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                android:hint="Precio" />
+                android:hint="Precio"
+                android:inputType="numberDecimal"/>
 
             <EditText
                 android:id="@+id/crear_fecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                android:hint="10/06/1991" />
+                android:hint="10/06/1991"
+                android:inputType="date"/>
 
 
             <EditText
@@ -113,7 +116,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                android:hint="22:00" />
+                android:hint="22:00"
+                android:inputType="time"/>
 
             <EditText
                 android:id="@+id/crear_comentario"

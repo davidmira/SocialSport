@@ -1,47 +1,32 @@
 package com.david.socialsport.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.david.socialsport.Objetos.Evento;
-import com.david.socialsport.Pantallas.VerEvento;
 import com.david.socialsport.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by david on 03/04/2017.
+ * Created by david on 16/05/2017.
  */
 
-public class AdapterEventos extends ArrayAdapter<Evento> {
+public class AdapterMisEventos extends ArrayAdapter<Evento> {
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
-
-
-    public AdapterEventos(@NonNull Context context) {
+    public AdapterMisEventos(@NonNull Context context) {
         super(context, 0, new ArrayList<Evento>());
     }
 
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.lista_eventos, parent, false);
@@ -68,12 +53,10 @@ public class AdapterEventos extends ArrayAdapter<Evento> {
 
        /* Date fechaHora = evento.getFecha_hora();
         fecha.setText(new SimpleDateFormat("dd/MM/yy").format(fechaHora));
-        hora.setText(new SimpleDateFormat("HH:mm").format(fechaHora));*/
-
-
+        hora.setText(new SimpleDateFormat("HH:mm").format(fechaHora));
+*/
         return convertView;
 
     }
-
 
 }

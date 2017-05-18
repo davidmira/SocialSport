@@ -1,9 +1,13 @@
 package com.david.socialsport.Objetos;
 
+import com.google.firebase.database.Exclude;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by david on 03/04/2017.
@@ -11,7 +15,7 @@ import java.util.Locale;
 
 public class Evento {
 
-    private String deporte, localizacion, ubicacionEvento, tipoLugar, comentario;
+    private String deporte, localizacion, ubicacionEvento, tipoLugar, comentario, id;
     Date fecha_hora;
     Float precio;
 
@@ -20,26 +24,35 @@ public class Evento {
         //Es obligatorio incluir constructor por defecto
     }
 
-    public Evento(String deporte, String localizacion, String ubicacionEvento, String tipoLugar, Date fecha_hora, Float precio) {
+
+    public Evento(String deporte, String localizacion, String ubicacionEvento, String tipoLugar, String id, Date fecha_hora, Float precio) {
         this.deporte = deporte;
         this.localizacion = localizacion;
         this.ubicacionEvento = ubicacionEvento;
         this.tipoLugar = tipoLugar;
+        this.id = id;
         this.fecha_hora = fecha_hora;
         this.precio = precio;
     }
 
-    public Evento(String deporte, String localizacion, String ubicacionEvento, String tipoLugar, String comentario, Date fecha_hora, Float precio) {
+    public Evento(String deporte, String localizacion, String ubicacionEvento, String tipoLugar, String comentario, String id, Date fecha_hora, Float precio) {
         this.deporte = deporte;
         this.localizacion = localizacion;
         this.ubicacionEvento = ubicacionEvento;
         this.tipoLugar = tipoLugar;
         this.comentario = comentario;
+        this.id = id;
         this.fecha_hora = fecha_hora;
         this.precio = precio;
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getDeporte() {
         return deporte;

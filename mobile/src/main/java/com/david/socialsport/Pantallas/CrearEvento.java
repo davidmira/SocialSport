@@ -29,6 +29,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,6 +54,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -74,9 +76,8 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     DatabaseReference myRef = database.getReference();
 
     Button crear, mostraMapa;
-    EditText deporte, localizacion, ubicacionEvento, tipoLugar, comentario;
-    Date fecha_hora;
-    Float precio;
+    EditText deporte, tipoLugar, comentario,precio, fecha, hora;
+    CardView localizacion, ubicacionEvento;
 
     private static final int OPEN_REQUEST_CODE = 41;
 
@@ -95,10 +96,14 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         setTitle(getString(R.string.crearEvento));
 
         deporte = (EditText) findViewById(R.id.crear_deporte);
-        //localizacion
-        //ubicacionEvento
+        localizacion = (CardView) findViewById(R.id.crear_buscador_mapa);
+        ubicacionEvento = (CardView) findViewById(R.id.crear_buscador_mapa);
         tipoLugar = (EditText) findViewById(R.id.crear_tipo);
         comentario =(EditText) findViewById(R.id.crear_comentario);
+        precio=(EditText) findViewById(R.id.crear_coste);
+        fecha=(EditText) findViewById(R.id.crear_fecha);
+        hora=(EditText) findViewById(R.id.crear_hora);
+
 
         //precio=(EditText) findViewById(R.id.crear_coste);
 
@@ -149,10 +154,18 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         myRef.child("evento").child(key).child("deporte").setValue(deporte.getText().toString());
+        myRef.child("evento").child(key).child("localizacion").setValue(localizacion.getContext().toString());
+        myRef.child("evento").child(key).child("ubicacionEvento").setValue(ubicacionEvento.getContext().toString());
+        myRef.child("evento").child(key).child("precio").setValue(Float.parseFloat(precio.getText().toString()));
+        myRef.child("evento").child(key).child("fechaHora").setValue(fecha+" "+hora);
         myRef.child("evento").child(key).child("tipoLugar").setValue(tipoLugar.getText().toString());
         myRef.child("evento").child(key).child("comentario").setValue(comentario.getText().toString());
         myRef.child("evento").child(key).child("creadoPor").setValue(firebaseUser.getDisplayName());
+
+        myRef.child("evento").child(key).child("usuario").child(userID).setValue(true);
         myRef.child("usuario").child(userID).child("evento").child(key).setValue(true);
+
+
         Toast.makeText(getBaseContext(), "EXITO", Toast.LENGTH_LONG).show();
         finish();
     }
