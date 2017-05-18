@@ -49,6 +49,8 @@ public class AdapterEventos extends ArrayAdapter<Evento> {
 
         Evento evento = getItem(position);
 
+        System.out.println(position);
+
         TextView deporte = (TextView) convertView.findViewById(R.id.evento_deporte);
         TextView localizacion = (TextView) convertView.findViewById(R.id.evento_localizacion);
         TextView ubicacionEvento = (TextView) convertView.findViewById(R.id.evento_ubicacion);
