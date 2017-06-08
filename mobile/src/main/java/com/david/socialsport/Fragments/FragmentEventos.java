@@ -56,7 +56,6 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
         listView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
 
-
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -114,6 +113,8 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
 
         final Date ahoraDate = new Date();
         ahoraDate.setHours(ahoraDate.getHours() - 2);
+        final Date cincoDiasDate = new Date();
+        cincoDiasDate.setDate(cincoDiasDate.getDate() - 5);
 
         miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -126,31 +127,37 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                 Map<String, Object> eventosId = dataSnapshot.child("evento").getValue(t);
                 if (eventosId != null) {
                     for (Map.Entry<String, Object> entry : eventosId.entrySet()) {
-                       for (String id : eventosId.keySet()) {
+                        for (String id : eventosId.keySet()) {
                             Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
                             if (evento != null) {
                                 evento.setId(id);
-                                if (evento.getFecha_hora_menos1900().before(ahoraDate)) { //si el evento esta en el pasado se borra
-                                    dataSnapshot.child("eventos").child(id).getRef().removeValue();
-                                } else {
-                                    adapter.add(evento);
+                                if (evento.getFecha_hora_menos1900().before(ahoraDate)) { //si el evento esta 2 horas en el pasado se borra
+                                    adapter.remove(evento);
                                 }
-                            } else {
-                                dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
+                                if (evento.getFecha_hora_menos1900().before(cincoDiasDate)) {
+                                    dataSnapshot.child("evento").child(id).getRef().removeValue();
+                                }
+                                if (evento.getFecha_hora_menos1900().after(ahoraDate)) {
+                                    adapter.add(evento);
+
+                                } else {
+                                    dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
+                                }
                             }
                         }
+                        adapter.sort(new Comparator<Evento>() {
+                            @Override
+                            public int compare(Evento o1, Evento o2) {
+                                return o1.getFecha_hora().compareTo(o2.getFecha_hora());
+                            }
+                        });
+                        adapter.notifyDataSetChanged();
                     }
-                    adapter.sort(new Comparator<Evento>() {
-                        @Override
-                        public int compare(Evento o1, Evento o2) {
-                            return o1.getFecha_hora().compareTo(o2.getFecha_hora());
-                        }
-                    });
-                    adapter.notifyDataSetChanged();
                 } else {
                     System.out.println("NO HAY EVENTOS DISPONIBLES");
                 }
                 swipeRefreshLayout.setRefreshing(false);
+
             }
 
             @Override

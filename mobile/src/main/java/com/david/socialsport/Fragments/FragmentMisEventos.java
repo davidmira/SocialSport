@@ -14,6 +14,7 @@ import com.david.socialsport.Adapters.AdapterMisEventos;
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,6 +73,10 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
 
+
+        final Date cincoDiasDate = new Date();
+        cincoDiasDate.setDate(cincoDiasDate.getDate()-5);
+
         miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -103,6 +108,9 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
                                     evento.setTipoLugar(tipoLugar);
                                     evento.setPrecio(precio);*/
                                    // evento.setFecha_hora(fecha_hora);
+                                    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
                                     adapter.add(evento);
                                 } else {
                                     dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
@@ -130,4 +138,8 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
         });
 
     }
+
+    /* if (evento.getFecha_hora_menos1900().before(cincoDiasDate)){//si el evento ha pasado hace más de cinco días se borra en el historial de usuario
+        dataSnapshot.child("usuario").child(id).child("evento").child(id).getRef().removeValue();
+    }*/
 }
