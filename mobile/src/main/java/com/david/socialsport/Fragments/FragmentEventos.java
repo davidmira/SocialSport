@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,8 +18,6 @@ import android.widget.Toast;
 
 import com.david.socialsport.Adapters.AdapterEventos;
 import com.david.socialsport.Objetos.Evento;
-import com.david.socialsport.Objetos.Usuario;
-import com.david.socialsport.Pantallas.VerEvento;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -45,21 +44,46 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
     AdapterEventos adapter;
 
     SwipeRefreshLayout swipeRefreshLayout;
+    ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        adapter = new AdapterEventos(getContext());
+        adapter = new AdapterEventos(getContext(), savedInstanceState);
         View rootView = inflater.inflate(R.layout.tab_fragment_eventos, container, false);
-        final ListView listView = (ListView) rootView.findViewById(R.id.listaEventos);
+
+        listView = (ListView) rootView.findViewById(R.id.listaEventos);
         listView.setAdapter(adapter);
         listView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
+
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                adapter.collapseCurrent(listView);
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), VerEvento.class);
-                intent.putExtra("eventoId",adapter.getItem(position).getId());
-                startActivity(intent);
+                AdapterEventos adapter = ((AdapterEventos) listView.getAdapter());
+                if (view.findViewById(R.id.expandible).getVisibility() == View.VISIBLE) {
+                    adapter.collapseItem(view);
+                } else {
+                    adapter.collapseCurrent(listView);
+                    if (adapter.expandItem(position, view)) {
+
+                        listView.setSelection(position);
+                        listView.smoothScrollToPosition(position);
+                    }
+                }
             }
         });
 
@@ -75,12 +99,21 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
         return rootView;
 
 
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        onRefresh();
     }
 
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
+        ((AdapterEventos) listView.getAdapter()).collapseCurrent(listView);
+
+        final Date ahoraDate = new Date();
+        ahoraDate.setHours(ahoraDate.getHours() - 2);
 
         miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -93,24 +126,15 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                 Map<String, Object> eventosId = dataSnapshot.child("evento").getValue(t);
                 if (eventosId != null) {
                     for (Map.Entry<String, Object> entry : eventosId.entrySet()) {
-                        String deporte = dataSnapshot.child("evento").child(entry.getKey()).child("deporte").getValue(String.class);
-                        String localizacion = dataSnapshot.child("evento").child(entry.getKey()).child("localizacion").getValue(String.class);
-                        String ubicacionEvento = dataSnapshot.child("evento").child(entry.getKey()).child("ubicacionEvento").getValue(String.class);
-                        String tipoLugar = dataSnapshot.child("evento").child(entry.getKey()).child("tipoLugar").getValue(String.class);
-                        Float precio = dataSnapshot.child("evento").child(entry.getKey()).child("precio").getValue(Float.class);
-                        //Date fecha_hora = dataSnapshot.child("evento").child(entry.getKey()).child("fechaHora").getValue(Date.class);
-                        for (String id : eventosId.keySet()) {
+                       for (String id : eventosId.keySet()) {
                             Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
                             if (evento != null) {
-                                evento.setDeporte(deporte);
-                                evento.setLocalizacion(localizacion);
-                                evento.setUbicacionEvento(ubicacionEvento);
-                                evento.setTipoLugar(tipoLugar);
-                                evento.setPrecio(precio);
-                                evento.setId(entry.getKey());
-                                //evento.setFecha_hora(fecha_hora);
-
-                               adapter.add(evento);
+                                evento.setId(id);
+                                if (evento.getFecha_hora_menos1900().before(ahoraDate)) { //si el evento esta en el pasado se borra
+                                    dataSnapshot.child("eventos").child(id).getRef().removeValue();
+                                } else {
+                                    adapter.add(evento);
+                                }
                             } else {
                                 dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
                             }
@@ -119,10 +143,10 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                     adapter.sort(new Comparator<Evento>() {
                         @Override
                         public int compare(Evento o1, Evento o2) {
-                            return o1.getDeporte().compareTo(o2.getDeporte());
+                            return o1.getFecha_hora().compareTo(o2.getFecha_hora());
                         }
                     });
-                    //adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 } else {
                     System.out.println("NO HAY EVENTOS DISPONIBLES");
                 }

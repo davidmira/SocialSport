@@ -44,13 +44,13 @@ public class AdapterMisEventos extends ArrayAdapter<Evento> {
 
         ImageView icono = (ImageView) convertView.findViewById(R.id.evento_icono);
 
-
+/*
         deporte.setText(evento.getDeporte());
         localizacion.setText(evento.getLocalizacion());
         ubicacionEvento.setText(evento.getUbicacionEvento());
         tipoLugar.setText(evento.getTipoLugar());
         precio.setText(evento.getPrecio().toString() + " €");
-
+*/
        /* Date fechaHora = evento.getFecha_hora();
         fecha.setText(new SimpleDateFormat("dd/MM/yy").format(fechaHora));
         hora.setText(new SimpleDateFormat("HH:mm").format(fechaHora));

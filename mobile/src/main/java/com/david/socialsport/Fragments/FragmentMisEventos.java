@@ -87,21 +87,21 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
                 if (eventosId != null) { //se comprueba que no sea nulo, si fuese nulo el usuario no tendria ningun evento y no se hace nada
                     for (Map.Entry<String, Boolean> entry : eventosId.entrySet()) { //se recorren las claves de los eventos y sus valores
                         if (entry.getValue()) {//si el valor es true el usuaio esta dentro del evento y se procede, se cogen los id de los eventos y se añaden a una lista
-                            String deporte = dataSnapshot.child("evento").child(entry.getKey()).child("deporte").getValue(String.class);
+                            /*String deporte = dataSnapshot.child("evento").child(entry.getKey()).child("deporte").getValue(String.class);
                             String localizacion = dataSnapshot.child("evento").child(entry.getKey()).child("localizacion").getValue(String.class);
                             String ubicacionEvento = dataSnapshot.child("evento").child(entry.getKey()).child("ubicacionEvento").getValue(String.class);
                             String tipoLugar = dataSnapshot.child("evento").child(entry.getKey()).child("tipoLugar").getValue(String.class);
                             Float precio = dataSnapshot.child("evento").child(entry.getKey()).child("precio").getValue(Float.class);
-//                            Date fecha_hora = dataSnapshot.child("evento").child(entry.getKey()).child("fechaHora").getValue(Date.class);
+//                            Date fecha_hora = dataSnapshot.child("evento").child(entry.getKey()).child("fechaHora").getValue(Date.class);*/
 
                             for (String id : eventosId.keySet()) {
                                 Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
                                 if (evento != null) {
-                                    evento.setDeporte(deporte);
+                                   /* evento.setDeporte(deporte);
                                     evento.setLocalizacion(localizacion);
                                     evento.setUbicacionEvento(ubicacionEvento);
                                     evento.setTipoLugar(tipoLugar);
-                                    evento.setPrecio(precio);
+                                    evento.setPrecio(precio);*/
                                    // evento.setFecha_hora(fecha_hora);
                                     adapter.add(evento);
                                 } else {

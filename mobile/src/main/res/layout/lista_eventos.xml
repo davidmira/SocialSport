@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/verEvento"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
@@ -10,8 +11,13 @@
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="10dp"
-    android:id="@+id/verEvento">
+    android:paddingTop="10dp">
+
+    <RelativeLayout
+        android:id="@+id/evento_ver_arriba"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
         <ImageView
             android:id="@+id/evento_icono"
@@ -102,6 +108,44 @@
             android:text="20:00"
             android:textColor="@color/tw__solid_white"
             android:textSize="15dp" />
+    </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/expandible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/evento_ver_arriba"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/evento_texto_comentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tw__solid_white"
+            android:text="Comentario:"
+            android:textSize="15dp" />
+        <TextView
+            android:id="@+id/evento_comentario"
+            android:layout_below="@+id/evento_texto_comentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tw__solid_white"
+            android:textSize="15dp" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/evento_mapa"
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:clickable="true"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </RelativeLayout>

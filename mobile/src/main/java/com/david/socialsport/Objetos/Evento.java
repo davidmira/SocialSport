@@ -1,7 +1,9 @@
 package com.david.socialsport.Objetos;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,11 +15,12 @@ import java.util.Map;
  * Created by david on 03/04/2017.
  */
 
-public class Evento {
+public class Evento implements Serializable {
 
-    private String deporte, localizacion, ubicacionEvento, tipoLugar, comentario, id;
+    private String deporte, ubicacionEvento, tipoLugar, comentario, id;
     Date fecha_hora;
     Float precio;
+    double latitude, longitude;
 
 
     public Evento() {
@@ -25,25 +28,41 @@ public class Evento {
     }
 
 
-    public Evento(String deporte, String localizacion, String ubicacionEvento, String tipoLugar, String id, Date fecha_hora, Float precio) {
+    public Evento(String deporte, String ubicacionEvento, LatLng coordenadas, String tipoLugar, Float precio, Date fecha_hora, String comentario) {
         this.deporte = deporte;
-        this.localizacion = localizacion;
-        this.ubicacionEvento = ubicacionEvento;
+        this.ubicacionEvento=ubicacionEvento;if(coordenadas == null){
+            latitude = 0;
+            longitude = 0;
+        }else {
+            latitude = coordenadas.latitude;
+            longitude = coordenadas.longitude;
+        }
         this.tipoLugar = tipoLugar;
-        this.id = id;
-        this.fecha_hora = fecha_hora;
         this.precio = precio;
+        this.fecha_hora = fecha_hora;
+        fecha_hora.setYear(fecha_hora.getYear() + 1900);
+        this.comentario = comentario;
     }
 
-    public Evento(String deporte, String localizacion, String ubicacionEvento, String tipoLugar, String comentario, String id, Date fecha_hora, Float precio) {
-        this.deporte = deporte;
-        this.localizacion = localizacion;
-        this.ubicacionEvento = ubicacionEvento;
-        this.tipoLugar = tipoLugar;
-        this.comentario = comentario;
-        this.id = id;
-        this.fecha_hora = fecha_hora;
-        this.precio = precio;
+    @Exclude
+    public LatLng getCoordenadas() {
+        return new LatLng(latitude, longitude);
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getId() {
@@ -62,13 +81,6 @@ public class Evento {
         this.deporte = deporte;
     }
 
-    public String getLocalizacion() {
-        return localizacion;
-    }
-
-    public void setLocalizacion(String localizacion) {
-        this.localizacion = localizacion;
-    }
 
     public String getUbicacionEvento() {
         return ubicacionEvento;
@@ -108,6 +120,14 @@ public class Evento {
 
     public void setPrecio(Float precio) {
         this.precio = precio;
+    }
+
+    @Exclude
+    public Date getFecha_hora_menos1900() {
+        Date d = new Date();
+        d.setTime(fecha_hora.getTime());
+        d.setYear(fecha_hora.getYear() - 1900);
+        return d;
     }
 
 }

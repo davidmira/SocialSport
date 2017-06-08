@@ -8,13 +8,162 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_exit">Cerrar Sesión</string>
-    <string name="buscar_ubicacion">Buscar Ubicacion</string>
-    <string name="normal">Normal</string>
-    <string name="tierra">Tierra</string>
-    <string name="hibrido">Hibrido</string>
-    <string name="satellite">Satellite</string>
-    <string name="ubicacion">Ubicación</string>
+
     <string name="crearEvento">Crear Evento</string>
     <string name="title_activity_crear_evento">Map</string>
+
+    <string name="deporte">Deporte</string>
+
+
+    <string name="alpinismo">Alpinismo</string>
+    <string name="andar">Andar, Caminar</string>
+    <string name="aquagym">Aquagym</string>
+    <string name="atletismo">Atletismo</string>
+
+    <string name="badminton">Badminton</string>
+    <string name="baile">Baile Moderno y Street Dance</string>
+    <string name="ballet">Ballet</string>
+    <string name="baloncesto">Baloncesto</string>
+    <string name="balonmano">Balonmano</string>
+    <string name="barco">Barco</string>
+    <string name="barranquismo">Barranquismo</string>
+    <string name="beisbol">Beisbol y Softball</string>
+    <string name="bodyboard">Bodyboard</string>
+    <string name="boxeo">Boxeo</string>
+    <string name="buceo">Buceo, Submarinismo</string>
+
+    <string name="cardioTr">Cardio Training</string>
+    <string name="caza">Caza</string>
+    <string name="ciclismo">Ciclismo</string>
+    <string name="cometas">Cometas</string>
+    <string name="crossTr">Cross Trainning</string>
+    <string name="danza">Danza</string>
+    <string name="dardos">Dardos</string>
+
+    <string name="equitacion">Equitación</string>
+    <string name="escalada">Escalada</string>
+    <string name="esqui">Esquí</string>
+    <string name="esquiFon">Esquí de Fondo</string>
+    <string name="esquiTrav">Esquí de travesía</string>
+
+    <string name="fitness">Fitness</string>
+    <string name="flamenco">Flamenco</string>
+    <string name="frontenis">Frontenis</string>
+    <string name="futbol">Fútbol</string>
+    <string name="futbolA">Fútbol Americano</string>
+    <string name="gimnasia">Gimnasia Rítmica y Artística</string>
+    <string name="golf">Golf</string>
+
+    <string name="hipica">Hípica</string>
+    <string name="hockeyH">Hockey Hierba</string>
+    <string name="hockeyR">Hockey Ruedas</string>
+    <string name="hockeyHi">Hockey Hielo</string>
+    <string name="jiu">Jiu-jitsu</string>
+    <string name="judo">Judo</string>
+    <string name="karate">Karate</string>
+    <string name="kayak">Kayak</string>
+    <string name="kite">Kite-Surf</string>
+
+    <string name="marcha">Marcha Nórdica</string>
+    <string name="montana">Montaña</string>
+    <string name="natacion">Natación</string>
+
+    <string name="padel">Pádel</string>
+    <string name="patinajeH">Patinaje Hielo</string>
+    <string name="patines">Patines, Rollers</string>
+    <string name="pelotaV">Pelota Vasca</string>
+    <string name="pesca">Pesca</string>
+    <string name="pescaS">Pesca submarina</string>
+    <string name="petanca">Petanca</string>
+    <string name="pilates">Pilates</string>
+    <string name="pingPong">Ping-Pong</string>
+
+    <string name="raid">Raid-Trail</string>
+    <string name="raquetas">Raquetas de Nieve</string>
+    <string name="rugby">Rugby</string>
+    <string name="running">Running</string>
+
+    <string name="senderismo">Senderismo</string>
+    <string name="skate">Skate y Patinetes</string>
+    <string name="skimboard">Skimboard</string>
+    <string name="snorkel">Snorkel</string>
+    <string name="snow">Snowboard</string>
+    <string name="squash">Squash</string>
+    <string name="stand">SUP-Stand Up Paddle</string>
+    <string name="surf">Surf</string>
+
+    <string name="tae">Tae Kwon Do</string>
+    <string name="tenis">Tenis</string>
+    <string name="tenisM">Tenis de Mesa</string>
+    <string name="tiroP">Tiro al Plato</string>
+    <string name="tiroA">Tiro con Arco</string>
+    <string name="trail">Trail-Running</string>
+    <string name="trek">Trekking</string>
+    <string name="triatlon">Triatlón</string>
+
+    <string name="vela">Vela, Barco</string>
+    <string name="voley">Voleibol</string>
+    <string name="voleyP">Voley playa</string>
+    <string name="waker">Wakeboard, Esquí Nautico</string>
+    <string name="windsurf">Windsurf</string>
+    <string name="yoga">Yoga</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </resources>
