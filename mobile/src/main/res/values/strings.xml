@@ -40,7 +40,6 @@
     <string name="danza">Danza</string>
     <string name="dardos">Dardos</string>
 
-
     <string name="equitacion">Equitación</string>
     <string name="escalada">Escalada</string>
     <string name="esqui">Esquí</string>
@@ -108,63 +107,14 @@
     <string name="waker">Wakeboard, Esquí Nautico</string>
     <string name="windsurf">Windsurf</string>
     <string name="yoga">Yoga</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="precio">Precio</string>
+    <string name="comentario">Comentario</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="comentario2">Comentario:</string>
+    <string name="social_sport">Social Sport</string>
+    <string name="lo_sentimos">Lo sentimos, aún no disponemos de ningún evento con esas características</string>
+    <string name="sin_suscripcion">Aún no te has suscrito a ningún evento</string>
+    <string name="coste_por_jugador">Coste por jugador:</string>
 
 
 </resources>

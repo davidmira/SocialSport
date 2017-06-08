@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.david.socialsport.Objetos.Evento;
@@ -19,12 +21,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -37,22 +39,29 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+
+import static android.R.attr.key;
 
 public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback, PlaceSelectionListener {
 
@@ -64,7 +73,8 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     ActionBar menuBar;
     LinearLayout mapa;
     int click;
-
+    String deporteC;
+    ImageView icono;
     private LatLng coordenadas;
 
 
@@ -81,14 +91,9 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     static int evYear, evMonth, evDay, evHour, evMinute;
     static String evLocalizacion;
 
-
-    private static final int OPEN_REQUEST_CODE = 41;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.activity_crear_evento);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -116,15 +121,13 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         //Definie el umbral de Autocompletar
         deporte.setThreshold(1);
 
-
         crear = (Button) findViewById(R.id.crear_aceptar);
 
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                String deporteC = deporte.getText().toString();
+                deporteC = deporte.getText().toString();
                 String tipoLugarC = tipoLugar.getText().toString();
                 Float precioC = Float.valueOf(precio.getText().toString());
                 String fechaC = fecha.getText().toString();
@@ -147,8 +150,12 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                         return;
                     }
 
-                    Evento evento = new Evento(deporteC, ubicacionEvento, coordenadas, tipoLugarC, precioC, eventoDate, comentarioC);
+                    //imagenDeporte();
+                    final Evento evento = new Evento(deporteC, ubicacionEvento, coordenadas, tipoLugarC, precioC, eventoDate, comentarioC);
                     crearEvento(evento);
+                    //final String key = myRef.child("evento").push().getKey();
+                    //crearPrueba(key,evento);
+
                 } else {
                     Snackbar.make(v, "Revisa la información introducida", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -183,7 +190,41 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
 
     }
+/*
+    private void crearPrueba(final String key, final Evento evento){
 
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://socialsport-e98f4.appspot.com/alpinismo.png");
+        StorageReference imagesRef = storageRef.child("iconos").child(key+".png");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = imagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(getBaseContext(),"ALGO SALIO MAL",Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                myRef.child("evento").child((key)).child("imgURL").setValue(downloadUrl.toString());
+                myRef.child("evento").child((key)).setValue(evento);
+                myRef.child("evento").child(key).child("usuario").child(userID).setValue(true);
+                myRef.child("usuario").child(userID).child("evento").child(key).setValue(true);
+
+                myRef.child("evento").child(key).child("creadoPor").setValue(firebaseUser.getDisplayName());
+                Toast.makeText(getBaseContext(), "EXITO", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+    }*/
     private void crearEvento(Evento evento) {
         String key = myRef.child("evento").push().getKey();
 
@@ -196,7 +237,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
         myRef.child("evento").child(key).child("creadoPor").setValue(firebaseUser.getDisplayName());
 
-        ProgressDialog.show(CrearEvento.this, "Creando", "Espera un poco ansioso...");
+//        ProgressDialog.show(CrearEvento.this, "Creando", "Espera un poco ansioso...");
         Toast.makeText(getBaseContext(), "EXITO", Toast.LENGTH_LONG).show();
         finish();
 
@@ -366,5 +407,24 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    /*
+    //Añadimos imagen al evento según el deporte
+    public void imagenDeporte(){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        icono.setDrawingCacheEnabled(true);
+        icono.buildDrawingCache();
+        Bitmap bitmap = icono.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+        if(deporteC.equals(getString(R.string.alpinismo))){
+            System.out.println("pruebaaaaaaaaaaaaaaaa");
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://furbol-trainers.appspot.com");
+            StorageReference imagesRef = storageRef.child("iconos").child(key+".png");
+        }if(getString(R.string.alpinismo).equals("alpinismo")){
+            System.out.println("cagadaaaa");
+        }
+    }
+*/
 
 }

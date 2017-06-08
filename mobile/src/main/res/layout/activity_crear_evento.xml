@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                android:hint="Precio"
+                android:hint="@string/precio"
                 android:inputType="numberDecimal" />
 
 
@@ -127,14 +127,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                android:hint="Comentario" />
+                android:hint="@string/comentario" />
 
             <Button
                 android:id="@+id/crear_aceptar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                android:text="Aceptar" />
+                android:text="@string/aceptar" />
 
 
         </LinearLayout>

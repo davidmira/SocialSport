@@ -31,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="60dp"
-            android:text="Fútbol"
             android:textColor="@color/tw__solid_white"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -42,9 +41,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_deporte"
             android:layout_marginRight="60dp"
-            android:text="A Coruña"
             android:textColor="@color/tw__solid_white"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:text="Acuerdate de poner la ciudad"/>
 
         <TextView
             android:id="@+id/evento_ubicacion"
@@ -52,7 +51,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_localizacion"
             android:layout_marginRight="60dp"
-            android:text="Pabellón inventado"
             android:textColor="@color/tw__solid_white"
             android:textSize="15dp" />
 
@@ -62,7 +60,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_ubicacion"
             android:layout_marginRight="60dp"
-            android:text="Interior"
             android:textColor="@color/tw__solid_white"
             android:textSize="15dp" />
 
@@ -71,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_tipo_lugar"
-            android:text="Coste por jugador:"
+            android:text="@string/coste_por_jugador"
             android:textColor="@color/tw__solid_white"
             android:textSize="15dp" />
 
@@ -83,7 +80,6 @@
             android:layout_below="@+id/evento_tipo_lugar"
             android:layout_toRightOf="@+id/evento_coste"
             android:paddingLeft="10dp"
-            android:text="5 €"
             android:textColor="@color/tw__solid_white"
             android:textSize="15dp" />
 
@@ -94,7 +90,6 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/evento_ubicacion"
             android:paddingLeft="10dp"
-            android:text="10/06/2017"
             android:textColor="@color/tw__solid_white"
             android:textSize="18dp" />
 
@@ -105,7 +100,6 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/evento_tipo_lugar"
             android:paddingLeft="10dp"
-            android:text="20:00"
             android:textColor="@color/tw__solid_white"
             android:textSize="15dp" />
     </RelativeLayout>
@@ -123,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/tw__solid_white"
-            android:text="Comentario:"
+            android:text="@string/comentario2"
             android:textSize="15dp" />
         <TextView
             android:id="@+id/evento_comentario"
