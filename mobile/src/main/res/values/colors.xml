@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00695C</color>
-    <color name="colorPrimaryDark">#00695C</color>
-    <color name="colorAccent">#004D40</color>
-    <color name="verdeFondo">#00897B</color>
-    <color name="verdeTimeLine">#00796B</color>
-    <color name="verdeAppBar">#00695C</color>
-    <color name="transparente">#00000000</color>
+    <color name="colorPrimary">#FF9800</color>
+    <color name="colorPrimaryDark">#F57C00</color>
+    <color name="colorPrimaryLight">#FFE0B2</color>
+    <color name="colorAccent">#C62828</color>
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSeconary">#727272</color>
+    <color name="iconsTint">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="windowBackgraound">#C0C3C6</color>
+    <color name="rowBackgroun">#F2F2F2</color>
 </resources>

@@ -1,11 +1,13 @@
 package com.david.socialsport.Objetos;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -17,18 +19,26 @@ import java.util.Map;
 
 public class Evento implements Serializable {
 
-    private String deporte, ubicacionEvento, tipoLugar, comentario, id;
+    private String deporte, ubicacionEvento, tipoLugar, comentario, id, creadoPor;
     Date fecha_hora;
     Float precio;
     double latitude, longitude;
+    public ArrayList<String> usuarios;
 
 
     public Evento() {
         //Es obligatorio incluir constructor por defecto
     }
 
+    public void setUsuarios(ArrayList<String> usuarios) {
+        this.usuarios = usuarios;
+    }
 
-    public Evento(String deporte, String ubicacionEvento, LatLng coordenadas, String tipoLugar, Float precio, Date fecha_hora, String comentario) {
+    public ArrayList<String> getUsuarios() {
+        return usuarios;
+    }
+
+    public Evento(String deporte, String ubicacionEvento, LatLng coordenadas, String tipoLugar, Float precio, Date fecha_hora, String comentario, String creadoPor, ArrayList<String> usuarios) {
         this.deporte = deporte;
         this.ubicacionEvento=ubicacionEvento;if(coordenadas == null){
             latitude = 0;
@@ -42,6 +52,8 @@ public class Evento implements Serializable {
         this.fecha_hora = fecha_hora;
         fecha_hora.setYear(fecha_hora.getYear() + 1900);
         this.comentario = comentario;
+        this.creadoPor = creadoPor;
+        this.usuarios=usuarios;
     }
 
     @Exclude
@@ -120,6 +132,14 @@ public class Evento implements Serializable {
 
     public void setPrecio(Float precio) {
         this.precio = precio;
+    }
+
+    public String getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(String creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     @Exclude

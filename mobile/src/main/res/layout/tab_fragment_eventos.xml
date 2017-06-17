@@ -4,8 +4,8 @@
     android:id="@+id/refrescar_eventos"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/verdeFondo"
-    tools:context=".Pantallas.Principal">
+    tools:context=".Pantallas.Principal"
+    android:background="@color/windowBackgraound">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,14 +15,13 @@
             android:id="@+id/listaEventos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:dividerHeight="10dp"
-            android:divider="@color/transparente"/>
+            android:dividerHeight="2dp"
+            android:divider="@color/divider"/>
 
         <TextView
-            android:id="@android:id/empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/lo_sentimos" />

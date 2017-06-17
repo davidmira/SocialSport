@@ -115,6 +115,12 @@
     <string name="lo_sentimos">Lo sentimos, aún no disponemos de ningún evento con esas características</string>
     <string name="sin_suscripcion">Aún no te has suscrito a ningún evento</string>
     <string name="coste_por_jugador">Coste por jugador:</string>
+    <string name="evento_participar">¿Desea participar en este evento?</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="evento_abandonar">¿Seguro que deseas abandonar el evento?</string>
+    <string name="evento_eliminar">Usted ha creado este evento, si lo abanda será eliminado</string>
+    <string name="informacion">Información:</string>
 
 
 </resources>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Pantallas.Principal"
-    android:background="@color/verdeFondo">
+    android:background="@color/windowBackgraound">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,16 +15,15 @@
         android:id="@+id/listaMisEventos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:dividerHeight="10dp"
-        android:divider="@color/transparente" />
+        android:dividerHeight="2dp"
+        android:divider="@color/divider" />
 
     <TextView
+        android:id="@+id/empty_mis"
         android:layout_gravity="center"
         android:gravity="center"
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="@string/sin_suscripcion" />
 
     </RelativeLayout>

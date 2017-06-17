@@ -6,15 +6,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.david.socialsport.Adapters.AdapterEventos;
 import com.david.socialsport.Adapters.AdapterMisEventos;
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,30 +30,62 @@ import java.util.Map;
  * Created by david on 03/04/2017.
  */
 
-public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-
-    String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    String userID;
     FirebaseDatabase database = FirebaseDatabase.getInstance().getInstance();
     DatabaseReference miReferencia = database.getReference();
 
     AdapterMisEventos adapter;
 
     SwipeRefreshLayout swipeRefreshLayout;
+    private TextView emptyText;
+    ListView listView;
 
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        adapter = new AdapterMisEventos(getContext());
+        adapter = new AdapterMisEventos(getContext(), savedInstanceState);
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+            return inflater.inflate(R.layout.tab_fragment_mis_eventos, container, false);
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         View rootView = inflater.inflate(R.layout.tab_fragment_mis_eventos, container, false);
-        ListView listView = (ListView) rootView.findViewById(R.id.listaMisEventos);
+
+        emptyText = (TextView) rootView.findViewById(R.id.empty_mis);
+        emptyText.setVisibility(View.INVISIBLE);
+
+        listView = (ListView) rootView.findViewById(R.id.listaMisEventos);
         listView.setAdapter(adapter);
-        listView.setEmptyView(rootView.findViewById(android.R.id.empty));
+        listView.setEmptyView(rootView.findViewById(R.id.empty_mis));
+
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                adapter.collapseCurrent(listView);
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                AdapterMisEventos adapter = ((AdapterMisEventos) listView.getAdapter());
+                if (view.findViewById(R.id.expandible).getVisibility() == View.VISIBLE) {
+                    adapter.collapseItem(view);
+                } else {
+                    adapter.collapseCurrent(listView);
+                    if (adapter.expandItem(position, view)) {
 
+                        listView.setSelection(position);
+                        listView.smoothScrollToPosition(position);
+                    }
+                }
             }
         });
 
@@ -71,12 +103,13 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
+        if (swipeRefreshLayout == null) return;
         swipeRefreshLayout.setRefreshing(true);
-
+        emptyText.setVisibility(View.INVISIBLE);
+        ((AdapterMisEventos) listView.getAdapter()).collapseCurrent(listView);
 
         final Date cincoDiasDate = new Date();
-        cincoDiasDate.setDate(cincoDiasDate.getDate()-5);
-
+        cincoDiasDate.setDate(cincoDiasDate.getDate() - 5);
         miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -88,29 +121,18 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
                 };
                 //Se accede al usuario con el id de usuario, y se guardan en un hashmap su codigos de evento (que vinen acompañados de un boolean que usare para indicar
                 //si esta suscrito)
-                Map<String, Boolean> eventosId = dataSnapshot.child("usuario").child(idUsuario).child("evento").getValue(t);
+                Map<String, Boolean> eventosId = dataSnapshot.child("usuario").child(userID).child("evento").getValue(t);
                 if (eventosId != null) { //se comprueba que no sea nulo, si fuese nulo el usuario no tendria ningun evento y no se hace nada
                     for (Map.Entry<String, Boolean> entry : eventosId.entrySet()) { //se recorren las claves de los eventos y sus valores
                         if (entry.getValue()) {//si el valor es true el usuaio esta dentro del evento y se procede, se cogen los id de los eventos y se añaden a una lista
-                            /*String deporte = dataSnapshot.child("evento").child(entry.getKey()).child("deporte").getValue(String.class);
-                            String localizacion = dataSnapshot.child("evento").child(entry.getKey()).child("localizacion").getValue(String.class);
-                            String ubicacionEvento = dataSnapshot.child("evento").child(entry.getKey()).child("ubicacionEvento").getValue(String.class);
-                            String tipoLugar = dataSnapshot.child("evento").child(entry.getKey()).child("tipoLugar").getValue(String.class);
-                            Float precio = dataSnapshot.child("evento").child(entry.getKey()).child("precio").getValue(Float.class);
-//                            Date fecha_hora = dataSnapshot.child("evento").child(entry.getKey()).child("fechaHora").getValue(Date.class);*/
-
                             for (String id : eventosId.keySet()) {
                                 Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
                                 if (evento != null) {
-                                   /* evento.setDeporte(deporte);
-                                    evento.setLocalizacion(localizacion);
-                                    evento.setUbicacionEvento(ubicacionEvento);
-                                    evento.setTipoLugar(tipoLugar);
-                                    evento.setPrecio(precio);*/
-                                   // evento.setFecha_hora(fecha_hora);
-                                    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
+                                    evento.setId(id);
+                                    if (evento.getFecha_hora_menos1900().before(cincoDiasDate)) { //si el evento esta 5 días en el pasado se borra
+                                        dataSnapshot.child("evento").child(id).getRef().removeValue();
+                                        dataSnapshot.child("usuario").child(userID).child("evento").child(id).getRef().removeValue();
+                                    }
                                     adapter.add(evento);
                                 } else {
                                     dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
@@ -139,7 +161,9 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
 
     }
 
-    /* if (evento.getFecha_hora_menos1900().before(cincoDiasDate)){//si el evento ha pasado hace más de cinco días se borra en el historial de usuario
-        dataSnapshot.child("usuario").child(id).child("evento").child(id).getRef().removeValue();
-    }*/
+    @Override
+    public void onResume() {
+        super.onResume();
+        onRefresh();
+    }
 }

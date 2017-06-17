@@ -2,10 +2,7 @@ package com.david.socialsport.Pantallas;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.david.socialsport.Objetos.Evento;
@@ -26,7 +23,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -39,7 +35,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -53,8 +48,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -70,9 +65,9 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     LinearLayout mapa;
     int click;
     String deporteC;
-    String icono;
     private LatLng coordenadas;
-
+    Evento evento;
+    ArrayList<String> usuarios;
 
     String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -84,7 +79,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     Button crear, mostraMapa;
     static EditText tipoLugar, comentario, precio, fecha, hora;
     static AutoCompleteTextView deporte;
-    String ubicacionEvento;
+    String ubicacionEvento, creadoPor;
 
     static int evYear, evMonth, evDay, evHour, evMinute;
     static String evLocalizacion;
@@ -126,13 +121,19 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
 
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+                creadoPor= firebaseUser.getUid();
+                usuarios=new ArrayList<>();
+                usuarios.add(firebaseUser.getUid());
+                //evento.setUsuarios(usuario);
                 deporteC = deporte.getText().toString();
                 String tipoLugarC = tipoLugar.getText().toString();
                 Float precioC = Float.valueOf(precio.getText().toString());
                 String fechaC = fecha.getText().toString();
                 String horaC = hora.getText().toString();
                 String comentarioC = ((EditText) findViewById(R.id.crear_comentario)).getText().toString();
-
                 if (deporte.getText() != null && !deporte.getText().toString().trim().isEmpty()) {
                     if (fechaC.isEmpty() || horaC.isEmpty() || deporteC.isEmpty() || precioC == null) {
                         Snackbar.make(v, "Te olvidas de algun dato importante!", Snackbar.LENGTH_LONG)
@@ -149,7 +150,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                         return;
                     }
 
-                    final Evento evento = new Evento(deporteC, ubicacionEvento, coordenadas, tipoLugarC, precioC, eventoDate, comentarioC);
+                    evento = new Evento(deporteC, ubicacionEvento, coordenadas, tipoLugarC, precioC, eventoDate, comentarioC, creadoPor, usuarios);
                     crearEvento(evento);
 
                 } else {
@@ -194,10 +195,11 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         myRef.child("evento").child(key).setValue(evento);
-        myRef.child("evento").child(key).child("usuario").child(userID).setValue(true);
-
+        //myRef.child("evento").child(key).child("usuario").child(userID).setValue(true);
         myRef.child("usuario").child(userID).child("evento").child(key).setValue(true);
-        myRef.child("evento").child(key).child("creadoPor").setValue(firebaseUser.getDisplayName());
+        //myRef.child("evento").child(key).child("creadoPor").setValue(firebaseUser.getDisplayName());;
+        //myRef.child("evento").child(key).child("usuario").child(userID).setValue(firebaseUser.getDisplayName());
+        //myRef.child("evento").child(key).child("usuario").setValue(userID);
         Toast.makeText(getBaseContext(), "EXITO", Toast.LENGTH_LONG).show();
         finish();
 
@@ -365,20 +367,6 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
             evHour = hourOfDay;
             hora.setText(SimpleDateFormat.getTimeInstance().format(new Date(1, 1, 1900, hourOfDay, minute)));
         }
+
     }
-
-
-    //Añadimos imagen al evento según el deporte
-   /* public void imagenDeporte(final String key){
-        if(deporteC.equals(getString(R.string.alpinismo))){
-            System.out.println("pruebaaaaaaaaaaaaaaaa");
-            storageRef = storage.getReferenceFromUrl("gs://socialsport-e98f4.appspot.com").child("iconos").child("alpinismo.png");
-            icono= String.valueOf(storageRef);
-            System.out.println(storageRef);
-        }if(getString(R.string.alpinismo).equals("alpinismo")){
-            System.out.println("cagadaaaa");
-        }
-    }*/
-
-
 }

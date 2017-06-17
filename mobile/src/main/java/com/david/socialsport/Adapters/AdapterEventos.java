@@ -128,7 +128,7 @@ public class AdapterEventos extends ArrayAdapter<Evento> implements OnMapReadyCa
         currentPosition = position;
 
         if (!(e.getComentario() == null || e.getComentario().isEmpty())) {
-            TextView comentario = ((TextView) view.findViewById(R.id.evento_comentario));
+            TextView comentario = ((TextView) view.findViewById(R.id.evento_informacion));
             comentario.setText(e.getComentario());
             comentario.setVisibility(View.VISIBLE);
         }
@@ -141,6 +141,8 @@ public class AdapterEventos extends ArrayAdapter<Evento> implements OnMapReadyCa
             map.setVisibility(View.VISIBLE);
         }
 
+
+        view.findViewById(R.id.evento_opciones).setVisibility(View.VISIBLE);
         LinearLayout expandible = (LinearLayout) view.findViewById(R.id.expandible);
         expandible.setVisibility(View.VISIBLE);
 
@@ -149,8 +151,9 @@ public class AdapterEventos extends ArrayAdapter<Evento> implements OnMapReadyCa
     }
 
     public void collapseItem(View view) {
-        view.findViewById(R.id.evento_comentario).setVisibility(View.GONE);
+        view.findViewById(R.id.evento_informacion).setVisibility(View.GONE);
         view.findViewById(R.id.expandible).setVisibility(View.GONE);
+        view.findViewById(R.id.evento_opciones).setVisibility(View.GONE);
         currentPosition = -1;
     }
 

@@ -13,7 +13,7 @@ import com.david.socialsport.R;
 
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int numeroTabs;
+    private int numeroTabs;
 
 
     public PagerAdapter(FragmentManager fm, int numeroTabs) {
@@ -27,11 +27,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                FragmentEventos tab1 = new FragmentEventos();
-                return tab1;
+                return new FragmentEventos();
             case 1:
-                FragmentMisEventos tab2 = new FragmentMisEventos();
-                return tab2;
+                return new FragmentMisEventos();
             default:
                 return null;
         }

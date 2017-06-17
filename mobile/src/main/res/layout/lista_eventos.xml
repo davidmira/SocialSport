@@ -4,10 +4,7 @@
     android:id="@+id/verEvento"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
-    android:layout_marginTop="10dp"
-    android:background="@drawable/redondeo_layout"
+    android:background="@color/rowBackgroun"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
@@ -31,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="60dp"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorPrimary"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -41,9 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_deporte"
             android:layout_marginRight="60dp"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorPrimary"
             android:textSize="18dp"
-            android:text="Acuerdate de poner la ciudad"/>
+            android:text="A Coruña"/>
 
         <TextView
             android:id="@+id/evento_ubicacion"
@@ -51,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_localizacion"
             android:layout_marginRight="60dp"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
 
         <TextView
@@ -60,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_ubicacion"
             android:layout_marginRight="60dp"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
 
         <TextView
@@ -69,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_tipo_lugar"
             android:text="@string/coste_por_jugador"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
 
 
@@ -80,7 +77,7 @@
             android:layout_below="@+id/evento_tipo_lugar"
             android:layout_toRightOf="@+id/evento_coste"
             android:paddingLeft="10dp"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
 
         <TextView
@@ -90,7 +87,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/evento_ubicacion"
             android:paddingLeft="10dp"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorPrimary"
             android:textSize="18dp" />
 
         <TextView
@@ -100,7 +97,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/evento_tipo_lugar"
             android:paddingLeft="10dp"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
     </RelativeLayout>
 
@@ -113,18 +110,18 @@
         android:orientation="vertical"
         android:visibility="gone">
         <TextView
-            android:id="@+id/evento_texto_comentario"
+            android:id="@+id/evento_texto_informacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/tw__solid_white"
-            android:text="@string/comentario2"
+            android:textColor="@color/textColorPrimary"
+            android:text="@string/informacion"
             android:textSize="15dp" />
         <TextView
-            android:id="@+id/evento_comentario"
-            android:layout_below="@+id/evento_texto_comentario"
+            android:id="@+id/evento_informacion"
+            android:layout_below="@+id/evento_texto_informacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/tw__solid_white"
+            android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
 
         <com.google.android.gms.maps.MapView
@@ -133,13 +130,34 @@
             android:layout_height="250dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginStart="20dp"
             android:clickable="true"
             android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/evento_opciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/unirse_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_tick"
+                android:tint="@color/iconsTint" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/eliminar_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_borrar"
+                android:tint="@color/iconsTint"
+                />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
