@@ -61,7 +61,6 @@ public class AdapterMisEventos extends ArrayAdapter<Evento> implements OnMapRead
         TextView deporte = (TextView) convertView.findViewById(R.id.evento_deporte);
         TextView localizacion = (TextView) convertView.findViewById(R.id.evento_localizacion);
         TextView ubicacionEvento = (TextView) convertView.findViewById(R.id.evento_ubicacion);
-        TextView tipoLugar = (TextView) convertView.findViewById(R.id.evento_tipo_lugar);
         TextView precio = (TextView) convertView.findViewById(R.id.evento_precio);
         TextView fecha = (TextView) convertView.findViewById(R.id.evento_fecha);
         TextView hora = (TextView) convertView.findViewById(R.id.evento_hora);
@@ -83,7 +82,6 @@ public class AdapterMisEventos extends ArrayAdapter<Evento> implements OnMapRead
 
         deporte.setText(evento.getDeporte());
         ubicacionEvento.setText(evento.getUbicacionEvento());
-        tipoLugar.setText(evento.getTipoLugar());
         precio.setText(evento.getPrecio().toString() + " €");
 
 

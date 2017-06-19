@@ -1,6 +1,7 @@
 package com.david.socialsport.Fragments;
 
 import android.content.DialogInterface;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
     FirebaseDatabase database = FirebaseDatabase.getInstance().getInstance();
     DatabaseReference miReferencia = database.getReference();
 
+    DataSnapshot dataSnapshot;
     AdapterEventos adapter;
 
     SwipeRefreshLayout swipeRefreshLayout;
@@ -48,6 +51,8 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
     ListView listView;
     Evento e;
     ArrayList<String> usuario;
+    FloatingActionButton unirse, borrar;
+    RelativeLayout tarjeta;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +69,6 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
         listView = (ListView) rootView.findViewById(R.id.listaEventos);
         listView.setAdapter(adapter);
         listView.setEmptyView(rootView.findViewById(android.R.id.empty));
-
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -120,6 +124,7 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
 
     }
 
+
     @Override
     public void onRefresh() {
         if (swipeRefreshLayout == null) return;
@@ -141,37 +146,45 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                 GenericTypeIndicator<Map<String, Object>> t = new GenericTypeIndicator<Map<String, Object>>() {
                 };
                 Map<String, Object> eventosId = dataSnapshot.child("evento").getValue(t);
+
                 if (eventosId != null) {
-                    for (Map.Entry<String, Object> entry : eventosId.entrySet()) {
-                        for (String id : eventosId.keySet()) {
-                            Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
-                            if (evento != null) {
-                                evento.setId(id);
-                                if (evento.getFecha_hora_menos1900().before(ahoraDate)) { //si el evento esta a 45 minutos se oculta
-                                    adapter.remove(evento);
-                                }
-                                if (evento.getFecha_hora_menos1900().before(cincoDiasDate)) {//si el evento esta 5 días en el pasado se borra de los eventos y del ususario
-                                    dataSnapshot.child("evento").child(id).getRef().removeValue();
-                                    dataSnapshot.child("usuario").child(userID).child("evento").child(id).getRef().removeValue();
-                                }
-                                if (evento.getFecha_hora_menos1900().after(ahoraDate)) {
-                                    adapter.add(evento);
-                                    }
+                    //for (Map.Entry<String, Object> entry : eventosId.entrySet()) {
+                    for (String id : eventosId.keySet()) {
+                        Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
+                        if (evento != null) {
+                            evento.setId(id);
 
-                                } else {
+                            if (evento.getFecha_hora_menos1900().before(ahoraDate)) { //si el evento esta a 45 minutos se oculta
+                                adapter.remove(evento);
+                            }
+                            if (evento.getFecha_hora_menos1900().before(cincoDiasDate)) {//si el evento esta 5 días en el pasado se borra de los eventos y del ususario
+                                dataSnapshot.child("evento").child(id).getRef().removeValue();
+                                dataSnapshot.child("usuario").child(userID).child("evento").child(id).getRef().removeValue();
+                            }
+                            if (evento.getFecha_hora_menos1900().after(ahoraDate)) {
+                                adapter.add(evento);
+
+
+                               /* if (dataSnapshot.child("usuario").child(userID).child("evento").child(id).getKey() == dataSnapshot.child("evento").child(id).getKey()) {
+                                    System.out.println("prueee:   " + dataSnapshot.child("usuario").child(userID).child("evento").child(id).getKey());
+                                    unirse.setVisibility(View.GONE);
+                                }*/
+
+                            } else {
+                                for (Map.Entry<String, Object> entry : eventosId.entrySet()) {
                                     dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
-
                                 }
+                            }
 
-                            }
                         }
-                        adapter.sort(new Comparator<Evento>() {
-                            @Override
-                            public int compare(Evento o1, Evento o2) {
-                                return o1.getFecha_hora().compareTo(o2.getFecha_hora());
-                            }
-                        });
-                        adapter.notifyDataSetChanged();
+                    }
+                    adapter.sort(new Comparator<Evento>() {
+                        @Override
+                        public int compare(Evento o1, Evento o2) {
+                            return o1.getFecha_hora().compareTo(o2.getFecha_hora());
+                        }
+                    });
+                    adapter.notifyDataSetChanged();
                 } else {
                     emptyText.setVisibility(View.VISIBLE);
                 }
@@ -209,9 +222,17 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
 
     private void unirse(Evento e) {
         miReferencia.child("usuario").child(userID).child("evento").child(e.getId()).setValue(true);
-        //miReferencia.child("evento").child(e.getId()).child("usuario").setValue(userID);
+        //miReferencia.child("evento").child(referencia).child("usuarios").child(userID).setValue(true);
+        miReferencia.child("evento").child(e.getId()).child("usuarios").child(userID).setValue(true);
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
+        borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
+        unirse.setVisibility(getView().GONE);
+        borrar.setVisibility(View.VISIBLE);
+        tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+        tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+
+     /*   FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         usuario=new ArrayList<>();
         usuario.add(String.valueOf(miReferencia.child("evento").child(e.getId()).child("usuarios").setValue(userID)));
@@ -243,6 +264,7 @@ String referencia= String.valueOf(miReferencia.child("evento").child(e.getId()).
                             miReferencia.child("evento").child(e.getId()).removeValue();
                             miReferencia.child("usuario").child(userID).child("evento").child(e.getId()).removeValue();
                             adapter.notifyDataSetChanged();
+
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -258,8 +280,16 @@ String referencia= String.valueOf(miReferencia.child("evento").child(e.getId()).
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             miReferencia.child("usuario").child(userID).child("evento").child(e.getId()).removeValue();
-                            miReferencia.child("evento").child(e.getId()).child("usuario").removeValue();
+                            //miReferencia.child("evento").child(e.getId()).child("usuarios").removeValue();
+                            miReferencia.child("evento").child(e.getId()).child("usuarios").child(userID).setValue(false);
+
+                            unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
+
+                            borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
                             adapter.notifyDataSetChanged();
+                            borrar.setVisibility(getView().GONE);
+                            unirse.setVisibility(View.VISIBLE);
+                            tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

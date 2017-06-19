@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">SocialSport</string>
     <string name="error_inicio_sesion">Lo sentimos, ha ocurrido un error</string>
-    <string name="facebook_app_id">1059154417554118</string>
+    <string name="facebook_app_id">1832997950361110</string>
+    <string name="fb_login_protocol_scheme">fb1832997950361110</string>
     <string name="title_activity_pantalla_principal">PantallaPrincipal</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -12,7 +13,7 @@
     <string name="crearEvento">Crear Evento</string>
     <string name="title_activity_crear_evento">Map</string>
 
-    <string name="deporte">Deporte</string>
+    <string name="deporte">Deporte:</string>
 
 
     <string name="alpinismo">Alpinismo</string>
@@ -108,9 +109,9 @@
     <string name="windsurf">Windsurf</string>
     <string name="yoga">Yoga</string>
     <string name="precio">Precio</string>
-    <string name="comentario">Comentario</string>
+    <string name="comentario">Comentario:</string>
+    <string name="comentarios"><u>Comentarios</u></string>
     <string name="aceptar">Aceptar</string>
-    <string name="comentario2">Comentario:</string>
     <string name="social_sport">Social Sport</string>
     <string name="lo_sentimos">Lo sentimos, aún no disponemos de ningún evento con esas características</string>
     <string name="sin_suscripcion">Aún no te has suscrito a ningún evento</string>
@@ -121,6 +122,12 @@
     <string name="evento_abandonar">¿Seguro que deseas abandonar el evento?</string>
     <string name="evento_eliminar">Usted ha creado este evento, si lo abanda será eliminado</string>
     <string name="informacion">Información:</string>
+    <string name="fecha">Fecha:</string>
+    <string name="hora">Hora:</string>
+    <string name="esqcribaAqui">Escriba aquí sus comentarios o información adicional</string>
+    <string name="terminos_condiciones"><u>Acepto los términos y condiciones</u></string>
+    <string name="politica">politica</string>
+    <string name="participantes"><u>Participantes</u></string>
 
 
 </resources>

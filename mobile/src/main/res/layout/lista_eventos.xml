@@ -51,20 +51,12 @@
             android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/evento_tipo_lugar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/evento_ubicacion"
-            android:layout_marginRight="60dp"
-            android:textColor="@color/textColorSeconary"
-            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/evento_coste"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/evento_tipo_lugar"
+            android:layout_below="@+id/evento_ubicacion"
             android:text="@string/coste_por_jugador"
             android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
@@ -74,7 +66,7 @@
             android:id="@+id/evento_precio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/evento_tipo_lugar"
+            android:layout_below="@+id/evento_ubicacion"
             android:layout_toRightOf="@+id/evento_coste"
             android:paddingLeft="10dp"
             android:textColor="@color/textColorSeconary"
@@ -95,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/evento_tipo_lugar"
+            android:layout_below="@+id/evento_localizacion"
             android:paddingLeft="10dp"
             android:textColor="@color/textColorSeconary"
             android:textSize="15dp" />
@@ -136,8 +128,6 @@
             android:id="@+id/evento_opciones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
             android:orientation="horizontal"
             android:visibility="gone">
 
@@ -157,6 +147,40 @@
                 android:src="@drawable/ic_borrar"
                 android:tint="@color/iconsTint"
                 />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/compartir_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_compartir"
+                android:tint="@color/iconsTint"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="right">
+            <TextView
+                android:id="@+id/crear_comentarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/comentarios"
+                android:textColor="@color/textColorPrimary"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:layout_gravity="bottom"/>
+            <TextView
+                android:id="@+id/crear_participantes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/participantes"
+                android:textColor="@color/textColorPrimary"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="5dp"
+                android:paddingBottom="10dp"/>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

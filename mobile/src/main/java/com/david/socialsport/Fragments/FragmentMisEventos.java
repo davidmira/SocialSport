@@ -1,6 +1,9 @@
 package com.david.socialsport.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -13,6 +16,8 @@ import android.widget.TextView;
 
 import com.david.socialsport.Adapters.AdapterMisEventos;
 import com.david.socialsport.Objetos.Evento;
+import com.david.socialsport.Pantallas.CrearEvento;
+import com.david.socialsport.Pantallas.Principal;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -58,6 +63,16 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
         listView.setAdapter(adapter);
         listView.setEmptyView(rootView.findViewById(R.id.empty_mis));
 
+        //Botón + flotante inferior
+        FloatingActionButton botonAñadirEvento = (FloatingActionButton) rootView.findViewById(R.id.boton_anadir_partidos);
+        botonAñadirEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                startActivity(new Intent(getContext(), CrearEvento.class));
+            }
+        });
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -123,8 +138,8 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
                 //si esta suscrito)
                 Map<String, Boolean> eventosId = dataSnapshot.child("usuario").child(userID).child("evento").getValue(t);
                 if (eventosId != null) { //se comprueba que no sea nulo, si fuese nulo el usuario no tendria ningun evento y no se hace nada
-                    for (Map.Entry<String, Boolean> entry : eventosId.entrySet()) { //se recorren las claves de los eventos y sus valores
-                        if (entry.getValue()) {//si el valor es true el usuaio esta dentro del evento y se procede, se cogen los id de los eventos y se añaden a una lista
+                  // for (Map.Entry<String, Boolean> entry : eventosId.entrySet()) { //se recorren las claves de los eventos y sus valores
+                     //   if (entry.getValue()) {//si el valor es true el usuaio esta dentro del evento y se procede, se cogen los id de los eventos y se añaden a una lista
                             for (String id : eventosId.keySet()) {
                                 Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
                                 if (evento != null) {
@@ -135,11 +150,11 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
                                     }
                                     adapter.add(evento);
                                 } else {
-                                    dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
+                                  //  dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
                                 }
-                            }
+                          //  }
                         }
-                    }
+                   // }
                     adapter.sort(new Comparator<Evento>() {
                         @Override
                         public int compare(Evento o1, Evento o2) {

@@ -8,11 +8,13 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,6 +58,8 @@ public class AdapterEventos extends ArrayAdapter<Evento> implements OnMapReadyCa
     private int currentPosition = -1;
     ImageView icono;
     Evento evento;
+    TextView deporte, localizacion, ubicacionEvento, precio, fecha, hora;
+    String userID;
 
     public AdapterEventos(@NonNull Context context, Bundle savedInstanceState) {
         super(context, 0, new ArrayList<Evento>());
@@ -67,15 +72,16 @@ public class AdapterEventos extends ArrayAdapter<Evento> implements OnMapReadyCa
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.lista_eventos, parent, false);
         }
 
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         evento = getItem(position);
 
-        TextView deporte = (TextView) convertView.findViewById(R.id.evento_deporte);
-        TextView localizacion = (TextView) convertView.findViewById(R.id.evento_localizacion);
-        TextView ubicacionEvento = (TextView) convertView.findViewById(R.id.evento_ubicacion);
-        TextView tipoLugar = (TextView) convertView.findViewById(R.id.evento_tipo_lugar);
-        TextView precio = (TextView) convertView.findViewById(R.id.evento_precio);
-        TextView fecha = (TextView) convertView.findViewById(R.id.evento_fecha);
-        TextView hora = (TextView) convertView.findViewById(R.id.evento_hora);
+        deporte = (TextView) convertView.findViewById(R.id.evento_deporte);
+        localizacion = (TextView) convertView.findViewById(R.id.evento_localizacion);
+        ubicacionEvento = (TextView) convertView.findViewById(R.id.evento_ubicacion);
+        precio = (TextView) convertView.findViewById(R.id.evento_precio);
+        fecha = (TextView) convertView.findViewById(R.id.evento_fecha);
+        hora = (TextView) convertView.findViewById(R.id.evento_hora);
 
         //Cargamos la imagen del evento según el deporte que le corresponda
         icono = (ImageView) convertView.findViewById(R.id.evento_icono);
@@ -93,7 +99,6 @@ public class AdapterEventos extends ArrayAdapter<Evento> implements OnMapReadyCa
 
         deporte.setText(evento.getDeporte());
         ubicacionEvento.setText(evento.getUbicacionEvento());
-        tipoLugar.setText(evento.getTipoLugar());
         precio.setText(evento.getPrecio().toString() + " €");
 
 

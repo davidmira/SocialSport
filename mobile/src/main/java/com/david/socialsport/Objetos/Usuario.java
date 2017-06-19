@@ -7,6 +7,7 @@ import java.util.HashMap;
  */
 
 public class Usuario {
+    private String id;
     private String nombre;
     private String imagen;
     HashMap<String,Boolean> eventos;
@@ -25,6 +26,14 @@ public class Usuario {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setNombre(String nombre) {

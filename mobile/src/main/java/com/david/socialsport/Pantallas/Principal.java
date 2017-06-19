@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -40,6 +38,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Principal extends AppCompatActivity
@@ -63,6 +65,8 @@ public class Principal extends AppCompatActivity
     DatabaseReference miReferencia = database.getReference();
     DatabaseReference usuarioReferencia;
 
+    String usuarioId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,16 +80,7 @@ public class Principal extends AppCompatActivity
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-        //Botón + flotante inferior
-        FloatingActionButton botonAñadirEvento = (FloatingActionButton) findViewById(R.id.boton_añadir_partidos);
-        botonAñadirEvento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                startActivity(new Intent(Principal.this, CrearEvento.class));
-            }
-        });
+
 
         //Cajón lateral
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -140,21 +135,25 @@ public class Principal extends AppCompatActivity
     }
 
     private void goLogin() {
-        Intent intent = new Intent(this, Login2.class);
+        Intent intent = new Intent(this, Login.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
-    private void cargarUsuario(final FirebaseUser user){
+    private void cargarUsuario(final FirebaseUser user) {
         //crea el usuario si no existe
         usuarioReferencia = miReferencia.child("usuario").child(user.getUid());
         usuarioReferencia.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Usuario usuario = dataSnapshot.getValue(Usuario.class);
-                if(usuario == null){
+                if (usuario == null) {
                     usuario = new Usuario(user.getDisplayName(), user.getPhotoUrl().toString());
+                    usuario.setId(dataSnapshot.getKey());
+                    usuario.setEventos(new HashMap<String, Boolean>());
                     usuarioReferencia.setValue(usuario);
+                } else {
+                    usuario.setId(dataSnapshot.getKey());
                 }
             }
 
@@ -164,6 +163,7 @@ public class Principal extends AppCompatActivity
             }
         });
     }
+
 
     @Override
     protected void onStart() {
@@ -278,7 +278,7 @@ public class Principal extends AppCompatActivity
         AuthUI.getInstance().signOut(Principal.this).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                startActivity(new Intent(Principal.this, Login2.class));
+                startActivity(new Intent(Principal.this, Login.class));
                 finish();
             }
         });

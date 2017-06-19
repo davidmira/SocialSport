@@ -19,26 +19,18 @@ import java.util.Map;
 
 public class Evento implements Serializable {
 
-    private String deporte, ubicacionEvento, tipoLugar, comentario, id, creadoPor;
+    private String deporte, ubicacionEvento, comentario, id, creadoPor;
     Date fecha_hora;
     Float precio;
     double latitude, longitude;
-    public ArrayList<String> usuarios;
 
 
     public Evento() {
         //Es obligatorio incluir constructor por defecto
     }
 
-    public void setUsuarios(ArrayList<String> usuarios) {
-        this.usuarios = usuarios;
-    }
 
-    public ArrayList<String> getUsuarios() {
-        return usuarios;
-    }
-
-    public Evento(String deporte, String ubicacionEvento, LatLng coordenadas, String tipoLugar, Float precio, Date fecha_hora, String comentario, String creadoPor, ArrayList<String> usuarios) {
+    public Evento(String deporte, String ubicacionEvento, LatLng coordenadas, Float precio, Date fecha_hora, String comentario, String creadoPor, String id) {
         this.deporte = deporte;
         this.ubicacionEvento=ubicacionEvento;if(coordenadas == null){
             latitude = 0;
@@ -47,13 +39,12 @@ public class Evento implements Serializable {
             latitude = coordenadas.latitude;
             longitude = coordenadas.longitude;
         }
-        this.tipoLugar = tipoLugar;
         this.precio = precio;
         this.fecha_hora = fecha_hora;
         fecha_hora.setYear(fecha_hora.getYear() + 1900);
         this.comentario = comentario;
         this.creadoPor = creadoPor;
-        this.usuarios=usuarios;
+        this.id = id;
     }
 
     @Exclude
@@ -100,14 +91,6 @@ public class Evento implements Serializable {
 
     public void setUbicacionEvento(String ubicacionEvento) {
         this.ubicacionEvento = ubicacionEvento;
-    }
-
-    public String getTipoLugar() {
-        return tipoLugar;
-    }
-
-    public void setTipoLugar(String tipoLugar) {
-        this.tipoLugar = tipoLugar;
     }
 
     public String getComentario() {

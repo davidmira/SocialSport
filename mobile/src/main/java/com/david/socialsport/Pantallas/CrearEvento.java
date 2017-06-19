@@ -3,10 +3,14 @@ package com.david.socialsport.Pantallas;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.R;
+import com.facebook.appevents.internal.Constants;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -23,19 +27,29 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
+import android.text.InputType;
 import android.text.format.DateFormat;
+import android.text.util.Linkify;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -68,6 +82,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     private LatLng coordenadas;
     Evento evento;
     ArrayList<String> usuarios;
+    TextView terminos;
 
     String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -76,14 +91,21 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     StorageReference storageRef;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    Button crear, mostraMapa;
-    static EditText tipoLugar, comentario, precio, fecha, hora;
+    Button crear;
+    CheckBox pagar;
+    FloatingActionButton mostraMapa;
+    static EditText  comentario, precio, fecha, hora;
     static AutoCompleteTextView deporte;
     String ubicacionEvento, creadoPor;
 
     static int evYear, evMonth, evDay, evHour, evMinute;
     static String evLocalizacion;
     Date eventoDate;
+    Float precioC;
+    String id;
+
+
+    PlaceAutocompleteFragment autocompleteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +121,12 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         menuBar.setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.crearEvento));
 
-        tipoLugar = (EditText) findViewById(R.id.crear_tipo);
         comentario = (EditText) findViewById(R.id.crear_comentario);
         precio = (EditText) findViewById(R.id.crear_coste);
         fecha = (EditText) findViewById(R.id.crear_fecha);
+        fecha.setFocusable(false); //Deshabilitamos teclado
         hora = (EditText) findViewById(R.id.crear_hora);
-
+        hora.setFocusable(false); //Deshabilitamos teclado
         // Inicializar y rellenar un String Array desde un recurso de aplicación
         // String Array - Recurso XML que proporciona una matriz de cadena
         String[] LISTADEPORTES = getResources().getStringArray(R.array.lista_deportes);
@@ -115,27 +137,56 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         //Definie el umbral de Autocompletar
         deporte.setThreshold(1);
 
+
+        precio.setVisibility(View.INVISIBLE);//Ocultamos el precio por defecto
+        pagar = (CheckBox) findViewById(R.id.crear_check_precio);
+        pagar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(pagar.isChecked()){
+                    precio.setVisibility(View.VISIBLE);
+                }else{
+                    precio.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+
+        terminos = (TextView) findViewById(R.id.crear_terminos);
+        terminos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(CrearEvento.this);
+
+                builder.setMessage(R.string.politica)
+                        .setPositiveButton(R.string.aceptar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
         crear = (Button) findViewById(R.id.crear_aceptar);
 
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-                creadoPor= firebaseUser.getUid();
-                usuarios=new ArrayList<>();
-                usuarios.add(firebaseUser.getUid());
-                //evento.setUsuarios(usuario);
                 deporteC = deporte.getText().toString();
-                String tipoLugarC = tipoLugar.getText().toString();
-                Float precioC = Float.valueOf(precio.getText().toString());
+                if(precio.getText().toString()=="Precio"){
+                    precioC = Float.valueOf(0);
+                }else{
+                    precioC = Float.valueOf(precio.getText().toString());
+                }
                 String fechaC = fecha.getText().toString();
                 String horaC = hora.getText().toString();
                 String comentarioC = ((EditText) findViewById(R.id.crear_comentario)).getText().toString();
                 if (deporte.getText() != null && !deporte.getText().toString().trim().isEmpty()) {
-                    if (fechaC.isEmpty() || horaC.isEmpty() || deporteC.isEmpty() || precioC == null) {
+                    if (fechaC.isEmpty() || horaC.isEmpty() || deporteC.isEmpty()) {
                         Snackbar.make(v, "Te olvidas de algun dato importante!", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         return;
@@ -150,7 +201,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                         return;
                     }
 
-                    evento = new Evento(deporteC, ubicacionEvento, coordenadas, tipoLugarC, precioC, eventoDate, comentarioC, creadoPor, usuarios);
+                    evento = new Evento(deporteC, ubicacionEvento, coordenadas, precioC, eventoDate, comentarioC, creadoPor,id);
                     crearEvento(evento);
 
                 } else {
@@ -165,7 +216,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         mapa = (LinearLayout) findViewById(R.id.mapa);
         mapa.setVisibility(View.GONE);
 
-        mostraMapa = (Button) findViewById(R.id.mostraMapa);
+        mostraMapa = (FloatingActionButton) findViewById(R.id.mostraMapa);
         mostraMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,7 +232,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         });
 
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setOnPlaceSelectedListener(this);
 
@@ -195,9 +246,10 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         myRef.child("evento").child(key).setValue(evento);
-        //myRef.child("evento").child(key).child("usuario").child(userID).setValue(true);
+        myRef.child("evento").child(key).child("usuarios").child(userID).setValue(true);
         myRef.child("usuario").child(userID).child("evento").child(key).setValue(true);
-        //myRef.child("evento").child(key).child("creadoPor").setValue(firebaseUser.getDisplayName());;
+        myRef.child("evento").child(key).child("creadoPor").setValue(userID);
+        ;
         //myRef.child("evento").child(key).child("usuario").child(userID).setValue(firebaseUser.getDisplayName());
         //myRef.child("evento").child(key).child("usuario").setValue(userID);
         Toast.makeText(getBaseContext(), "EXITO", Toast.LENGTH_LONG).show();
