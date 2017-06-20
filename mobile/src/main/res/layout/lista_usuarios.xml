@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackgraound">
+
+    <ListView
+        android:id="@+id/listaUsuarios"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/invitar"
+        android:divider="@color/divider"
+        android:dividerHeight="2dp"
+        android:paddingTop="25dp" />
+
+    <LinearLayout
+        android:id="@+id/invitar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/boton_invitar"
+                android:src="@android:drawable/ic_input_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:tint="@color/iconsTint"
+                android:background="@color/colorAccent"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/windowBackgraound"
+                android:text="@string/invita"
+                android:textColor="@color/textColorPrimary"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+
+</RelativeLayout>

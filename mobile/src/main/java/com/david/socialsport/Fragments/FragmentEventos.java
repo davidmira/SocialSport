@@ -1,6 +1,7 @@
 package com.david.socialsport.Fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -14,13 +15,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.david.socialsport.Adapters.AdapterEventos;
 import com.david.socialsport.Objetos.Evento;
+import com.david.socialsport.Pantallas.VerComentarios;
+import com.david.socialsport.Pantallas.VerUsuarios;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +29,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
@@ -39,29 +39,28 @@ import java.util.Map;
  */
 
 public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    String userID;
+    private String userID;
     FirebaseDatabase database = FirebaseDatabase.getInstance().getInstance();
     DatabaseReference miReferencia = database.getReference();
 
-    DataSnapshot dataSnapshot;
     AdapterEventos adapter;
 
     SwipeRefreshLayout swipeRefreshLayout;
     private TextView emptyText;
     ListView listView;
     Evento e;
-    ArrayList<String> usuario;
-    FloatingActionButton unirse, borrar;
+    FloatingActionButton unirse, borrar, compartir;
     RelativeLayout tarjeta;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         adapter = new AdapterEventos(getContext(), savedInstanceState);
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
-            return inflater.inflate(R.layout.tab_fragment_eventos, container, false);
+            return inflater.inflate(R.layout.lista_fragment_eventos, container, false);
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        View rootView = inflater.inflate(R.layout.tab_fragment_eventos, container, false);
+
+        View rootView = inflater.inflate(R.layout.lista_fragment_eventos, container, false);
 
         emptyText = (TextView) rootView.findViewById(R.id.empty);
         emptyText.setVisibility(View.INVISIBLE);
@@ -82,13 +81,15 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
             }
         });
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                AdapterEventos adapter = ((AdapterEventos) listView.getAdapter());
+                final AdapterEventos adapter = ((AdapterEventos) listView.getAdapter());
                 if (view.findViewById(R.id.expandible).getVisibility() == View.VISIBLE) {
                     adapter.collapseItem(view);
+
                 } else {
                     adapter.collapseCurrent(listView);
                     if (adapter.expandItem(position, view)) {
@@ -104,8 +105,45 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                                 eliminarSuscripcionEvento(position);
                             }
                         });
+                        view.findViewById(R.id.ver_participantes).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                verUsuarios(position);
+                            }
+                        });
+                        view.findViewById(R.id.ver_comentarios).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                verComentarios(position);
+                            }
+                        });
                         listView.setSelection(position);
                         listView.smoothScrollToPosition(position);
+
+                        miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                DataSnapshot evento = dataSnapshot.child("evento").child(adapter.getItem(position).getId()).child("usuarios").child(userID);
+                                if (evento.exists()) {
+                                    unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
+                                    unirse.setVisibility(View.GONE);
+                                    tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                                    tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                                }else{
+                                    borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
+                                    compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
+                                    tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                                    tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
+                                    borrar.setVisibility(View.GONE);
+                                    compartir.setVisibility(View.GONE);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 }
             }
@@ -149,7 +187,7 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
 
                 if (eventosId != null) {
                     //for (Map.Entry<String, Object> entry : eventosId.entrySet()) {
-                    for (String id : eventosId.keySet()) {
+                    for (final String id : eventosId.keySet()) {
                         Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
                         if (evento != null) {
                             evento.setId(id);
@@ -165,10 +203,31 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                                 adapter.add(evento);
 
 
-                               /* if (dataSnapshot.child("usuario").child(userID).child("evento").child(id).getKey() == dataSnapshot.child("evento").child(id).getKey()) {
-                                    System.out.println("prueee:   " + dataSnapshot.child("usuario").child(userID).child("evento").child(id).getKey());
-                                    unirse.setVisibility(View.GONE);
-                                }*/
+                                //inicializamos botones y colores de las tarjetas
+                                miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        DataSnapshot evento = dataSnapshot.child("evento").child(id).child("usuarios").child(userID);
+                                        if (evento.exists()) {
+                                            unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
+                                            unirse.setVisibility(View.GONE);
+                                            tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                                            tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                                        }else{
+                                            borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
+                                            compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
+                                            tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                                            tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
+                                            borrar.setVisibility(View.GONE);
+                                            compartir.setVisibility(View.GONE);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
 
                             } else {
                                 for (Map.Entry<String, Object> entry : eventosId.entrySet()) {
@@ -227,8 +286,10 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
 
         unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
         borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
+        compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
         unirse.setVisibility(getView().GONE);
         borrar.setVisibility(View.VISIBLE);
+        compartir.setVisibility(View.VISIBLE);
         tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
         tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
 
@@ -250,6 +311,20 @@ String referencia= String.valueOf(miReferencia.child("evento").child(e.getId()).
         usuarios.add(firebaseUser.getUid());
         e.setUsuarios(usuarios);
  */
+    }
+
+    public void verUsuarios(int position) {
+        Intent intent = new Intent(getContext(), VerUsuarios.class);
+        intent.putExtra("eventoID", adapter.getItem(position).getId());
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+
+    public void verComentarios(int position) {
+        Intent intent = new Intent(getContext(), VerComentarios.class);
+        intent.putExtra("eventoID", adapter.getItem(position).getId());
+        intent.putExtra("userID", userID);
+        startActivity(intent);
     }
 
     public void eliminarSuscripcionEvento(int position) {
@@ -281,14 +356,16 @@ String referencia= String.valueOf(miReferencia.child("evento").child(e.getId()).
                         public void onClick(DialogInterface dialog, int id) {
                             miReferencia.child("usuario").child(userID).child("evento").child(e.getId()).removeValue();
                             //miReferencia.child("evento").child(e.getId()).child("usuarios").removeValue();
-                            miReferencia.child("evento").child(e.getId()).child("usuarios").child(userID).setValue(false);
+                            miReferencia.child("evento").child(e.getId()).child("usuarios").child(userID).removeValue();
 
                             unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
-
                             borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
+                            compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
+                            tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
                             adapter.notifyDataSetChanged();
                             borrar.setVisibility(getView().GONE);
                             unirse.setVisibility(View.VISIBLE);
+                            compartir.setVisibility(View.GONE);
                             tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
                         }
                     })

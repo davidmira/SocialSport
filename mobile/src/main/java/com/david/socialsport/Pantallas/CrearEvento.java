@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -49,6 +50,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -94,7 +97,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     Button crear;
     CheckBox pagar;
     FloatingActionButton mostraMapa;
-    static EditText  comentario, precio, fecha, hora;
+    static EditText comentario, precio, fecha, hora;
     static AutoCompleteTextView deporte;
     String ubicacionEvento, creadoPor;
 
@@ -103,6 +106,8 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     Date eventoDate;
     Float precioC;
     String id;
+    RadioGroup privacidad;
+    TextView textoPrivacidad;
 
 
     PlaceAutocompleteFragment autocompleteFragment;
@@ -136,21 +141,35 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         deporte.setAdapter(adapter);
         //Definie el umbral de Autocompletar
         deporte.setThreshold(1);
-
-
         precio.setVisibility(View.INVISIBLE);//Ocultamos el precio por defecto
         pagar = (CheckBox) findViewById(R.id.crear_check_precio);
         pagar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(pagar.isChecked()){
+                if (pagar.isChecked()) {
                     precio.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     precio.setVisibility(View.INVISIBLE);
                 }
             }
         });
-
+        textoPrivacidad = (TextView) findViewById(R.id.crear_texto_privacidad);
+        textoPrivacidad.setText(R.string.texto_publico);
+        privacidad = (RadioGroup) findViewById(R.id.crear_privacidad);
+        privacidad.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                if (checkedId == R.id.crear_publico) {
+                    textoPrivacidad.setText(R.string.texto_publico);
+                }
+                if (checkedId == R.id.crear_privado) {
+                    textoPrivacidad.setText(R.string.texto_privado);
+                }
+                if (checkedId == R.id.crear_restringido) {
+                    textoPrivacidad.setText(R.string.texto_restringido);
+                }
+            }
+        });
 
         terminos = (TextView) findViewById(R.id.crear_terminos);
         terminos.setOnClickListener(new View.OnClickListener() {
@@ -177,9 +196,9 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 deporteC = deporte.getText().toString();
-                if(precio.getText().toString()=="Precio"){
+                if (precio.getText().toString() == "Precio") {
                     precioC = Float.valueOf(0);
-                }else{
+                } else {
                     precioC = Float.valueOf(precio.getText().toString());
                 }
                 String fechaC = fecha.getText().toString();
@@ -201,7 +220,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                         return;
                     }
 
-                    evento = new Evento(deporteC, ubicacionEvento, coordenadas, precioC, eventoDate, comentarioC, creadoPor,id);
+                    evento = new Evento(deporteC, ubicacionEvento, coordenadas, precioC, eventoDate, comentarioC, creadoPor, id);
                     crearEvento(evento);
 
                 } else {

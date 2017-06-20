@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.david.socialsport.Adapters.AdapterMisEventos;
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.Pantallas.CrearEvento;
-import com.david.socialsport.Pantallas.Principal;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -51,10 +50,10 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         adapter = new AdapterMisEventos(getContext(), savedInstanceState);
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
-            return inflater.inflate(R.layout.tab_fragment_mis_eventos, container, false);
+            return inflater.inflate(R.layout.lista_fragment_mis_eventos, container, false);
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        View rootView = inflater.inflate(R.layout.tab_fragment_mis_eventos, container, false);
+        View rootView = inflater.inflate(R.layout.lista_fragment_mis_eventos, container, false);
 
         emptyText = (TextView) rootView.findViewById(R.id.empty_mis);
         emptyText.setVisibility(View.INVISIBLE);

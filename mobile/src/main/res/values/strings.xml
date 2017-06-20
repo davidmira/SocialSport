@@ -115,7 +115,7 @@
     <string name="social_sport">Social Sport</string>
     <string name="lo_sentimos">Lo sentimos, aún no disponemos de ningún evento con esas características</string>
     <string name="sin_suscripcion">Aún no te has suscrito a ningún evento</string>
-    <string name="coste_por_jugador">Coste por jugador:</string>
+    <string name="coste_por_participante">Coste por participante:</string>
     <string name="evento_participar">¿Desea participar en este evento?</string>
     <string name="si">Si</string>
     <string name="no">No</string>
@@ -128,6 +128,16 @@
     <string name="terminos_condiciones"><u>Acepto los términos y condiciones</u></string>
     <string name="politica">politica</string>
     <string name="participantes"><u>Participantes</u></string>
+    <string name="publico">Público</string>
+    <string name="privado">Privado</string>
+    <string name="restringido">Restringido</string>
+    <string name="texto_publico">Cualquier usuario podrá unirse al evento.</string>
+    <string name="texto_privado">Sólo usuarios con invitación podrán participar.</string>
+    <string name="texto_restringido">Cualquiera podrá ver el evento, pero para poder unirse deberás autorizarlo.</string>
+    <string name="evento_coste">Este evento tiene un coste</string>
+    <string name="usuarios">Usuarios</string>
+    <string name="invita">INVITA A TUS AMIGOS</string>
+    <string name="no_comentarios">Aún no hay ningún comentario para este evento, se el primero en opinar sobre él</string>
 
 
 </resources>
