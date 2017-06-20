@@ -29,14 +29,14 @@ public class VerUsuarios extends Activity {
     DatabaseReference myRef = database.getReference();
 
     private AdapterUsuarios adapter;
-    private String equipoID;
+    private String eventoID;
     private String userID;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new AdapterUsuarios(getApplication());
 
-        equipoID = getIntent().getStringExtra("eventoID");
+        eventoID = getIntent().getStringExtra("eventoID");
         userID = getIntent().getStringExtra("userID");
         setContentView(R.layout.lista_usuarios);
 
@@ -51,10 +51,10 @@ public class VerUsuarios extends Activity {
                 adapter.clear();
                 GenericTypeIndicator<Map<String, Boolean>> t = new GenericTypeIndicator<Map<String, Boolean>>() {
                 };
-                Map<String, Boolean> usuariosID = dataSnapshot.child("evento").child(equipoID).child("usuarios").getValue(t);
+                Map<String, Boolean> usuariosID = dataSnapshot.child("evento").child(eventoID).child("usuarios").getValue(t);
                 if (usuariosID != null) {
                     for (Map.Entry<String, Boolean> entry : usuariosID.entrySet()) {
-                        DataSnapshot usuarioEvento = dataSnapshot.child("usuario").child(entry.getKey()).child("evento").child(equipoID);
+                        DataSnapshot usuarioEvento = dataSnapshot.child("usuario").child(entry.getKey()).child("evento").child(eventoID);
                         if (usuarioEvento.exists()) {
                             if (usuarioEvento.getValue(Boolean.class)) {
                                 Usuario usuario = dataSnapshot.child("usuario").child(entry.getKey()).getValue(Usuario.class);
@@ -62,7 +62,7 @@ public class VerUsuarios extends Activity {
                                 adapter.add(usuario);
                             }
                         } else {
-                            dataSnapshot.child("evento").child(equipoID).child("usuario").child(entry.getKey()).getRef().removeValue();
+                            dataSnapshot.child("evento").child(eventoID).child("usuario").child(entry.getKey()).getRef().removeValue();
                         }
                     }
                 }

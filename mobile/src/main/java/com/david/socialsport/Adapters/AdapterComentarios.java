@@ -13,9 +13,15 @@ import com.david.socialsport.Objetos.Comentarios;
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 /**
@@ -23,28 +29,52 @@ import java.util.ArrayList;
  */
 
 public class AdapterComentarios extends ArrayAdapter<Comentarios> {
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
 
-
+    private String nombre, imagen;
     public AdapterComentarios(@NonNull Context context) {
         super(context, 0, new ArrayList<Comentarios>());
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.ficha_usuarios, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.ficha_comentarios, parent, false);
         }
 
-        Comentarios comentarios = getItem(position);
+        final Comentarios comentarios = getItem(position);
 
-        if(comentarios!=null) {
-            TextView nombre = (TextView) convertView.findViewById(R.id.textViewNombreUsuario);
-            nombre.setText(comentarios.getNombre());
-            ImageView imagen = (ImageView) convertView.findViewById(R.id.imagenUsuario);
-            Picasso.with(getContext()).load(comentarios.getImagen()).into(imagen);
-            TextView comentario = (TextView) convertView.findViewById(R.id.textViewComentario);
-            comentario.setText(comentarios.getComentario());
-        }
+        DatabaseReference usuario = myRef.child("usuario").child(comentarios.getIdUsuario());
+
+
+        final View finalConvertView = convertView;
+        usuario.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                nombre=dataSnapshot.child("nombre").getValue(String.class);
+                imagen =(dataSnapshot.child("imagen").getValue(String.class));
+                if(comentarios!=null) {
+                    TextView nombreUsuario = (TextView) finalConvertView.findViewById(R.id.textViewNombreUsuario);
+                    nombreUsuario.setText(nombre);
+
+                    ImageView imagenUsuaio = (ImageView) finalConvertView.findViewById(R.id.imagenUsuario);
+                    Picasso.with(getContext()).load(imagen).into(imagenUsuaio);
+
+                    TextView comentario = (TextView) finalConvertView.findViewById(R.id.textViewComentario);
+                    comentario.setText(comentarios.getComentario());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+
+
 
 
         return convertView;

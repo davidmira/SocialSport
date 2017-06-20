@@ -37,17 +37,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorPrimary"
-            android:textSize="10dp"
+            android:textSize="15dp"
             android:gravity="center_vertical"
-            android:paddingTop="5dp"/>
+            android:paddingTop="5dp"
+            android:textStyle="bold"
+            />
         <TextView
             android:id="@+id/textViewComentario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorPrimary"
-            android:textSize="18dp"
+            android:textSize="15dp"
             android:gravity="center_vertical"
-            android:paddingTop="10dp"
-            android:text="sdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdssssssssssssssssssssssss"/>
+            android:paddingTop="5dp"
+            android:layout_below="@id/textViewNombreUsuario"
+            />
+        <TextView
+            android:id="@+id/textViewFechaHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorSeconary"
+            android:layout_below="@id/textViewComentario"/>
     </RelativeLayout>
 </RelativeLayout>

@@ -6,9 +6,8 @@ package com.david.socialsport.Objetos;
  */
 
 public class Comentarios {
-    private String id;
-    private String nombre;
-    private String imagen;
+    private String idUsuario;
+    private String idComentario;
     private String comentario;
 
     public Comentarios() {
@@ -16,34 +15,26 @@ public class Comentarios {
 
 
 
-    public Comentarios(String nombre, String imagen,String comentario) {
-        this.nombre = nombre;
-        this.imagen = imagen;
+    public Comentarios(String idUsuario,String comentario) {
+        this.idUsuario = idUsuario;
         this.comentario = comentario;
+
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public String getId() {
-        return id;
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getIdComentario() {
+        return idComentario;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void setIdComentario(String idComentario) {
+        this.idComentario = idComentario;
     }
 
     public String getComentario() {

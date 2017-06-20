@@ -138,6 +138,7 @@
     <string name="usuarios">Usuarios</string>
     <string name="invita">INVITA A TUS AMIGOS</string>
     <string name="no_comentarios">Aún no hay ningún comentario para este evento, se el primero en opinar sobre él</string>
+    <string name="escribe_comentario">Escribe un comentario...</string>
 
 
 </resources>
