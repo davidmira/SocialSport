@@ -3,19 +3,18 @@ package com.david.socialsport.Pantallas;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.david.socialsport.Adapters.AdapterComentarios;
-import com.david.socialsport.Adapters.AdapterUsuarios;
+import com.david.socialsport.Adapters.AdapterEventos;
 import com.david.socialsport.Objetos.Comentarios;
 import com.david.socialsport.Objetos.Evento;
-import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,19 +25,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Map;
 
 /**
  * Created by david on 20/06/2017.
  */
 
-public class VerComentarios extends Activity {
+public class VerComentarios extends Activity implements SwipeRefreshLayout.OnRefreshListener {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
 
+    SwipeRefreshLayout swipeRefreshLayout;
     private AdapterComentarios adapter;
     private String eventoID;
     private String userID;
@@ -48,6 +50,7 @@ public class VerComentarios extends Activity {
 
     EditText escribirComentario;
 
+    ListView listView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,15 +67,66 @@ public class VerComentarios extends Activity {
 
         emptyText = (TextView) findViewById(R.id.empty);
 
-        final ListView listView = (ListView) findViewById(R.id.listaComentarios);
+        listView = (ListView) findViewById(R.id.listaComentarios);
         listView.setAdapter(adapter);
         listView.setEmptyView(findViewById(android.R.id.empty));
+
+
+        escribirComentario = (EditText) findViewById(R.id.escribir_comentario);
+
+        //Creamos el comentario al presionar botón enviar
+        escribirComentario.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2; //seleccionamos el boton del EditText a la derecha
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (escribirComentario.getRight() - escribirComentario.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+
+                        comentarioUsuario = escribirComentario.getText().toString();
+
+                        idUsuari = userID;
+
+                        escribirComentario.setText("");
+
+                        Date ahoraDate = new Date();
+                        ahoraDate.setHours(ahoraDate.getHours());
+
+                        comentariosUsuario = new Comentarios(idUsuari, comentarioUsuario, ahoraDate);
+
+                        crearComentario(comentariosUsuario);
+                        onRefresh();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refrescar_comentarios);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        });
+    }
+
+    @Override
+    public void onRefresh() {
+        if (swipeRefreshLayout == null) return;
+        swipeRefreshLayout.setRefreshing(true);
+        emptyText.setVisibility(View.INVISIBLE);
+
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 adapter.clear();
-                 DataSnapshot comentarios = dataSnapshot.child("evento").child(eventoID).child("comentarios");
+                DataSnapshot comentarios = dataSnapshot.child("evento").child(eventoID).child("comentarios");
                 if (comentarios.exists()) {
                     FirebaseDatabase.getInstance().getReference().child("evento").child(eventoID).child("comentarios")
                             .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -85,78 +139,50 @@ public class VerComentarios extends Activity {
                                     Map<String, Comentarios> comentarios = dataSnapshot.getValue(t);
 
                                     if (comentarios != null) {
-                                        for (Comentarios c: comentarios.values()) {
+                                        for (Comentarios c : comentarios.values()) {
                                             emptyText.setVisibility(View.INVISIBLE);
                                             adapter.add(c);
                                         }
                                     }
                                 }
 
-
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
                                 }
                             });
-                }else{
-                }
-               /* adapter.sort(new Comparator<Comentarios>() {
-                    @Override
-                    public int compare(Comentarios o1, Comentarios o2) {
-                        return o1.getNombre().compareTo(o2.getNombre());
 
-                    }
-                });*/
-                adapter.notifyDataSetChanged();
+
+                    adapter.sort(new Comparator<Comentarios>() {
+                        @Override
+                        public int compare(Comentarios o1, Comentarios o2) {
+                            return o2.getFecha_hora().compareTo(o1.getFecha_hora());
+
+                        }
+                    });
+                    adapter.notifyDataSetChanged();
+                } else {
+                    emptyText.setVisibility(View.VISIBLE);
+                }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-        escribirComentario = (EditText) findViewById(R.id.escribir_comentario);
-        escribirComentario.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (escribirComentario.getRight() - escribirComentario.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
-                        comentarioUsuario = escribirComentario.getText().toString();
-
-                        idUsuari = userID;
-
-                        escribirComentario.setText("");
-
-                        comentariosUsuario = new Comentarios(idUsuari, comentarioUsuario);
-
-                        crearComentario(comentariosUsuario);
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-
     }
 
 
     private void crearComentario(Comentarios comentarios) {
         String key = myRef.child("evento").child(eventoID).child("comentarios").push().getKey();
-
-
         myRef.child("evento").child(eventoID).child("comentarios").child(key).setValue(comentarios);
-        finish();
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
     }
+
+
 }

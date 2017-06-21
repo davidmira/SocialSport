@@ -20,8 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 
 
 /**
@@ -63,6 +65,12 @@ public class AdapterComentarios extends ArrayAdapter<Comentarios> {
 
                     TextView comentario = (TextView) finalConvertView.findViewById(R.id.textViewComentario);
                     comentario.setText(comentarios.getComentario());
+
+
+                    TextView fecha_hora = (TextView) finalConvertView.findViewById(R.id.textViewFechaHora);
+
+                    Date fechaHora = comentarios.getFecha_hora();
+                    fecha_hora.setText(new SimpleDateFormat("dd MMM").format(fechaHora)+" "+getContext().getString(R.string.a_las)+" "+ new SimpleDateFormat("HH:mm").format(fechaHora));
                 }
             }
 

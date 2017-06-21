@@ -16,47 +16,52 @@
         android:id="@+id/layout_imagen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="5dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imagenUsuario"
-            app:srcCompat="@android:drawable/sym_def_app_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:paddingTop="@dimen/nav_header_vertical_spacing" />
+            android:layout_marginTop="5dp"
+            app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/layout_imagen"
-        android:paddingLeft="20dp"
-        android:layout_marginRight="10dp">
+        android:paddingLeft="10dp">
+
         <TextView
             android:id="@+id/textViewNombreUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="15dp"
             android:gravity="center_vertical"
             android:paddingTop="5dp"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="15dp"
             android:textStyle="bold"
             />
+
         <TextView
             android:id="@+id/textViewComentario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="15dp"
-            android:gravity="center_vertical"
-            android:paddingTop="5dp"
             android:layout_below="@id/textViewNombreUsuario"
-            />
+            android:gravity="center_vertical"
+            android:paddingTop="3dp"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="15dp" />
+
         <TextView
             android:id="@+id/textViewFechaHora"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textViewComentario"
             android:textColor="@color/textColorSeconary"
-            android:layout_below="@id/textViewComentario"/>
+            android:textSize="12dp"
+            android:paddingTop="3dp"/>
     </RelativeLayout>
 </RelativeLayout>
