@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.david.socialsport">
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -50,7 +51,12 @@
 
         <activity
             android:name=".Pantallas.Login"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".Pantallas.CrearCuentaActivity"
+            android:label="titulo_actividad_crear_cuenta"
+            android:screenOrientation="portrait">
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -81,6 +87,9 @@
             android:label="@string/usuarios"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog"></activity>
+
+
+        </activity>
     </application>
 
 </manifest>

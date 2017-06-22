@@ -39,6 +39,8 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.text.util.Linkify;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -125,6 +127,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         menuBar = getSupportActionBar();
         menuBar.setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.crearEvento));
+
 
         comentario = (EditText) findViewById(R.id.crear_comentario);
         precio = (EditText) findViewById(R.id.crear_coste);
@@ -258,6 +261,20 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
     private void crearEvento(Evento evento) {
         String key = myRef.child("evento").push().getKey();
 

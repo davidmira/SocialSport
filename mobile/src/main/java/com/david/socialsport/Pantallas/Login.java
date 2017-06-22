@@ -1,10 +1,17 @@
 package com.david.socialsport.Pantallas;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.david.socialsport.R;
@@ -33,7 +40,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "LOGIN ACTIVITY";
     /**
      * Código de solicitud utilizado para iniciar la Actividad de Inicio de Sesión de Google.
@@ -67,7 +74,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     /**
      * SignInButton es el botón de Google para iniciar sesión.
      */
-    private SignInButton botonIniciarSesionGoogle;
+    private Button botonIniciarSesionGoogle;
 
 
     /**
@@ -75,10 +82,62 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
      */
     private LoginButton botonIniciarSesionFacebook;
 
+    //botón que al pulsarlo llama al login button de facebook
+    private Button botonFacebook;
+
+    EditText textoEmail, textoPass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //Elimina barra de notificaciones
+        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //Hacer transparente barra notificaciones
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(this.getResources().getColor(R.color.transparenteNaranja));
+        }
+
+        botonFacebook = (Button) findViewById(R.id.boton_facebook);
+
+        textoPass = (EditText) findViewById(R.id.login_pass);
+        textoPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    textoPass.getText().clear();
+                    textoPass.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                } else if (!hasFocus && textoPass.getText().toString().isEmpty()) {
+                    textoPass.setTextColor(getResources().getColor(R.color.textColorSeconary));
+                    textoPass.setText(R.string.contrasena);
+                }
+            }
+
+        });
+
+        textoEmail = (EditText) findViewById(R.id.login_email);
+        textoEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    textoEmail.getText().clear();
+                    textoEmail.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                } else if (!hasFocus && textoEmail.getText().toString().isEmpty()) {
+                    textoEmail.setTextColor(getResources().getColor(R.color.textColorSeconary));
+                    textoEmail.setText(R.string.direccion_email);
+                }
+            }
+
+        });
 
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -88,6 +147,16 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         inicializarGoogle();
         inicializarFacebook();
         inicializarAutenticacion();
+      /*  Button botonCrearCuenta = (Button) findViewById(R.id.boton_registrarse);
+        botonCrearCuenta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Login.this, CrearCuentaActivity.class));
+            }
+        });
+        */
+
+
     }
 
     /**
@@ -107,6 +176,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         super.onStop();
         if (listenerAutenticacion != null) {
             autenticacionFirebase.removeAuthStateListener(listenerAutenticacion);
+            finish();
         }
     }
 
@@ -156,11 +226,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
      */
     private void inicializarVistas() {
         botonIniciarSesionFacebook = (LoginButton) findViewById(R.id.boton_login_facebook);
-        botonIniciarSesionGoogle = (SignInButton) findViewById(R.id.google_login);
+        botonIniciarSesionGoogle = (Button) findViewById(R.id.google_login);
         botonIniciarSesionGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 iniciarSesionConGoogle();
+
             }
         });
     }
@@ -194,22 +265,30 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, opcionesInicioSesionGoogle)
                 .build();
-
     }
+
     /**
      * Método donde se inicializan los objetos de Facebook.
      */
     private void inicializarFacebook() {
+
+
         /**
          * Creamos el manejador de llamadas de Facebook.
          */
         manejadorDeLlamadasFacebook = CallbackManager.Factory.create();
-
         /**
          * Agregamos los permisos que queremos pedir al usuario. Al menos debemos de pedir
          * el permiso de email y public_profile.
          */
         botonIniciarSesionFacebook.setReadPermissions("email", "public_profile");
+
+        botonFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                botonIniciarSesionFacebook.callOnClick();
+            }
+        });
 
         /**
          * Necesitamos agregar el manejador de llamadas al botón de inicio de sesión. Creamos
@@ -250,12 +329,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     AccessToken tokenDeAccesoActual) {
 
                 if (tokenDeAccesoActual == null) {
-                   //  cerrarSesionFirebase();
+                    //  cerrarSesionFirebase();
                 }
             }
         };
     }
-
 
 
     /**
@@ -276,7 +354,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                      * El usuario ha iniciado sesión correctamente.
                      */
                     botonIniciarSesionGoogle.setEnabled(false);
-                    finish();
+                    // finish();
                     startActivity(new Intent(Login.this, Principal.class));
                     Toast.makeText(Login.this, "Usuario: " + usuario.getEmail(), Toast.LENGTH_SHORT).show();
                 } else {

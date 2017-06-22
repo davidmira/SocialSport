@@ -108,6 +108,7 @@
     <string name="waker">Wakeboard, Esquí Nautico</string>
     <string name="windsurf">Windsurf</string>
     <string name="yoga">Yoga</string>
+
     <string name="precio">Precio</string>
     <string name="comentario">Comentario:</string>
     <string name="comentarios"><u>Comentarios</u></string>
@@ -124,7 +125,7 @@
     <string name="informacion">Información:</string>
     <string name="fecha">Fecha:</string>
     <string name="hora">Hora:</string>
-    <string name="esqcribaAqui">Escriba aquí sus comentarios o información adicional</string>
+    <string name="esqcribaAqui">Escriba aquí sus comentarios o información adicional.</string>
     <string name="terminos_condiciones"><u>Acepto los términos y condiciones</u></string>
     <string name="politica">politica</string>
     <string name="participantes"><u>Participantes</u></string>
@@ -137,9 +138,17 @@
     <string name="evento_coste">Este evento tiene un coste</string>
     <string name="usuarios">Usuarios</string>
     <string name="invita">INVITA A TUS AMIGOS</string>
-    <string name="no_comentarios">Aún no hay ningún comentario para este evento, se el primero en opinar sobre él</string>
+    <string name="no_comentarios">Aún no hay ningún comentario para este evento, se el primero en opinar sobre él.</string>
     <string name="escribe_comentario">Escribe un comentario...</string>
     <string name="a_las">a las</string>
+    <string name="administrador">Administrador</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+    <string name="contrasena">contraseña</string>
+    <string name="direccion_email">Dirección E-mail</string>
+    <string name="continuar_facebook">Continuar con Facebook</string>
+    <string name="nuevo_registrate"><u>¿Nuevo? \nRegistrate</u></string>
+    <string name="olvidado_contrasena">¿Has olvidado \nla contraseña?</string>
 
 
 </resources>

@@ -11,6 +11,8 @@ public class Usuario {
     private String nombre;
     private String imagen;
     HashMap<String,Boolean> eventos;
+    String admin;
+
 
     public Usuario() {
     }
@@ -54,5 +56,13 @@ public class Usuario {
 
     public void setEventos(HashMap<String, Boolean> eventos) {
         this.eventos = eventos;
+    }
+
+    public String getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 }

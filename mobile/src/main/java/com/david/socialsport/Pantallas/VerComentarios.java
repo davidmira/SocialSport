@@ -6,6 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -54,8 +57,11 @@ public class VerComentarios extends Activity implements SwipeRefreshLayout.OnRef
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new AdapterComentarios(getApplication());
 
+        setContentView(R.layout.lista_comentarios);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        adapter = new AdapterComentarios(getApplication());
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -63,7 +69,8 @@ public class VerComentarios extends Activity implements SwipeRefreshLayout.OnRef
         eventoID = getIntent().getStringExtra("eventoID");
         userID = getIntent().getStringExtra("userID");
 
-        setContentView(R.layout.lista_comentarios);
+
+
 
         emptyText = (TextView) findViewById(R.id.empty);
 

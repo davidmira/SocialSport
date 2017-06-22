@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.david.socialsport.Fragments.FragmentEventos;
 import com.david.socialsport.Objetos.Comentarios;
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.Objetos.Usuario;
@@ -47,8 +48,7 @@ public class AdapterComentarios extends ArrayAdapter<Comentarios> {
 
         final Comentarios comentarios = getItem(position);
 
-        DatabaseReference usuario = myRef.child("usuario").child(comentarios.getIdUsuario());
-
+        final DatabaseReference usuario = myRef.child("usuario").child(comentarios.getIdUsuario());
 
         final View finalConvertView = convertView;
         usuario.addListenerForSingleValueEvent(new ValueEventListener() {

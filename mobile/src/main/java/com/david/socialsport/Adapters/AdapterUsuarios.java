@@ -9,18 +9,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by david on 19/06/2017.
  */
 
 public class AdapterUsuarios extends ArrayAdapter<Usuario> {
-
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
 
     public AdapterUsuarios(@NonNull Context context) {
         super(context, 0, new ArrayList<Usuario>());
@@ -37,8 +44,11 @@ public class AdapterUsuarios extends ArrayAdapter<Usuario> {
         TextView nombre = (TextView) convertView.findViewById(R.id.textViewNombreUsuario);
         nombre.setText(usuario.getNombre());
         ImageView imagen = (ImageView) convertView.findViewById(R.id.imagenUsuario);
-            Picasso.with(getContext()).load(usuario.getImagen()).into(imagen);
+        Picasso.with(getContext()).load(usuario.getImagen()).into(imagen);
 
+        //Se pasa administrador al usuario que ha creado el evento
+        TextView admin = (TextView) convertView.findViewById(R.id.textViewAdmin);
+        admin.setText(usuario.getAdmin());
 
 
         return convertView;

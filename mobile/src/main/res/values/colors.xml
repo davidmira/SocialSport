@@ -10,4 +10,5 @@
     <color name="divider">#B6B6B6</color>
     <color name="windowBackgraound">#C0C3C6</color>
     <color name="rowBackgroun">#F2F2F2</color>
+    <color name="transparenteNaranja">#50F57C00</color>
 </resources>
