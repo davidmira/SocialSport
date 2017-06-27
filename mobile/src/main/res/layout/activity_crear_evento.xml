@@ -343,7 +343,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorAccent"
                     android:text="@string/aceptar"
-                    android:textColor="@color/iconsTint" />
+                    android:textColor="@color/iconsTint"
+                    style="@style/Button" />
             </LinearLayout>
 
             <LinearLayout

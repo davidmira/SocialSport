@@ -79,7 +79,6 @@ public class Principal extends AppCompatActivity
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
 
-
         //Cajón lateral
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

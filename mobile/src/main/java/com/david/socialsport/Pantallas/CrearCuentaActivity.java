@@ -5,34 +5,58 @@ import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.david.socialsport.Adapters.ArrayAdapterIconos;
 import com.david.socialsport.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileDescriptor;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Actividad que crea una cuenta con base en correo electrónico y contraseña, utilizando
@@ -56,20 +80,32 @@ public class CrearCuentaActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener listenerAutenticacion;
 
     // Vistas
-    private AutoCompleteTextView email;
-    private EditText password;
-    private EditText confirmarPassword;
+    private AutoCompleteTextView emailUsuario;
+    private EditText nombre, apellidos, password, confirmarPassword;
+    CircleImageView imagenUsuario;
     private View cargando;
     private View formaDeLogin;
     private Button botonCrearCuenta;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+
+    private static final int OPEN_REQUEST_CODE = 41;
+    private static final int CAMERA_REQUEST = 1888;
+
+    boolean imagenBoolean;
+    Bitmap bitmap;
+    StorageReference imagesRef;
+
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crear_cuenta);
+        setContentView(R.layout.activity_registro);
 
         inicializarVistas();
         inicializarAutenticacion();
+
     }
 
     /**
@@ -132,13 +168,45 @@ public class CrearCuentaActivity extends AppCompatActivity {
      */
     private void inicializarVistas() {
         configurarActionBar();
+        nombre = (EditText) findViewById(R.id.loginNombre);
+        apellidos = (EditText) findViewById(R.id.loginApellidos);
+        password = (EditText) findViewById(R.id.loginPass);
+        confirmarPassword = (EditText) findViewById(R.id.loginConfirmarPass);
+        botonCrearCuenta = (Button) findViewById(R.id.boton_registro);
+        emailUsuario = (AutoCompleteTextView) findViewById(R.id.loginEmail);
+        emailUsuario.setAdapter(agregarEmailsAutocompletar());
 
-        botonCrearCuenta = (Button) findViewById(R.id.boton_registro_email);
-        email = (AutoCompleteTextView) findViewById(R.id.email);
-        email.setAdapter(agregarEmailsAutocompletar());
+        imagenUsuario = (CircleImageView) findViewById(R.id.imagenUsuario);
+        Glide.with(this).load(R.drawable.user_rojo).into(imagenUsuario);
 
-        password = (EditText) findViewById(R.id.password);
-        confirmarPassword = (EditText) findViewById(R.id.confirmar_password);
+        imagenUsuario.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] items = new String[]{getString(R.string.galeria), getString(R.string.camara)};
+                final Integer[] icons = new Integer[]{R.drawable.ic_menu_gallery, R.drawable.ic_menu_camera};
+                ListAdapter adapter = new ArrayAdapterIconos(CrearCuentaActivity.this, items, icons);
+
+                new AlertDialog.Builder(CrearCuentaActivity.this)
+                        .setAdapter(adapter, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                Toast.makeText(CrearCuentaActivity.this, "Item Selected: " + item, Toast.LENGTH_SHORT).show();
+                                switch (item) {
+                                    case 0:
+                                        item = 0;
+                                        imagenGaleria();
+                                        break;
+                                    case 1:
+                                        item = 1;
+                                        imagenCamara();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }).show();
+            }
+        });
+
 
         /**
          * Este Observador nos ayuda a saber si el usuario puso un email válido y ambas
@@ -155,14 +223,14 @@ public class CrearCuentaActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!esPasswordValido(password.getText().toString())) {
-                    //password.setError(getString(R.string.passwords_tamaño));
+                    password.setError(getString(R.string.passwords_tamaño));
                 }
 
                 if (!TextUtils.equals(password.getText().toString(), confirmarPassword.getText().toString())) {
-                    //confirmarPassword.setError(getString(R.string.passwords_son_diferentes));
+                    confirmarPassword.setError(getString(R.string.passwords_son_diferentes));
                 }
 
-                if (esFormaValida(email.getText().toString(), password.getText().toString(), confirmarPassword.getText().toString())) {
+                if (esFormaValida(emailUsuario.getText().toString(), password.getText().toString(), confirmarPassword.getText().toString())) {
                     botonCrearCuenta.setEnabled(true);
                     confirmarPassword.setError(null);
                 } else {
@@ -182,12 +250,188 @@ public class CrearCuentaActivity extends AppCompatActivity {
         botonCrearCuenta.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                crearCuenta(email.getText().toString(), password.getText().toString());
+                crearCuenta(emailUsuario.getText().toString(), password.getText().toString());
             }
         });
 
         formaDeLogin = findViewById(R.id.forma_login);
         cargando = findViewById(R.id.progreso_login);
+    }
+
+  /*  private void crearSinImagen(final String key) {
+        myRef.child("usuario").child(key).child("nombre").setValue(nombre.getText().toString() + " " + apellidos.getText().toString());
+        myRef.child("usuario").child(key).child("id").setValue(key);
+        finish();
+    }*/
+
+
+    private void imagenCamara() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        imagenBoolean = true;
+    }
+
+    private void imagenGaleria() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(intent, OPEN_REQUEST_CODE);
+        imagenBoolean = true;
+    }
+
+    //Cargamos la nueva imagen en el Circle Image View
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+
+        Uri currentUri = null;
+
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case OPEN_REQUEST_CODE:
+                    if (resultData != null) {
+                        currentUri = resultData.getData();
+                        try {
+                            bitmap = getBitmapFromUri(currentUri);
+                            imagenUsuario.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            // Handle error here
+                        }
+                    }
+                    break;
+                case CAMERA_REQUEST:
+                    Bitmap photo = (Bitmap) resultData.getExtras().get("data");
+                    bitmap = photo;
+                    imagenUsuario.setImageBitmap(photo);
+                    break;
+            }
+        }
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
+
+    //Boton para ir atrás
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
+
+    /**
+     * Crear una cuenta utilizando email y password utilizando Firebase.
+     *
+     * @param email
+     * @param password
+     */
+    private void crearCuenta(String email, String password) {
+        // Mostrar círculo de progreso y esconder los campos.
+        mostrarProgreso(true);
+        /**
+         * Este método se utiliza para crear una cuenta con email y password. Se agrega un
+         * onCompleteListener que nos indica si la creación de la cuenta fue exitosa.
+         *
+         * Si la creación de cuenta fue exitosa, se manda llamar el listener, en donde se puede
+         * obtener el usuario creado.
+         */
+        autenticacionFirebase.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        mostrarProgreso(false);
+
+                        final String key = myRef.child("usuario").push().getKey();
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = storage.getReferenceFromUrl("gs://socialsport-e98f4.appspot.com");
+                        imagesRef = storageRef.child("fotosPerfil").child(key + ".png");
+                        imagenUsuario.setDrawingCacheEnabled(true);
+                        imagenUsuario.buildDrawingCache();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        byte[] data = baos.toByteArray();
+
+                        UploadTask uploadTask = imagesRef.putBytes(data);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                                Toast.makeText(getBaseContext(), "ALGO SALIO MAL", Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                                @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(nombre.getText().toString() + " " + apellidos.getText().toString())
+                                        .setPhotoUri(downloadUrl)
+                                        .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    //Log.d(TAG, "User profile updated.");
+
+                                                    enviarVerificacionEmail();
+                                                    //  finish();
+
+
+                                                }
+                                            }
+                                        });
+
+                            }
+                        });
+
+
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(CrearCuentaActivity.this, "Hubo un error", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Deshabilita los campos si la creación fue exitosa, para evitar que se repita el proceso.
+                            deshabilitarCampos();
+
+
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(CrearCuentaActivity.this);
+
+                            dialog.setMessage(getString(R.string.hemos_enviado) + " " + getEmail().toString() + " " + getString(R.string.revise_bandeja))
+                                    .setNeutralButton(R.string.aceptar, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    })
+                                    .show();
+
+
+                        }
+                    }
+                });
+    }
+
+    public void enviarVerificacionEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+
+                            }
+                        }
+                    });
+
+        }
     }
 
     /**
@@ -202,11 +446,13 @@ public class CrearCuentaActivity extends AppCompatActivity {
 
     /**
      * Este método nos indica si los valores de los campos son válidos.
+     *
      * @param email
      * @param password
      * @param confirmarPassword
      * @return true si la forma es válida.
      */
+
     private boolean esFormaValida(String email, String password, String confirmarPassword) {
         if (esEmailValido(email) && esPasswordValido(password) && TextUtils.equals(password, confirmarPassword)) {
             return true;
@@ -301,42 +547,15 @@ public class CrearCuentaActivity extends AppCompatActivity {
         return new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, emails);
     }
 
-    /**
-     * Crear una cuenta utilizando email y password utilizando Firebase.
-     * @param email
-     * @param password
-     */
-    private void crearCuenta(String email, String password) {
-        // Mostrar círculo de progreso y esconder los campos.
-        mostrarProgreso(true);
-        /**
-         * Este método se utiliza para crear una cuenta con email y password. Se agrega un
-         * onCompleteListener que nos indica si la creación de la cuenta fue exitosa.
-         *
-         * Si la creación de cuenta fue exitosa, se manda llamar el listener, en donde se puede
-         * obtener el usuario creado.
-         */
-        autenticacionFirebase.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        mostrarProgreso(false);
-
-                        if (!task.isSuccessful()) {
-                            //Toast.makeText(CrearCuentaActivity.this, R.string.hubo_error, Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Deshabilita los campos si la creación fue exitosa, para evitar que se repita el proceso.
-                            deshabilitarCampos();
-                        }
-                    }
-                });
-    }
 
     /**
      * Método que deshabilita todos los campos.
      */
     private void deshabilitarCampos() {
-        email.setEnabled(false);
+        imagenUsuario.setEnabled(false);
+        nombre.setEnabled(false);
+        apellidos.setEnabled(false);
+        emailUsuario.setEnabled(false);
         password.setEnabled(false);
         confirmarPassword.setEnabled(false);
         botonCrearCuenta.setEnabled(false);
@@ -344,11 +563,20 @@ public class CrearCuentaActivity extends AppCompatActivity {
 
     /**
      * Método que obtiene el email del usuario creado y lo asigna a una text view.
+     *
      * @param usuarioFirebase
      */
     private void asignarUsuario(FirebaseUser usuarioFirebase) {
-        TextView usuario = (TextView) findViewById(R.id.usuario);
-        usuario.setText("Usuario: " + usuarioFirebase.getEmail());
+        emailUsuario.setText(usuarioFirebase.getEmail());
+        setEmail(usuarioFirebase.getEmail());
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 

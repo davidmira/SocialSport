@@ -285,9 +285,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         myRef.child("evento").child(key).child("usuarios").child(userID).setValue(true);
         myRef.child("usuario").child(userID).child("evento").child(key).setValue(true);
         myRef.child("evento").child(key).child("creadoPor").setValue(userID);
-        ;
-        //myRef.child("evento").child(key).child("usuario").child(userID).setValue(firebaseUser.getDisplayName());
-        //myRef.child("evento").child(key).child("usuario").setValue(userID);
+
         Toast.makeText(getBaseContext(), "EXITO", Toast.LENGTH_LONG).show();
         finish();
 

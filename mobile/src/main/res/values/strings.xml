@@ -144,11 +144,29 @@
     <string name="administrador">Administrador</string>
     <string name="registrarse">Registrarse</string>
     <string name="iniciar_sesion">Iniciar Sesión</string>
-    <string name="contrasena">contraseña</string>
+    <string name="contrasena">Contraseña:</string>
     <string name="direccion_email">Dirección E-mail</string>
+    <string name="direccion_email2">Dirección E-mail:</string>
     <string name="continuar_facebook">Continuar con Facebook</string>
     <string name="nuevo_registrate"><u>¿Nuevo? \nRegistrate</u></string>
     <string name="olvidado_contrasena">¿Has olvidado \nla contraseña?</string>
+    <string name="registro">Registro</string>
+    <string name="nombre">Nombre:</string>
+    <string name="apellidos">Apellidos:</string>
+    <string name="confirmar_contrasena">Confirmar contraseña:</string>
 
+    <string name="passwords_tamaño">La contraseña debe de tener 6 o más caracteres</string>
+    <string name="passwords_son_diferentes">La contraseña y su comprobación no coinciden</string>
+    <string name="camara">Cámara</string>
+    <string name="galeria">Galería</string>
+    <string name="restablecer_contrasena">Restablecer Contraseña</string>
+    <string name="restablecer">Restablecer</string>
+    <string name="email_enviado">Se ha enviado un email de restablecimiento a</string>
+    <string name="revise_bandeja">por favor revise su bandeja de entrada.</string>
+    <string name="usuario">Usuario:</string>
+    <string name="compruebe_email">Compruebe su dirección de email</string>
+    <string name="verificar_email">y verifique el correo</string>
+    <string name="no_sesion">Usuario sin sesión</string>
+    <string name="hemos_enviado">Hemos enviado un email de verificación a la cuenta</string>
 
 </resources>

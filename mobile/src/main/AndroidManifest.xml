@@ -10,6 +10,19 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="ANDROID.PERMISSION.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,9 +41,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
 
         <activity
@@ -38,8 +51,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -52,11 +67,11 @@
         <activity
             android:name=".Pantallas.Login"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Pantallas.CrearCuentaActivity"
-            android:label="titulo_actividad_crear_cuenta"
-            android:screenOrientation="portrait">
+            android:label="@string/registro"
+            android:screenOrientation="portrait" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -72,24 +87,30 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+
         <activity
             android:name=".Pantallas.CrearEvento"
             android:label="@string/title_activity_crear_evento"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".Pantallas.RestablecerContrasena"
+            android:label="@string/restablecer_contrasena"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog" />
+
         <activity
             android:name=".Pantallas.VerUsuarios"
             android:label="@string/usuarios"
             android:screenOrientation="portrait"
-            android:theme="@style/Dialog"></activity>
+            android:theme="@style/Dialog" />
+
         <activity
             android:name=".Pantallas.VerComentarios"
             android:label="@string/usuarios"
             android:screenOrientation="portrait"
-            android:theme="@style/Dialog"></activity>
-
-
-        </activity>
+            android:theme="@style/Dialog" />
     </application>
 
 </manifest>
