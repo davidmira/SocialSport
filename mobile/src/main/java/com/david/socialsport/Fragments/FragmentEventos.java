@@ -324,7 +324,7 @@ String referencia= String.valueOf(miReferencia.child("evento").child(e.getId()).
         Intent intent = new Intent(getContext(), VerComentarios.class);
         intent.putExtra("eventoID", adapter.getItem(position).getId());
         intent.putExtra("userID", userID);
-        System.out.println("hkhkjhjkhk");
+        startActivity(intent);
     }
 
     public void eliminarSuscripcionEvento(int position) {
