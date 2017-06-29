@@ -38,8 +38,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class Principal extends AppCompatActivity
@@ -149,8 +151,10 @@ public class Principal extends AppCompatActivity
                     usuario.setId(dataSnapshot.getKey());
                     usuario.setEventos(new HashMap<String, Boolean>());
                     usuarioReferencia.setValue(usuario);
+                    setUserData(usuario);
                 } else {
                     usuario.setId(dataSnapshot.getKey());
+                    setUserData(usuario);
                 }
             }
 
@@ -160,6 +164,10 @@ public class Principal extends AppCompatActivity
             }
         });
     }
+    private void setUserData(Usuario usuario) {
+        usuarioId = usuario.getId();
+    }
+
 
 
     @Override
@@ -193,8 +201,11 @@ public class Principal extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_editar_perfil) {
+            Intent intent = new Intent(getBaseContext(), EditarPerfil.class);
+            intent.putExtra("usuarioID", usuarioId);
+            startActivity(intent);
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -204,7 +215,7 @@ public class Principal extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_salir) {
-            signOut();;
+            signOut();
             return true;
         }
 

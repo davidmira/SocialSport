@@ -1,4 +1,4 @@
-package com.david.socialsport.Pantallas;
+package com.david.socialsport.Dialogs;
 
 import android.app.Activity;
 import android.content.DialogInterface;

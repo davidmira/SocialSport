@@ -139,7 +139,7 @@
     <string name="usuarios">Usuarios</string>
     <string name="invita">INVITA A TUS AMIGOS</string>
     <string name="no_comentarios">Aún no hay ningún comentario para este evento, se el primero en opinar sobre él.</string>
-    <string name="escribe_comentario">Escribe un comentario...</string>
+    <string name="escribe_comentario">Escribe un comentario&#8230;</string>
     <string name="a_las">a las</string>
     <string name="administrador">Administrador</string>
     <string name="registrarse">Registrarse</string>
@@ -168,5 +168,9 @@
     <string name="verificar_email">y verifique el correo</string>
     <string name="no_sesion">Usuario sin sesión</string>
     <string name="hemos_enviado">Hemos enviado un email de verificación a la cuenta</string>
+    <string name="perfil">Perfil</string>
+    <string name="valoracion">Valoración:</string>
+    <string name="solicitud_de_amistad">Solicitud de Amistad</string>
+    <string name="chat">Chat</string>
 
 </resources>

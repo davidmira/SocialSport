@@ -10,15 +10,11 @@ public class Usuario {
     private String id;
     private String nombre;
     private String imagen;
-    HashMap<String,Boolean> eventos;
-    String admin;
+    private HashMap<String,Boolean> eventos;
+    private String admin;
 
 
     public Usuario() {
-    }
-
-    public Usuario(String nombre) {
-        this.nombre = nombre;
     }
 
     public Usuario(String nombre, String imagen) {

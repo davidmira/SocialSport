@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackgraound"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_imagen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imagenUsuario"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:paddingTop="16dp" />
+
+            <TextView
+                android:id="@+id/valoracion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imagenUsuario"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="15dp"
+                android:text="@string/valoracion"
+                android:textColor="@color/textColorSeconary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/valoracion"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="5dp"
+                android:text="100%"
+                android:textColor="@color/colorAccent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/layout_imagen"
+            android:paddingLeft="15dp">
+
+            <TextView
+                android:id="@+id/textoNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre"
+                android:textColor="@color/textColorSeconary" />
+
+            <EditText
+                android:id="@+id/editTextNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textoNombre"
+                android:textColor="@color/textColorPrimary" />
+
+            <TextView
+                android:id="@+id/textoCorreo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextNombre"
+                android:text="@string/direccion_email2"
+                android:textColor="@color/textColorSeconary" />
+
+            <EditText
+                android:id="@+id/editTextCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textoCorreo"
+                android:textColor="@color/textColorPrimary" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

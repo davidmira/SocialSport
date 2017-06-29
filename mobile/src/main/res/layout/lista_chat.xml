@@ -4,33 +4,21 @@
     android:layout_height="match_parent"
     android:background="@color/windowBackgraound">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refrescar_comentarios"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/comentarios">
+        android:layout_above="@+id/mensajes">
 
         <ListView
-            android:id="@+id/listaComentarios"
+            android:id="@+id/listaChat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/divider"
             android:dividerHeight="0dp" />
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:text="@string/no_comentarios"
-        android:textColor="@color/textColorPrimary" />
+    </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/comentarios"
+        android:id="@+id/mensajes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -48,12 +36,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:drawableEnd="@drawable/ic_send"
+            android:drawableRight="@drawable/ic_send"
             android:drawableTint="@color/colorAccent"
-            android:hint="@string/escribe_comentario"
             android:inputType="textMultiLine|textCapSentences"
-            android:textColor="@color/textColorPrimary"
-            android:drawableRight="@drawable/ic_send" />
+            android:textColor="@color/textColorPrimary" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.david.socialsport.Pantallas;
+package com.david.socialsport.Dialogs;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -28,7 +28,7 @@ public class RestablecerContrasena extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.restablecer_contrasena);
+        setContentView(R.layout.dialog_restablecer_contrasena);
 
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 

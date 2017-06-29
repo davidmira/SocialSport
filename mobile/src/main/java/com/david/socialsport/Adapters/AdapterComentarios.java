@@ -9,10 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.david.socialsport.Fragments.FragmentEventos;
 import com.david.socialsport.Objetos.Comentarios;
-import com.david.socialsport.Objetos.Evento;
-import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +20,6 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 
 
@@ -32,8 +28,8 @@ import java.util.Date;
  */
 
 public class AdapterComentarios extends ArrayAdapter<Comentarios> {
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference();
 
     private String nombre, imagen;
     public AdapterComentarios(@NonNull Context context) {
@@ -41,9 +37,9 @@ public class AdapterComentarios extends ArrayAdapter<Comentarios> {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public @NonNull View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.ficha_comentarios, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_comentarios, parent, false);
         }
 
         final Comentarios comentarios = getItem(position);

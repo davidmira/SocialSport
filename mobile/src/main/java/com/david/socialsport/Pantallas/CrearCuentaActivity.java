@@ -51,6 +51,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -192,11 +193,9 @@ public class CrearCuentaActivity extends AppCompatActivity {
                                 Toast.makeText(CrearCuentaActivity.this, "Item Selected: " + item, Toast.LENGTH_SHORT).show();
                                 switch (item) {
                                     case 0:
-                                        item = 0;
                                         imagenGaleria();
                                         break;
                                     case 1:
-                                        item = 1;
                                         imagenCamara();
                                         break;
                                     default:
@@ -258,12 +257,6 @@ public class CrearCuentaActivity extends AppCompatActivity {
         cargando = findViewById(R.id.progreso_login);
     }
 
-  /*  private void crearSinImagen(final String key) {
-        myRef.child("usuario").child(key).child("nombre").setValue(nombre.getText().toString() + " " + apellidos.getText().toString());
-        myRef.child("usuario").child(key).child("id").setValue(key);
-        finish();
-    }*/
-
 
     private void imagenCamara() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -324,6 +317,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(menuItem);
     }
 
+
     /**
      * Crear una cuenta utilizando email y password utilizando Firebase.
      *
@@ -382,8 +376,6 @@ public class CrearCuentaActivity extends AppCompatActivity {
                                                     //Log.d(TAG, "User profile updated.");
 
                                                     enviarVerificacionEmail();
-                                                    //  finish();
-
 
                                                 }
                                             }
@@ -400,13 +392,15 @@ public class CrearCuentaActivity extends AppCompatActivity {
                             deshabilitarCampos();
 
 
+
+
                             AlertDialog.Builder dialog = new AlertDialog.Builder(CrearCuentaActivity.this);
 
-                            dialog.setMessage(getString(R.string.hemos_enviado) + " " + getEmail().toString() + " " + getString(R.string.revise_bandeja))
+                            dialog.setMessage(getString(R.string.hemos_enviado)+" "+getEmail().toString()+" "+getString(R.string.revise_bandeja))
                                     .setNeutralButton(R.string.aceptar, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            finish();
+                                            dialog.cancel();
                                         }
                                     })
                                     .show();
@@ -426,7 +420,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-
+                                finish();
                             }
                         }
                     });
@@ -434,24 +428,24 @@ public class CrearCuentaActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Agrega el botón para regresar desde la Action Bar.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void configurarActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /**
+         * Agrega el botón para regresar desde la Action Bar.
+         */
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        private void configurarActionBar () {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
-    }
 
-    /**
-     * Este método nos indica si los valores de los campos son válidos.
-     *
-     * @param email
-     * @param password
-     * @param confirmarPassword
-     * @return true si la forma es válida.
-     */
+        /**
+         * Este método nos indica si los valores de los campos son válidos.
+         *
+         * @param email
+         * @param password
+         * @param confirmarPassword
+         * @return true si la forma es válida.
+         */
 
     private boolean esFormaValida(String email, String password, String confirmarPassword) {
         if (esEmailValido(email) && esPasswordValido(password) && TextUtils.equals(password, confirmarPassword)) {
@@ -567,7 +561,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
      * @param usuarioFirebase
      */
     private void asignarUsuario(FirebaseUser usuarioFirebase) {
-        emailUsuario.setText(usuarioFirebase.getEmail());
+       emailUsuario.setText(usuarioFirebase.getEmail());
         setEmail(usuarioFirebase.getEmail());
     }
 

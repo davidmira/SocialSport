@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,8 +18,8 @@ import android.widget.TextView;
 
 import com.david.socialsport.Adapters.AdapterEventos;
 import com.david.socialsport.Objetos.Evento;
-import com.david.socialsport.Pantallas.VerComentarios;
-import com.david.socialsport.Pantallas.VerUsuarios;
+import com.david.socialsport.Dialogs.VerComentarios;
+import com.david.socialsport.Dialogs.VerUsuarios;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -325,6 +324,7 @@ String referencia= String.valueOf(miReferencia.child("evento").child(e.getId()).
         Intent intent = new Intent(getContext(), VerComentarios.class);
         intent.putExtra("eventoID", adapter.getItem(position).getId());
         intent.putExtra("userID", userID);
+        System.out.println("hkhkjhjkhk");
     }
 
     public void eliminarSuscripcionEvento(int position) {

@@ -10,7 +10,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    tools:context=".Pantallas.VerComentarios">
+    tools:context=".Dialogs.VerComentarios">
 
     <RelativeLayout
         android:id="@+id/layout_imagen"

@@ -10,7 +10,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    tools:context=".Pantallas.VerUsuarios">
+    tools:context=".Dialogs.VerUsuarios">
 
     <RelativeLayout
         android:layout_width="match_parent"

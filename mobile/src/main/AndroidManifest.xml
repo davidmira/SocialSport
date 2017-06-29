@@ -90,25 +90,42 @@
 
         <activity
             android:name=".Pantallas.CrearEvento"
-            android:label="@string/title_activity_crear_evento"
+            android:label="@string/chat"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".Pantallas.RestablecerContrasena"
+            android:name=".Pantallas.EditarPerfil"
+            android:label="@string/perfil"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".Pantallas.PantallaChat"
+            android:label="@string/perfil"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".Dialogs.RestablecerContrasena"
             android:label="@string/restablecer_contrasena"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog" />
 
         <activity
-            android:name=".Pantallas.VerUsuarios"
+            android:name=".Dialogs.VerUsuarios"
             android:label="@string/usuarios"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog" />
 
         <activity
-            android:name=".Pantallas.VerComentarios"
+            android:name=".Dialogs.VerComentarios"
             android:label="@string/usuarios"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog" />
+
+        <activity
+            android:name=".Dialogs.InfoUsuario"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog" />
     </application>
