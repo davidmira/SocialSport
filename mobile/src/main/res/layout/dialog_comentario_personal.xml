@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/windowBackgraound"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/mensaje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="8sp">
+
+        <EditText
+            android:id="@+id/escribir_mensaje"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:hint="@string/escribe_mensaje"
+            android:inputType="textMultiLine|textCapSentences"
+            android:textAlignment="gravity"
+            android:gravity="top"
+            android:textColor="@color/textColorPrimary"/>
+        <Button
+            android:id="@+id/boton_enviar_mensaje"
+            android:layout_width="35sp"
+            android:layout_height="35sp"
+            android:background="@drawable/ic_send"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="155sp"/>
+    </RelativeLayout>
+</RelativeLayout>

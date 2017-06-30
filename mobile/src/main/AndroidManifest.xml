@@ -101,10 +101,10 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".Pantallas.PantallaChat"
-            android:label="@string/perfil"
+            android:name=".Pantallas.PantallaMensajesPersonales"
+            android:label="@string/mensajes"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".Dialogs.RestablecerContrasena"
@@ -126,6 +126,11 @@
 
         <activity
             android:name=".Dialogs.InfoUsuario"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog" />
+
+        <activity
+            android:name=".Dialogs.DialogMensaje"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog" />
     </application>

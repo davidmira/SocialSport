@@ -14,14 +14,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import com.david.socialsport.Fragments.PagerAdapter;
+import com.david.socialsport.Fragments.PagerAdapterEventos;
 import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
 import com.firebase.ui.auth.AuthUI;
@@ -38,7 +37,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +64,7 @@ public class Principal extends AppCompatActivity
     DatabaseReference usuarioReferencia;
 
     String usuarioId;
+    private int mensajes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,7 +205,10 @@ public class Principal extends AppCompatActivity
             intent.putExtra("usuarioID", usuarioId);
             startActivity(intent);
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_mensajes) {
+            Intent intent = new Intent(getBaseContext(), PantallaMensajesPersonales.class);
+            intent.putExtra("usuarioID", usuarioId);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -228,13 +230,13 @@ public class Principal extends AppCompatActivity
 
         //Barra de pestañas
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Eventos"));
-        tabLayout.addTab(tabLayout.newTab().setText("Mis Eventos"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.eventos));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.mis_eventos));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         //Adaptador que gestiona los fragmentos
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
+        final PagerAdapterEventos adapter = new PagerAdapterEventos
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

@@ -44,7 +44,7 @@ public class AdapterComentarios extends ArrayAdapter<Comentarios> {
 
         final Comentarios comentarios = getItem(position);
 
-        final DatabaseReference usuario = myRef.child("usuario").child(comentarios.getIdUsuario());
+        final DatabaseReference usuario = myRef.child("usuario").child(comentarios.getIdUsuarioRemitente());
 
         final View finalConvertView = convertView;
         usuario.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -190,7 +190,6 @@ public class CrearCuentaActivity extends AppCompatActivity {
                 new AlertDialog.Builder(CrearCuentaActivity.this)
                         .setAdapter(adapter, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
-                                Toast.makeText(CrearCuentaActivity.this, "Item Selected: " + item, Toast.LENGTH_SHORT).show();
                                 switch (item) {
                                     case 0:
                                         imagenGaleria();

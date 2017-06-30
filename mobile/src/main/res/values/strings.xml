@@ -172,5 +172,16 @@
     <string name="valoracion">Valoración:</string>
     <string name="solicitud_de_amistad">Solicitud de Amistad</string>
     <string name="chat">Chat</string>
+    <string name="mensajes_vacio">La lista de mensajes está vacía</string>
+    <string name="escribe_mensaje">Escribe aquí tu mensaje&#8230;</string>
+    <string name="mensajes">Mensajes</string>
+    <string name="recibidos">Recibidos</string>
+    <string name="enviados">Enviados</string>
+    <string name="eventos">Eventos</string>
+    <string name="mis_eventos">Mis Eventos</string>
+    <string name="peticion_enviada">Petición enviada</string>
+    <string name="solicitud_amistad">le ha enviado una solicitud de amistad.</string>
+    <string name="declinar">Declinar</string>
+    <string name="ahora_amigos">y tú, ahora sois amigos</string>
 
 </resources>

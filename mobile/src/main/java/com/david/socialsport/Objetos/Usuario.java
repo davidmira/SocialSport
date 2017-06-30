@@ -22,6 +22,7 @@ public class Usuario {
         this.imagen = imagen;
     }
 
+
     public String getNombre() {
         return nombre;
     }
@@ -61,4 +62,5 @@ public class Usuario {
     public void setAdmin(String admin) {
         this.admin = admin;
     }
+
 }

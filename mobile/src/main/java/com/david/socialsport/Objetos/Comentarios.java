@@ -10,29 +10,32 @@ import java.util.Date;
  */
 
 public class Comentarios {
-    private String idUsuario;
+    private String idUsuarioRemitente;
+    private String idUsuarioRecibe;
     private String idComentario;
     private String comentario;
-    Date fecha_hora;
+    private Boolean peticion;
+    private Date fecha_hora;
 
     public Comentarios() {
     }
 
 
 
-    public Comentarios(String idUsuario,String comentario, Date fecha_hora) {
-        this.idUsuario = idUsuario;
+    public Comentarios(String idUsuarioRemitente,String comentario, Date fecha_hora) {
+        this.idUsuarioRemitente = idUsuarioRemitente;
         this.comentario = comentario;
         this.fecha_hora=fecha_hora;
     }
 
-    public String getIdUsuario() {
-        return idUsuario;
+    public Comentarios(String idUsuarioRemitente, String idUsuarioRecibe,String comentario, Date fecha_hora, Boolean peticion) {
+        this.idUsuarioRemitente = idUsuarioRemitente;
+        this.idUsuarioRecibe = idUsuarioRecibe;
+        this.comentario = comentario;
+        this.fecha_hora=fecha_hora;
+        this.peticion=peticion;
     }
 
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
-    }
 
     public String getIdComentario() {
         return idComentario;
@@ -58,4 +61,27 @@ public class Comentarios {
         this.fecha_hora = fecha_hora;
     }
 
+    public String getIdUsuarioRemitente() {
+        return idUsuarioRemitente;
+    }
+
+    public void setIdUsuarioRemitente(String idUsuarioRemitente) {
+        this.idUsuarioRemitente = idUsuarioRemitente;
+    }
+
+    public String getIdUsuarioRecibe() {
+        return idUsuarioRecibe;
+    }
+
+    public void setIdUsuarioRecibe(String idUsuarioRecibe) {
+        this.idUsuarioRecibe = idUsuarioRecibe;
+    }
+
+    public Boolean getPeticion() {
+        return peticion;
+    }
+
+    public void setPeticion(Boolean peticion) {
+        this.peticion = peticion;
+    }
 }

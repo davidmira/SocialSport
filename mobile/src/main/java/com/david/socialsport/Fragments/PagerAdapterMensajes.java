@@ -1,22 +1,18 @@
 package com.david.socialsport.Fragments;
 
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.david.socialsport.R;
-
 /**
- * Created by david on 03/04/2017.
+ * Created by david on 30/06/2017.
  */
 
-
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class PagerAdapterMensajes extends FragmentStatePagerAdapter {
     private int numeroTabs;
 
 
-    public PagerAdapter(FragmentManager fm, int numeroTabs) {
+    public PagerAdapterMensajes(FragmentManager fm, int numeroTabs) {
         super(fm);
         this.numeroTabs = numeroTabs;
 
@@ -27,9 +23,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                return new FragmentEventos();
+                return new FragmentMensajesRecibidos();
             case 1:
-                return new FragmentMisEventos();
+                return new FragmentMensajesEnviados();
             default:
                 return null;
         }
