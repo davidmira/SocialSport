@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.david.socialsport.Objetos.Comentarios;
 import com.david.socialsport.R;
@@ -34,12 +36,13 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
     private TextView nombreUsuarioMensaje, horaMensaje, textoMensaje;
     private CircleImageView imagenUsuarioMensaje;
     private Button botonAceptar, botonDeclinar;
+    private LinearLayout peticiones;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
     private Bundle savedInstanceState;
 
-    private String nombreUsuario, imagenUsuario;
+    private String nombreUsuario, imagenUsuario, usuarioEnvio;
 
     public AdapterMensajesPersonalesRecibidos(@NonNull Context context, Bundle savedInstanceState) {
         super(context, 0, new ArrayList<Comentarios>());
@@ -49,10 +52,11 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
 
     public
     @NonNull
-    View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    View getView(final int position, View convertView, @NonNull ViewGroup parent) {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.ficha_mensaje_personal, parent, false);
+
         }
 
 
@@ -62,9 +66,9 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
         final View finalConvertView = convertView;
         usuario.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                nombreUsuario=dataSnapshot.child("nombre").getValue(String.class);
-                imagenUsuario =(dataSnapshot.child("imagen").getValue(String.class));
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                nombreUsuario = dataSnapshot.child("nombre").getValue(String.class);
+                imagenUsuario = dataSnapshot.child("imagen").getValue(String.class);
 
                 nombreUsuarioMensaje = (TextView) finalConvertView.findViewById(R.id.chat_nombre_usuario);
                 nombreUsuarioMensaje.setText(nombreUsuario);
@@ -79,29 +83,35 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
                 imagenUsuarioMensaje = (CircleImageView) finalConvertView.findViewById(R.id.chat_imagen_usuario);
                 Picasso.with(getContext()).load(imagenUsuario).into(imagenUsuarioMensaje);
 
+                peticiones = (LinearLayout) finalConvertView.findViewById(R.id.peticion);
                 botonAceptar = (Button) finalConvertView.findViewById(R.id.boton_aceptar);
                 botonAceptar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       // String key = myRef.child("mensaje").getKey();
-                        //myRef.child("mensaje").child(key).child("comentario").setValue(nombreUsuarioMensaje+" "+getContext().getString(R.string.ahora_amigos));
-                        System.out.println((nombreUsuarioMensaje+" "+getContext().getString(R.string.ahora_amigos)));
 
-                        //String keyUsuarioPedir = myRef.child("usuario").child(userID).getKey();
-                       // myRef.child("usuario").child(keyUsuarioPedir).child("peticion").child(userActivoID).setValue(true);
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                System.out.println(position);
+                                usuarioEnvio = dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("nombre").getValue(String.class);
+                                textoMensaje.setText(usuarioEnvio + " " + getContext().getString(R.string.ahora_amigos));
 
-                        //String keyUsuarioPide = myRef.child("usuario").child(userActivoID).getKey();
-                        //myRef.child("usuario").child(keyUsuarioPide).child("solicitud").child(userActivoID).setValue(true);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
 
                     }
                 });
+
                 botonDeclinar = (Button) finalConvertView.findViewById(R.id.boton_declinar);
-                if(!mensaje.getPeticion()) {
-                    botonAceptar.setVisibility(View.INVISIBLE);
-                    botonDeclinar.setVisibility(View.INVISIBLE);
-                }else{
-                    botonAceptar.setVisibility(View.VISIBLE);
-                    botonDeclinar.setVisibility(View.VISIBLE);
+                if (!mensaje.getPeticion()) {
+                    peticiones.setVisibility(View.INVISIBLE);
+                } else {
+                    peticiones.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -116,4 +126,5 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
 
         return convertView;
     }
+
 }

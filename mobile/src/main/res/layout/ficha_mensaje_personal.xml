@@ -64,6 +64,7 @@
             android:paddingTop="5sp">
 
             <LinearLayout
+                android:id="@+id/peticion"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:orientation="horizontal">
