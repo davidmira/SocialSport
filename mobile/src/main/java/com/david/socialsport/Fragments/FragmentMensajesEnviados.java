@@ -29,7 +29,7 @@ import java.util.Map;
  * Created by david on 30/06/2017.
  */
 
-public class FragmentMensajesEnviados  extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class FragmentMensajesEnviados extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private String userID;
     FirebaseDatabase database = FirebaseDatabase.getInstance().getInstance();
     DatabaseReference miReferencia = database.getReference();

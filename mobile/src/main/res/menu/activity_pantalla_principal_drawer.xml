@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/grupo1"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_editar_perfil"
             android:icon="@drawable/ic_person_outline"
@@ -11,26 +13,26 @@
             android:icon="@drawable/ic_message_black_24dp"
             android:title="@string/mensajes" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_amigos"
+            android:icon="@drawable/ic_friends"
+            android:title="@string/amigos" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_salir"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/action_exit" />
-        </menu>
-    </item>
+    <group
+        android:id="@+id/grupo2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_ayuda"
+            android:icon="@drawable/ic_help_outline_black_24dp"
+            android:title="@string/ayuda" />
+        <item
+            android:id="@+id/nav_compartir"
+            android:icon="@drawable/ic_menu_share"
+            android:title="@string/compartir" />
+        <item
+            android:id="@+id/nav_salir"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/action_exit" />
+    </group>
 
 </menu>

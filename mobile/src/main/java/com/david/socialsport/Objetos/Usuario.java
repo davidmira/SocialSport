@@ -10,8 +10,9 @@ public class Usuario {
     private String id;
     private String nombre;
     private String imagen;
-    private HashMap<String,Boolean> eventos;
+    private HashMap<String, Boolean> eventos;
     private String admin;
+    private String edad;
 
 
     public Usuario() {
@@ -20,6 +21,11 @@ public class Usuario {
     public Usuario(String nombre, String imagen) {
         this.nombre = nombre;
         this.imagen = imagen;
+    }
+    public Usuario(String nombre, String imagen, String edad) {
+        this.nombre = nombre;
+        this.imagen = imagen;
+        this.edad = edad;
     }
 
 

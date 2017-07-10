@@ -1,10 +1,14 @@
 package com.david.socialsport.Pantallas;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import com.david.socialsport.Fragments.PagerAdapterEventos;
+import com.david.socialsport.Herramientas.GestorPreferencias;
 import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
 import com.firebase.ui.auth.AuthUI;
@@ -39,11 +44,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class Principal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener  {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "Activity Principal";
 
@@ -64,7 +68,8 @@ public class Principal extends AppCompatActivity
     DatabaseReference usuarioReferencia;
 
     String usuarioId;
-    private int mensajes;
+
+    private int MIS_PERMISOS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +78,13 @@ public class Principal extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        pedirPermisos();
+
         tabs();
         conectarUsuario();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
 
         //Cajón lateral
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -106,7 +112,37 @@ public class Principal extends AppCompatActivity
 
         }
 
+
     }
+
+    private void pedirPermisos() {
+        if (ContextCompat.checkSelfPermission(Principal.this,
+                String.valueOf(new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION}))
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Principal.this,
+                    String.valueOf(new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION}))) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(Principal.this,
+                        new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION},
+                        MIS_PERMISOS);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
 
     private void conectarUsuario() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -151,6 +187,8 @@ public class Principal extends AppCompatActivity
                     usuario.setEventos(new HashMap<String, Boolean>());
                     usuarioReferencia.setValue(usuario);
                     setUserData(usuario);
+
+
                 } else {
                     usuario.setId(dataSnapshot.getKey());
                     setUserData(usuario);
@@ -163,11 +201,10 @@ public class Principal extends AppCompatActivity
             }
         });
     }
+
     private void setUserData(Usuario usuario) {
         usuarioId = usuario.getId();
     }
-
-
 
     @Override
     protected void onStart() {
@@ -210,11 +247,14 @@ public class Principal extends AppCompatActivity
             intent.putExtra("usuarioID", usuarioId);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_amigos) {
+            Intent intent = new Intent(getBaseContext(), PantallaAmigos.class);
+            intent.putExtra("usuarioID", usuarioId);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_ayuda) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_compartir) {
 
         } else if (id == R.id.nav_salir) {
             signOut();
@@ -226,7 +266,7 @@ public class Principal extends AppCompatActivity
         return true;
     }
 
-    private void tabs(){
+    private void tabs() {
 
         //Barra de pestañas
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -266,7 +306,7 @@ public class Principal extends AppCompatActivity
         AuthUI.getInstance().signOut(Principal.this).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-               // startActivity(new Intent(Principal.this, Login.class));
+                // startActivity(new Intent(Principal.this, Login.class));
                 finish();
             }
         });

@@ -1,5 +1,6 @@
 package com.david.socialsport.Pantallas;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.animation.Animator;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -98,6 +100,8 @@ public class CrearCuentaActivity extends AppCompatActivity {
     StorageReference imagesRef;
 
     String email;
+
+    private int MIS_PERMISOS_CAMERA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +199,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
                                         imagenGaleria();
                                         break;
                                     case 1:
-                                        imagenCamara();
+                                        pedirPermisos();
                                         break;
                                     default:
                                         break;
@@ -254,6 +258,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
 
         formaDeLogin = findViewById(R.id.forma_login);
         cargando = findViewById(R.id.progreso_login);
+
     }
 
 
@@ -261,6 +266,24 @@ public class CrearCuentaActivity extends AppCompatActivity {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
         imagenBoolean = true;
+    }
+
+    private void pedirPermisos() {
+        if (ContextCompat.checkSelfPermission(CrearCuentaActivity.this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(CrearCuentaActivity.this,
+                    Manifest.permission.CAMERA)) {
+
+                ActivityCompat.requestPermissions(CrearCuentaActivity.this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MIS_PERMISOS_CAMERA);
+
+            }
+        } else
+            imagenCamara();
+
     }
 
     private void imagenGaleria() {
@@ -391,11 +414,9 @@ public class CrearCuentaActivity extends AppCompatActivity {
                             deshabilitarCampos();
 
 
-
-
                             AlertDialog.Builder dialog = new AlertDialog.Builder(CrearCuentaActivity.this);
 
-                            dialog.setMessage(getString(R.string.hemos_enviado)+" "+getEmail().toString()+" "+getString(R.string.revise_bandeja))
+                            dialog.setMessage(getString(R.string.hemos_enviado) + " " + getEmail().toString() + " " + getString(R.string.revise_bandeja))
                                     .setNeutralButton(R.string.aceptar, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -427,24 +448,24 @@ public class CrearCuentaActivity extends AppCompatActivity {
         }
     }
 
-        /**
-         * Agrega el botón para regresar desde la Action Bar.
-         */
-        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-        private void configurarActionBar () {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
+    /**
+     * Agrega el botón para regresar desde la Action Bar.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void configurarActionBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
 
-        /**
-         * Este método nos indica si los valores de los campos son válidos.
-         *
-         * @param email
-         * @param password
-         * @param confirmarPassword
-         * @return true si la forma es válida.
-         */
+    /**
+     * Este método nos indica si los valores de los campos son válidos.
+     *
+     * @param email
+     * @param password
+     * @param confirmarPassword
+     * @return true si la forma es válida.
+     */
 
     private boolean esFormaValida(String email, String password, String confirmarPassword) {
         if (esEmailValido(email) && esPasswordValido(password) && TextUtils.equals(password, confirmarPassword)) {
@@ -560,7 +581,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
      * @param usuarioFirebase
      */
     private void asignarUsuario(FirebaseUser usuarioFirebase) {
-       emailUsuario.setText(usuarioFirebase.getEmail());
+        emailUsuario.setText(usuarioFirebase.getEmail());
         setEmail(usuarioFirebase.getEmail());
     }
 

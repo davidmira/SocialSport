@@ -54,5 +54,8 @@ dependencies {
 
 
     compile 'com.google.firebase:firebase-storage:10.2.0'
+
+
+
 }
 apply plugin: 'com.google.gms.google-services'

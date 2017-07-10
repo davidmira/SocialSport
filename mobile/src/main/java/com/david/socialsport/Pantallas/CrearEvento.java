@@ -1,5 +1,6 @@
 package com.david.socialsport.Pantallas;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -32,6 +33,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -110,6 +112,9 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     String id;
     RadioGroup privacidad;
     TextView textoPrivacidad;
+
+
+    private int MIS_PERMISOS_LOCATION;
 
 
     PlaceAutocompleteFragment autocompleteFragment;
@@ -247,6 +252,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                     mapa.setVisibility(View.GONE);
                 } else {
                     if (mapa.getVisibility() == View.GONE) {
+                        pedirPermisos();
                         mapa.setVisibility(View.VISIBLE);
                     }
                 }
@@ -260,7 +266,21 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
 
     }
+    private void pedirPermisos() {
+        if (ContextCompat.checkSelfPermission(CrearEvento.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
 
+            if (ActivityCompat.shouldShowRequestPermissionRationale(CrearEvento.this,
+                    Manifest.permission.CAMERA)) {
+
+                ActivityCompat.requestPermissions(CrearEvento.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MIS_PERMISOS_LOCATION);
+
+            }
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

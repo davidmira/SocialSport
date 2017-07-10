@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,7 +32,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -139,10 +143,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
          * Revisamos que sea nuestro código de solicitud.
          */
         if (codigoSolicitud == CS_INICIAR_SESION) {
+
             /**
              * Obtenemos el resultado de la acción, en este caso el resultado del inicio de sesión.
              */
             GoogleSignInResult resultado = Auth.GoogleSignInApi.getSignInResultFromIntent(datos);
+
             if (resultado.isSuccess()) {
                 /**
                  * Obtenemos el objeto cuenta que trae información del usuario.
@@ -152,6 +158,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                  * Se inicia sesión con Firebase utilizando la cuenta de Google seleccionada.
                  */
                 inicioSesionFirebaseConCuentaGoogle(cuenta);
+
             } else {
                 /**
                  * Notificar que hubo algún error.
@@ -160,6 +167,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         }
     }
+
+
 
     /**
      * Método para inicializar nuestras vistas.
@@ -366,6 +375,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .build();
     }
 
+
     /**
      * Método donde se inicializan los objetos de Facebook.
      */
@@ -537,6 +547,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                              */
                             Toast.makeText(Login.this, "Falló la autenticación.", Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
     }

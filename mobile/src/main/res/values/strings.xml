@@ -183,5 +183,16 @@
     <string name="solicitud_amistad">le ha enviado una solicitud de amistad.</string>
     <string name="declinar">Declinar</string>
     <string name="ahora_amigos">y tú, ahora sois amigos</string>
+    <string name="amigos">Amigos</string>
+    <string name="compartir">Compartir</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="grupos">Grupos</string>
+    <string name="no_agregado_amigo">Aún no ha agregado a ningún amigo</string>
+    <string name="no_grupo">Aún no perteneces a ningún grupo, puedes crear uno e invitar a tus amigos</string>
+    <string name="sexo">Sexo:</string>
+    <string name="hombre">Hombre</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="omitir">Omitir</string>
+    <string name="comenzar">Comenzar</string>
 
 </resources>

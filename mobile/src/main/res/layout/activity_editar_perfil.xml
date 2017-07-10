@@ -62,10 +62,25 @@
                 android:textColor="@color/textColorPrimary" />
 
             <TextView
+                android:id="@+id/textoApellidos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextNombre"
+                android:text="@string/apellidos"
+                android:textColor="@color/textColorSeconary" />
+
+            <EditText
+                android:id="@+id/editTextApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textoApellidos"
+                android:textColor="@color/textColorPrimary" />
+
+            <TextView
                 android:id="@+id/textoCorreo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextNombre"
+                android:layout_below="@id/editTextApellidos"
                 android:text="@string/direccion_email2"
                 android:textColor="@color/textColorSeconary" />
 
@@ -75,6 +90,43 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textoCorreo"
                 android:textColor="@color/textColorPrimary" />
+
+            <TextView
+                android:id="@+id/textoSexo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextCorreo"
+                android:text="@string/sexo"
+                android:textColor="@color/textColorSeconary" />
+
+            <RadioGroup
+                android:id="@+id/perfilSexo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_below="@+id/textoSexo">
+
+                <RadioButton
+                    android:id="@+id/crear_privado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="@string/hombre"
+                    android:textColor="@color/textColorPrimary" />
+
+                <RadioButton
+                    android:id="@+id/crear_restringido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Mujer"
+                    android:textColor="@color/textColorPrimary" />
+
+            </RadioGroup>
+
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

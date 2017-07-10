@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
+import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +33,10 @@ public class EditarPerfil extends AppCompatActivity {
     String imgURL;
 
     CircleImageView imagenUsuario;
-    EditText nombreUsuario, correoUsuario;
+    EditText nombreUsuario, correoUsuario, apellidosUsuario;
+
+
+    Usuario usuario;
 
 
     @Override
@@ -52,6 +56,9 @@ public class EditarPerfil extends AppCompatActivity {
         nombreUsuario = (EditText) findViewById(R.id.editTextNombre);
         nombreUsuario.setEnabled(false);
 
+        apellidosUsuario = (EditText) findViewById(R.id.editTextApellidos);
+        apellidosUsuario.setEnabled(false);
+
         correoUsuario = (EditText) findViewById(R.id.editTextCorreo);
         correoUsuario.setEnabled(false);
 
@@ -62,10 +69,15 @@ public class EditarPerfil extends AppCompatActivity {
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-                String nombre = dataSnapshot.child("nombre").getValue(String.class);
-                String imgDir = dataSnapshot.child("imagen").getValue(String.class);
+                String nombreCompleto = firebaseUser.getDisplayName();
+                String espacio = " ";
+                String nombre = nombreCompleto.substring(0, nombreCompleto.indexOf(espacio));
+                String apellidos = nombreCompleto.substring(nombreCompleto.indexOf(espacio) + 1, nombreCompleto.length());
+
+               // Usuario person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                String imgDir = String.valueOf(firebaseUser.getPhotoUrl());
                 String email = firebaseUser.getEmail();
-                mostrarDatos(nombre, imgDir, email);
+                mostrarDatos(nombre, apellidos, imgDir, email);
             }
 
             @Override
@@ -76,9 +88,12 @@ public class EditarPerfil extends AppCompatActivity {
 
     }
 
-    public void mostrarDatos(String nombre, String img, String email) {
+    public void mostrarDatos(String nombre, String apellidos, String img, String email) {
+
+
         imgURL = img;
         nombreUsuario.setText(nombre);
+        apellidosUsuario.setText(apellidos);
         correoUsuario.setText(email);
         if (img != null && !img.isEmpty()) {
             Glide.with(this).load(img).into(imagenUsuario);
