@@ -55,6 +55,7 @@ dependencies {
 
     compile 'com.google.firebase:firebase-storage:10.2.0'
 
+    compile 'com.google.android.gms:play-services:10.2.1'
 
 
 }

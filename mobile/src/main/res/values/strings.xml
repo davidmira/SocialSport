@@ -194,5 +194,9 @@
     <string name="siguiente">Siguiente</string>
     <string name="omitir">Omitir</string>
     <string name="comenzar">Comenzar</string>
+    <string name="fecha_de_nacimiento">Fecha de Nacimiento:</string>
+    <string name="editar">Editar</string>
+    <string name="mujer">Mujer</string>
+    <string name="otro">Otro</string>
 
 </resources>

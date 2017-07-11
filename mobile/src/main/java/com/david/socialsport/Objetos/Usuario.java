@@ -1,5 +1,6 @@
 package com.david.socialsport.Objetos;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -13,6 +14,8 @@ public class Usuario {
     private HashMap<String, Boolean> eventos;
     private String admin;
     private String edad;
+    private String sexo;
+
 
 
     public Usuario() {
@@ -22,10 +25,11 @@ public class Usuario {
         this.nombre = nombre;
         this.imagen = imagen;
     }
-    public Usuario(String nombre, String imagen, String edad) {
+    public Usuario(String nombre, String imagen, String edad, String sexo) {
         this.nombre = nombre;
         this.imagen = imagen;
         this.edad = edad;
+        this.sexo=sexo;
     }
 
 
@@ -69,4 +73,19 @@ public class Usuario {
         this.admin = admin;
     }
 
+    public String getEdad() {
+        return edad;
+    }
+
+    public void setEdad(String edad) {
+        this.edad = edad;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
 }

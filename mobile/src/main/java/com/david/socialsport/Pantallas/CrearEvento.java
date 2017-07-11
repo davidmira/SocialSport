@@ -5,13 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.Bundle;
 
+import com.david.socialsport.Herramientas.ArrayAdapterCaracteresEspeciales;
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.R;
-import com.facebook.appevents.internal.Constants;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -37,24 +35,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
-import android.text.InputType;
 import android.text.format.DateFormat;
-import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -143,12 +134,14 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         // Inicializar y rellenar un String Array desde un recurso de aplicación
         // String Array - Recurso XML que proporciona una matriz de cadena
         String[] LISTADEPORTES = getResources().getStringArray(R.array.lista_deportes);
-        //Establecemos un Array para autocompletar
+
         deporte = (AutoCompleteTextView) findViewById(R.id.crear_deporte);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, LISTADEPORTES);
-        deporte.setAdapter(adapter);
+        //Establecemos un Array para autocompletar
+        ArrayAdapterCaracteresEspeciales<String> adapter2 = new ArrayAdapterCaracteresEspeciales<String>(this, android.R.layout.simple_dropdown_item_1line, LISTADEPORTES);
+        deporte.setAdapter(adapter2);
         //Definie el umbral de Autocompletar
         deporte.setThreshold(1);
+
         precio.setVisibility(View.INVISIBLE);//Ocultamos el precio por defecto
         pagar = (CheckBox) findViewById(R.id.crear_check_precio);
         pagar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -266,6 +259,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
 
     }
+
     private void pedirPermisos() {
         if (ContextCompat.checkSelfPermission(CrearEvento.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -281,6 +275,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
             }
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -295,6 +290,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
     private void crearEvento(Evento evento) {
         String key = myRef.child("evento").push().getKey();
 
