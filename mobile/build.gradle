@@ -1,26 +1,36 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    signingConfigs {
+        config {
+            keyAlias 'socialsport'
+            keyPassword 'davidmira676485363'
+            storeFile file('/home/david/keystores/socialsport3.jks')
+            storePassword '170919191432Z 470912191432Z071'
+        }
+    }
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.david.socialsport"
-        minSdkVersion 16
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -28,35 +38,26 @@ dependencies {
     // Agregar Firebase para la autenticación.
     // Agregar para iniciar sesión con Google
     // Agregar para iniciar sesión con Facebook
-    compile 'com.google.android.gms:play-services-wearable:10.2.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.google.android.gms:play-services-wearable:10.2.6'
+    compile 'com.android.support:appcompat-v7:26.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.firebase:firebase-auth:10.2.1'
-    compile 'com.google.android.gms:play-services-auth:10.2.1'
-    compile 'com.android.support:design:25.1.1'
+    compile 'com.google.firebase:firebase-auth:10.2.6'
+    compile 'com.google.android.gms:play-services-auth:10.2.6'
+    compile 'com.android.support:design:26.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'de.hdodenhof:circleimageview:1.2.1'
     compile 'com.firebaseui:firebase-ui-auth:1.2.0'
-    compile 'com.google.android.gms:play-services-maps:10.2.1'
-    compile 'com.google.android.gms:play-services-places:10.2.1'
+    compile 'com.google.android.gms:play-services-maps:10.2.6'
+    compile 'com.google.android.gms:play-services-places:10.2.6'
     testCompile 'junit:junit:4.12'
-
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-
-    compile 'com.google.firebase:firebase-core:10.2.1'
-
+    compile 'com.facebook.android:facebook-android-sdk:[4.5)'
+    compile 'com.google.firebase:firebase-core:10.2.6'
     //Librería de Firebase (para Base de Datos)
-    compile 'com.google.firebase:firebase-database:10.2.1'
-
+    compile 'com.google.firebase:firebase-database:10.2.6'
     //Librería de FirebaseUI (para Base de Datos)
     compile 'com.firebaseui:firebase-ui-database:1.0.0'
-
-
-    compile 'com.google.firebase:firebase-storage:10.2.0'
-
-    compile 'com.google.android.gms:play-services:10.2.1'
-
-
+    compile 'com.google.firebase:firebase-storage:10.2.6'
+    compile 'com.google.android.gms:play-services:10.2.6'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -197,7 +197,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 deporteC = deporte.getText().toString();
-                if (precio.getText().toString() == "Precio") {
+                if (precio.getHint().toString().equals("Precio")) {
                     precioC = Float.valueOf(0);
                 } else {
                     precioC = Float.valueOf(precio.getText().toString());

@@ -53,7 +53,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -347,15 +346,18 @@ public class CrearCuentaActivity extends AppCompatActivity {
      * @param password
      */
     private void crearCuenta(String email, String password) {
-        // Mostrar círculo de progreso y esconder los campos.
-        mostrarProgreso(true);
-        /**
-         * Este método se utiliza para crear una cuenta con email y password. Se agrega un
-         * onCompleteListener que nos indica si la creación de la cuenta fue exitosa.
-         *
-         * Si la creación de cuenta fue exitosa, se manda llamar el listener, en donde se puede
-         * obtener el usuario creado.
-         */
+
+
+       // if(!email.isEmpty()||!password.isEmpty()) {
+            // Mostrar círculo de progreso y esconder los campos.
+            mostrarProgreso(true);
+            /**
+             * Este método se utiliza para crear una cuenta con email y password. Se agrega un
+             * onCompleteListener que nos indica si la creación de la cuenta fue exitosa.
+             *
+             * Si la creación de cuenta fue exitosa, se manda llamar el listener, en donde se puede
+             * obtener el usuario creado.
+             */
         autenticacionFirebase.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -402,7 +404,6 @@ public class CrearCuentaActivity extends AppCompatActivity {
                                                 }
                                             }
                                         });
-
                             }
                         });
 
@@ -424,11 +425,13 @@ public class CrearCuentaActivity extends AppCompatActivity {
                                         }
                                     })
                                     .show();
-
-
                         }
                     }
                 });
+     //   }else{
+       //     Toast.makeText(CrearCuentaActivity.this, "Debe rellenar todos los campos ", Toast.LENGTH_SHORT).show();
+
+        //}
     }
 
     public void enviarVerificacionEmail() {

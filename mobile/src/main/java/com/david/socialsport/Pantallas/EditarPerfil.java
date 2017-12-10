@@ -83,10 +83,6 @@ public class EditarPerfil extends AppCompatActivity {
 
     static int usuarioYear, usuarioMonth, usuarioDay;
 
-    Usuario usuario;
-
-    private String fechaNac;
-
 
     private static final int OPEN_REQUEST_CODE = 41;
     private static final int CAMERA_REQUEST = 1888;

@@ -39,14 +39,14 @@ public class PantallaBienVenida extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Checking for first time launch - before calling setContentView()
+        // Chomprobamos si es la primera ejecución
         prefManager = new GestorPreferencias(this);
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
         }
 
-        // Making notification bar transparent
+        //Hacemos la barra de notificaciones transparente
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
@@ -59,18 +59,17 @@ public class PantallaBienVenida extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btn_siguiente);
 
 
-        // layouts of all welcome sliders
-        // add few more layouts if you want
+        //  agregamos las ventanas que deseamos
         layouts = new int[]{
                 R.layout.bienvenida_slide1,
                 R.layout.bienvenida_slide2,
                 R.layout.bienvenida_slide3,
                 R.layout.bienvenida_slide4};
 
-        // adding bottom dots
+        // añadimos los botones
         addBottomDots(0);
 
-        // making notification bar transparent
+        // hacemos la barra de notificaciones transparente
         changeStatusBarColor();
 
         myViewPagerAdapter = new MyViewPagerAdapter();
@@ -87,11 +86,10 @@ public class PantallaBienVenida extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
+                // Comprobamos en que pagina nos encontramos y si estamos en la última lanzamos la aplicación
                 int current = getItem(+1);
                 if (current < layouts.length) {
-                    // move to next screen
+                    // siguiente página
                     viewPager.setCurrentItem(current);
                 } else {
                     launchHomeScreen();
@@ -129,16 +127,14 @@ public class PantallaBienVenida extends AppCompatActivity {
         finish();
     }
 
-    //	viewpager change listener
+
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
         public void onPageSelected(int position) {
             addBottomDots(position);
 
-            // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
                 btnNext.setText(getString(R.string.comenzar));
                 btnSkip.setVisibility(View.GONE);
             } else {

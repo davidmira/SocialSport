@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-import static com.google.android.gms.internal.zzt.TAG;
 
 /**
  * Created by david on 26/06/2017.
@@ -47,7 +46,6 @@ public class RestablecerContrasena extends Activity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Log.d(TAG, "Email sent.");
 
                                     AlertDialog.Builder dialog = new AlertDialog.Builder(RestablecerContrasena.this);
 
