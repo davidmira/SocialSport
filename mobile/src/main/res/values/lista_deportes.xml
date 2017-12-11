@@ -10,8 +10,6 @@
         <item>@string/ballet</item>
         <item>@string/baloncesto</item>
         <item>@string/balonmano</item>
-        <item>@string/barco</item>
-        <item>@string/barranquismo</item>
         <item>@string/beisbol</item>
         <item>@string/bodyboard</item>
         <item>@string/boxeo</item>
@@ -26,8 +24,6 @@
         <item>@string/equitacion</item>
         <item>@string/escalada</item>
         <item>@string/esqui</item>
-        <item>@string/esquiFon</item>
-        <item>@string/esquiTrav</item>
         <item>@string/fitness</item>
         <item>@string/flamenco</item>
         <item>@string/frontenis</item>
@@ -37,8 +33,6 @@
         <item>@string/golf</item>
         <item>@string/hipica</item>
         <item>@string/hockeyH</item>
-        <item>@string/hockeyR</item>
-        <item>@string/hockeyHi</item>
         <item>@string/jiu</item>
         <item>@string/judo</item>
         <item>@string/karate</item>

@@ -17,55 +17,51 @@
 
 
     <string name="alpinismo">Alpinismo</string>
-    <string name="andar">Andar, Caminar</string>
+    <string name="andar">Andar</string>
     <string name="aquagym">Aquagym</string>
     <string name="atletismo">Atletismo</string>
 
     <string name="badminton">Badminton</string>
-    <string name="baile">Baile Moderno y Street Dance</string>
+    <string name="baile">Baile</string>
     <string name="ballet">Ballet</string>
     <string name="baloncesto">Baloncesto</string>
     <string name="balonmano">Balonmano</string>
     <string name="barco">Barco</string>
     <string name="barranquismo">Barranquismo</string>
-    <string name="beisbol">Beisbol y Softball</string>
+    <string name="beisbol">Beisbol</string>
     <string name="bodyboard">Bodyboard</string>
     <string name="boxeo">Boxeo</string>
-    <string name="buceo">Buceo, Submarinismo</string>
+    <string name="buceo">Buceo</string>
 
-    <string name="cardioTr">Cardio Training</string>
+    <string name="cardioTr">Cardio</string>
     <string name="caza">Caza</string>
     <string name="ciclismo">Ciclismo</string>
     <string name="cometas">Cometas</string>
-    <string name="crossTr">Cross Trainning</string>
+    <string name="crossTr">Cross</string>
     <string name="danza">Danza</string>
     <string name="dardos">Dardos</string>
 
     <string name="equitacion">Equitación</string>
     <string name="escalada">Escalada</string>
     <string name="esqui">Esquí</string>
-    <string name="esquiFon">Esquí de Fondo</string>
-    <string name="esquiTrav">Esquí de travesía</string>
 
     <string name="fitness">Fitness</string>
     <string name="flamenco">Flamenco</string>
     <string name="frontenis">Frontenis</string>
     <string name="futbol">Fútbol</string>
     <string name="futbolA">Fútbol Americano</string>
-    <string name="gimnasia">Gimnasia Rítmica y Artística</string>
+    <string name="gimnasia">Gimnasia</string>
     <string name="golf">Golf</string>
 
     <string name="hipica">Hípica</string>
-    <string name="hockeyH">Hockey Hierba</string>
-    <string name="hockeyR">Hockey Ruedas</string>
-    <string name="hockeyHi">Hockey Hielo</string>
+    <string name="hockeyH">Hockey</string>
     <string name="jiu">Jiu-jitsu</string>
     <string name="judo">Judo</string>
     <string name="karate">Karate</string>
     <string name="kayak">Kayak</string>
     <string name="kite">Kite-Surf</string>
 
-    <string name="marcha">Marcha Nórdica</string>
+    <string name="marcha">Marcha</string>
     <string name="montana">Montaña</string>
     <string name="natacion">Natación</string>
 
@@ -198,5 +194,9 @@
     <string name="editar">Editar</string>
     <string name="mujer">Mujer</string>
     <string name="otro">Otro</string>
+    <string name="nueva_contrasena">Introduzca su nueva contraseña</string>
+    <string name="enviar">Enviar</string>
+    <string name="cambio_correcto">Contraseña cambiada correctamente</string>
+    <string name="cambiar_contrasena">Cambiar Contraseña</string>
 
 </resources>

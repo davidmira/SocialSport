@@ -1,17 +1,12 @@
 package com.david.socialsport.Pantallas;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -284,8 +279,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
      * @param password
      */
     private void iniciarSesion(String email, String password) {
-        // Mostrar círculo de progreso y esconder los campos.
-        //mostrarProgreso(true);
         /**
          * Este método se utiliza para iniciar sesión con correo y contraseña. Se agrega un
          * onCompleteListener que nos indica si se pudo iniciar sesión.
@@ -297,11 +290,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        //  mostrarProgreso(false);
 
                         if (!task.isSuccessful()) {
-                            //Toast.makeText(IniciarSesionCorreoContrasenaActivity.this, R.string.hubo_error, Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(Login.this, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                         } else {
+                            inicializarAutenticacion();
                             // Deshabilita los campos si el inicio de sesión fue exitoso.
                             //   botonCerrarSesion.setVisibility(View.VISIBLE);
                             //     deshabilitarActivarCampos(false);
@@ -524,7 +518,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         finish();
                     }//else{
                        // cerrarSesionFirebase();
-                        //Toast.makeText(Login.this, getString(R.string.compruebe_email)+ " " + usuario.getEmail() +" "+getString(R.string.verificar_email), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Login.this, getString(R.string.compruebe_email)+ " " + usuario.getEmail() +" "+getString(R.string.verificar_email), Toast.LENGTH_SHORT).show();
                     //}
 
                 } else {

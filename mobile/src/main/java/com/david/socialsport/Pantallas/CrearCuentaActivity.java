@@ -251,7 +251,12 @@ public class CrearCuentaActivity extends AppCompatActivity {
         botonCrearCuenta.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                crearCuenta(emailUsuario.getText().toString(), password.getText().toString());
+                //crearCuenta(emailUsuario.getText().toString(), password.getText().toString());
+                if(imagenBoolean && !TextUtils.isEmpty(emailUsuario.getText().toString()) && !TextUtils.isEmpty(password.getText().toString()) && !TextUtils.isEmpty(nombre.getText().toString())&& !TextUtils.isEmpty((apellidos.getText().toString()))) {
+                    crearCuenta(emailUsuario.getText().toString(), password.getText().toString());
+                }else {
+                    Toast.makeText(getApplicationContext(), "Todos los campos son obligatorios", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

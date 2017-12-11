@@ -126,6 +126,11 @@
             android:theme="@style/Dialog" />
 
         <activity
+            android:name=".Dialogs.DialogCambioContrasena"
+            android:label="@string/cambiar_contrasena"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog" />
+        <activity
             android:name=".Dialogs.VerUsuarios"
             android:label="@string/usuarios"
             android:screenOrientation="portrait"

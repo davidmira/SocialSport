@@ -74,7 +74,6 @@ public class FragmentMensajesRecibidos extends Fragment implements SwipeRefreshL
         swipeRefreshLayout.setRefreshing(true);
         emptyText.setVisibility(View.INVISIBLE);
 
-
         miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override

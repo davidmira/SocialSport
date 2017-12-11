@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.david.socialsport.Adapters.ArrayAdapterIconos;
+import com.david.socialsport.Dialogs.DialogCambioContrasena;
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
@@ -126,6 +128,13 @@ public class EditarPerfil extends AppCompatActivity {
         editar = (Button) findViewById(R.id.boton_editar);
         cambiarPass = (Button) findViewById(R.id.boton_cambiar_pass);
         aceptar = (Button) findViewById(R.id.boton_aceptar);
+
+        cambiarPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EditarPerfil.this, DialogCambioContrasena.class));
+            }
+        });
 
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
