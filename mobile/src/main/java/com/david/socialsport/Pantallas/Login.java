@@ -516,7 +516,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         startActivity(new Intent(Login.this, Principal.class));
                         Toast.makeText(Login.this, getString(R.string.usuario) + usuario.getEmail(), Toast.LENGTH_SHORT).show();
                         finish();
-                    }//else{
+                    }//else{ 
                        // cerrarSesionFirebase();
                        // Toast.makeText(Login.this, getString(R.string.compruebe_email)+ " " + usuario.getEmail() +" "+getString(R.string.verificar_email), Toast.LENGTH_SHORT).show();
                     //}
