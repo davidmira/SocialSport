@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/crear_grupo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,21 +28,63 @@
         android:paddingBottom="5dp"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/nombreGRupo"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/nombre_del_grupo"/>
+            android:orientation="horizontal"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/nombreGRupo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nombre_del_grupo"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0"
+                android:orientation="horizontal"
+                >
 
-    </RelativeLayout>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imagenGrupo"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:paddingTop="16dp"
+                    android:layout_toRightOf="@+id/nombreGRupo"
+                    android:src="@drawable/ic_group"
+                    android:tint="@color/iconsTint"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <ListView
-        android:id="@+id/listaGrupos"
+        android:id="@+id/listaAmigos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/divider"
         android:dividerHeight="2dp"
         android:background="@color/windowBackgraound"
         android:layout_below="@+id/crear_grupo"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/boton_guardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:tint="@color/iconsTint"
+        app:srcCompat="@drawable/ic_save" />
 </RelativeLayout>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

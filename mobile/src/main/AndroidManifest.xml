@@ -110,7 +110,7 @@
             android:name=".Pantallas.PantallaCrearGrupo"
             android:label="Crear Grupo"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".Pantallas.PantallaMensajesPersonales"

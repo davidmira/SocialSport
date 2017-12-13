@@ -37,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios> {
 
-    private TextView nombreUsuarioMensaje, horaMensaje, textoMensaje;
+    private TextView nombreUsuarioMensaje, horaMensaje;
     private CircleImageView imagenUsuarioMensaje;
     private Button botonAceptar, botonDeclinar;
     private LinearLayout peticiones;
@@ -84,14 +84,15 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
                 Date fechaHora = mensaje.getFecha_hora();
                 horaMensaje.setText(new SimpleDateFormat("dd MMM").format(fechaHora) + " " + getContext().getString(R.string.a_las) + " " + new SimpleDateFormat("HH:mm").format(fechaHora));
 
-                textoMensaje = (TextView) finalConvertView.findViewById(R.id.chat_texto_usuario);
+                final TextView textoMensaje = (TextView) finalConvertView.findViewById(R.id.chat_texto_usuario);
                 textoMensaje.setText(mensaje.getComentario());
 
                 imagenUsuarioMensaje = (CircleImageView) finalConvertView.findViewById(R.id.chat_imagen_usuario);
                 Picasso.with(getContext()).load(imagenUsuario).into(imagenUsuarioMensaje);
 
                 peticiones = (LinearLayout) finalConvertView.findViewById(R.id.peticion);
-                botonAceptar = (Button) finalConvertView.findViewById(R.id.boton_aceptar);
+                final Button botonAceptar = (Button) finalConvertView.findViewById(R.id.boton_aceptar);
+                final Button botonDeclinar = (Button) finalConvertView.findViewById(R.id.boton_declinar);
                 botonAceptar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -104,8 +105,10 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
                                 textoMensaje.setText(usuarioEnvio + " " + getContext().getString(R.string.ahora_amigos));
                                 amigo=(dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("id").getValue().toString());
                                 Usuario usr = new Usuario(amigo);
-                                anadirAmigo(usr);
+                                anadirAmigo(mensaje);
 
+                                botonAceptar.setVisibility(View.GONE);
+                                botonDeclinar.setVisibility(View.GONE);
                             }
 
                             @Override
@@ -117,7 +120,6 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
                     }
                 });
 
-                botonDeclinar = (Button) finalConvertView.findViewById(R.id.boton_declinar);
                 if (!mensaje.getPeticion()) {
                     peticiones.setVisibility(View.INVISIBLE);
                 } else {
@@ -137,11 +139,14 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
         return convertView;
     }
 
-    private void anadirAmigo(Usuario amigos) {
+    private void anadirAmigo(Comentarios mensaje) {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         myRef.child("usuario").child(userID).child("amigos").child(amigo).setValue(true);
         myRef.child("usuario").child(amigo).child("amigos").child(userID).setValue(true);
 
+        myRef.child("usuario").child(userID).child("mensaje").child("recibido").child(mensaje.getIdComentario()).removeValue();
+        myRef.child("usuario").child(amigo).child("mensaje").child("enviado").child(mensaje.getIdComentario()).removeValue();
+        myRef.child("mensaje").child(mensaje.getIdComentario()).removeValue();
 
     }
 }

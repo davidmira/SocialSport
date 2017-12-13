@@ -1,6 +1,9 @@
 package com.david.socialsport.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -10,6 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.david.socialsport.Adapters.AdapterAmigos;
+import com.david.socialsport.Pantallas.CrearEvento;
+import com.david.socialsport.Pantallas.PantallaCrearGrupo;
+import com.david.socialsport.Pantallas.PantallaInfoUsuario;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -50,6 +56,16 @@ public class FragmentGrupos extends Fragment implements SwipeRefreshLayout.OnRef
                 onRefresh();
             }
         });
+
+        FloatingActionButton botonNuevoGrupo = (FloatingActionButton) rootView.findViewById(R.id.boton_crear_grupo);
+        botonNuevoGrupo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), PantallaCrearGrupo.class);
+                getContext().startActivity(intent);
+            }
+        });
+
         return rootView;
     }
 

@@ -42,7 +42,6 @@ public class AdapterMisEventos extends ArrayAdapter<Evento> implements OnMapRead
     DatabaseReference myRef = database.getReference();
     private Bundle savedInstanceState;
     private int currentPosition = -1;
-    ImageView icono;
     Evento evento;
 
     public AdapterMisEventos(@NonNull Context context, Bundle savedInstanceState) {
@@ -65,9 +64,8 @@ public class AdapterMisEventos extends ArrayAdapter<Evento> implements OnMapRead
         TextView fecha = (TextView) convertView.findViewById(R.id.evento_fecha);
         TextView hora = (TextView) convertView.findViewById(R.id.evento_hora);
 
-        icono = (ImageView) convertView.findViewById(R.id.evento_icono);
+        final ImageView icono = (ImageView) convertView.findViewById(R.id.evento_icono);
         //Cargamos la imagen del evento según el deporte que le corresponda
-        icono = (ImageView) convertView.findViewById(R.id.evento_icono);
         final FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference storageRef = storage.getReferenceFromUrl("gs://socialsport-e98f4.appspot.com").child("iconos").child(evento.getDeporte().toLowerCase() + ".png");
         final long ONE_MEGABYTE = 1024 * 1024;

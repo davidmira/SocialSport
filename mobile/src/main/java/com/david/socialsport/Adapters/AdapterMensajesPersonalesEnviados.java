@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.david.socialsport.Objetos.Comentarios;
@@ -53,7 +54,10 @@ public class AdapterMensajesPersonalesEnviados extends ArrayAdapter<Comentarios>
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.ficha_mensaje_personal, parent, false);
         }
 
-
+        final Button botonAceptar = (Button) convertView.findViewById(R.id.boton_aceptar);
+        final Button botonDeclinar = (Button) convertView.findViewById(R.id.boton_declinar);
+        botonAceptar.setVisibility(View.GONE);
+        botonDeclinar.setVisibility(View.GONE);
         final Comentarios mensaje = getItem(position);
 
         final DatabaseReference usuario = myRef.child("usuario").child(mensaje.getIdUsuarioRecibe());
