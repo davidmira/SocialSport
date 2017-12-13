@@ -198,5 +198,9 @@
     <string name="enviar">Enviar</string>
     <string name="cambio_correcto">Contraseña cambiada correctamente</string>
     <string name="cambiar_contrasena">Cambiar Contraseña</string>
+    <string name="eliminar_amigo">Eliminar</string>
+    <string name="amigo_eliminado">Amigo eliminado</string>
+    <string name="valorar">Valorar</string>
+    <string name="nombre_del_grupo">Nombre del Grupo</string>
 
 </resources>

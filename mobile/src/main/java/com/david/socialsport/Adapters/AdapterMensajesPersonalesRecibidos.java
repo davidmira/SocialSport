@@ -13,7 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.david.socialsport.Objetos.Comentarios;
+import com.david.socialsport.Objetos.Evento;
+import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +47,9 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
     private Bundle savedInstanceState;
 
     private String nombreUsuario, imagenUsuario, usuarioEnvio;
+
+    String amigo;
+
 
     public AdapterMensajesPersonalesRecibidos(@NonNull Context context, Bundle savedInstanceState) {
         super(context, 0, new ArrayList<Comentarios>());
@@ -95,6 +102,9 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
                                 System.out.println(position);
                                 usuarioEnvio = dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("nombre").getValue(String.class);
                                 textoMensaje.setText(usuarioEnvio + " " + getContext().getString(R.string.ahora_amigos));
+                                amigo=(dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("id").getValue().toString());
+                                Usuario usr = new Usuario(amigo);
+                                anadirAmigo(usr);
 
                             }
 
@@ -127,4 +137,11 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
         return convertView;
     }
 
+    private void anadirAmigo(Usuario amigos) {
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        myRef.child("usuario").child(userID).child("amigos").child(amigo).setValue(true);
+        myRef.child("usuario").child(amigo).child("amigos").child(userID).setValue(true);
+
+
+    }
 }

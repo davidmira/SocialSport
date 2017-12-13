@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="240dp"
+        android:layout_height="240dp">
+
+        <ImageView
+            android:id="@+id/imagenUsuarioAmigo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/nombreUsuarioAmigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparenteGris"
+            android:paddingBottom="3dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="3dp"
+            android:textColor="@color/rowBackgroun"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:background="@color/windowBackgraound"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
+        <Button
+            android:id="@+id/botonEliminarAmigo"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:text="@string/eliminar_amigo"
+            style="@style/Button"
+            android:background="@color/colorAccent"
+            android:textColor="@color/rowBackgroun"
+            android:textSize="8dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="135dp"/>
+        <Button
+            android:id="@+id/botonMensajeAmigo"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_message_black_24dp"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_marginLeft="160dp"
+            android:layout_marginRight="55dp"/>
+
+        <Button
+            android:id="@+id/botonInformacionAmigo"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_info_outline_black_24dp"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="200dp"/>
+
+    </RelativeLayout>
+</LinearLayout>

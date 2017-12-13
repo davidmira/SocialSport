@@ -1,6 +1,5 @@
 package com.david.socialsport.Objetos;
 
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -15,12 +14,16 @@ public class Usuario {
     private String admin;
     private String edad;
     private String sexo;
+    private String idAmigo;
 
 
 
     public Usuario() {
     }
 
+    public  Usuario(String idAmigo){
+        this.idAmigo=idAmigo;
+    }
     public Usuario(String nombre, String imagen) {
         this.nombre = nombre;
         this.imagen = imagen;
@@ -87,5 +90,13 @@ public class Usuario {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+
+    public String getIdAmigo() {
+        return idAmigo;
+    }
+
+    public void setIdAmigo(String idAmigo) {
+        this.idAmigo = idAmigo;
     }
 }

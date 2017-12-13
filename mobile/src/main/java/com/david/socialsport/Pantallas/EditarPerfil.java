@@ -235,6 +235,7 @@ public class EditarPerfil extends AppCompatActivity {
 
 
         final String key = myRef.child("usuario").push().getKey();
+        if(imagenBoolean){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://socialsport-e98f4.appspot.com");
         imagesRef = storageRef.child("fotosPerfil").child(key + ".png");
@@ -274,7 +275,7 @@ public class EditarPerfil extends AppCompatActivity {
             }
         });
 
-
+        }
         // myRef.child("nombre").setValue(nombreCompleto);
         myRef.child("fechaNacimiento").setValue(fechaU);
 

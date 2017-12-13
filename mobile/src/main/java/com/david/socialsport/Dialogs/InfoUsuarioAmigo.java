@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.david.socialsport.Objetos.Comentarios;
 import com.david.socialsport.Objetos.Usuario;
 import com.david.socialsport.Pantallas.PantallaInfoUsuario;
+import com.david.socialsport.Pantallas.PantallaInfoUsuarioAmigo;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,17 +30,16 @@ import java.util.Date;
  * Created by david on 28/06/2017.
  */
 
-public class InfoUsuario extends AppCompatActivity {
+public class InfoUsuarioAmigo extends AppCompatActivity {
 
     ActionBar menuBar;
 
     String userID, userActivoID, nombreUsuarioActivo;
-    Boolean peticionAmistad;
     Date ahoraDate;
 
-    ImageView imagenUsuario;
-    TextView nombreUsuario;
-    Button botonMensaje, botonInformacion, botonAmigo;
+    ImageView imagenUsuarioAmigo;
+    TextView nombreUsuarioAmigo;
+    Button botonMensajeAmigo, botonInformacionAmigo, botonEliminarAmigo;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -52,33 +52,22 @@ public class InfoUsuario extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         menuBar = getSupportActionBar();
-        setContentView(R.layout.dialog_info_usuario);
+        setContentView(R.layout.dialog_info_usuario_amigo);
 
         userID = getIntent().getStringExtra("userID");
         userActivoID=firebaseUser.getUid();
 
 
-        imagenUsuario = (ImageView) findViewById(R.id.imagenUsuario);
-        nombreUsuario = (TextView) findViewById(R.id.nombreUsuario);
-        botonMensaje = (Button) findViewById(R.id.botonMensaje);
-        botonInformacion = (Button) findViewById(R.id.botonInformacion);
-        botonAmigo = (Button) findViewById(R.id.botonAnadir);
+        imagenUsuarioAmigo = (ImageView) findViewById(R.id.imagenUsuarioAmigo);
+        nombreUsuarioAmigo = (TextView) findViewById(R.id.nombreUsuarioAmigo);
+        botonMensajeAmigo = (Button) findViewById(R.id.botonMensajeAmigo);
+        botonInformacionAmigo = (Button) findViewById(R.id.botonInformacionAmigo);
+        botonEliminarAmigo = (Button) findViewById(R.id.botonEliminarAmigo);
 
         ahoraDate = new Date();
         ahoraDate.setHours(ahoraDate.getHours());
 
-        botonInformacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PantallaInfoUsuario.class);
-                intent.putExtra("usuarioID", userID);
-                System.out.println(userID);
-                getApplicationContext().startActivity(intent);
-                finish();
-            }
-        });
-
-        botonMensaje.setOnClickListener(new View.OnClickListener() {
+        botonMensajeAmigo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), DialogMensaje.class);
@@ -99,16 +88,13 @@ public class InfoUsuario extends AppCompatActivity {
 
             }
         });
-        botonAmigo.setOnClickListener(new View.OnClickListener() {
+        botonEliminarAmigo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                peticionAmistad=true;
-                String mensajeEscrito =nombreUsuarioActivo+" "+getString(R.string.solicitud_amistad);
-                Comentarios peticion = new Comentarios(userActivoID, userID, mensajeEscrito, ahoraDate, peticionAmistad);
-                anadirAmigo(peticion);
-                botonAmigo.setFocusable(false);
-                botonAmigo.setBackgroundColor(getResources().getColor(R.color.transparenteGris));
-                botonAmigo.setText(R.string.peticion_enviada);
+                eliminarAmigo();
+                botonEliminarAmigo.setFocusable(false);
+                botonEliminarAmigo.setBackgroundColor(getResources().getColor(R.color.transparenteGris));
+                botonEliminarAmigo.setText(R.string.amigo_eliminado);
             }
         });
 
@@ -120,9 +106,9 @@ public class InfoUsuario extends AppCompatActivity {
                 Usuario usuario = dataSnapshot.child("usuario").child(userID).getValue(Usuario.class);
 
                 //Cargamos nombre de usuario
-                nombreUsuario.setText(usuario.getNombre());
+                nombreUsuarioAmigo.setText(usuario.getNombre());
                 //Ponemos la imagen de usuario
-                Glide.with(getApplicationContext()).load(usuario.getImagen()).into(imagenUsuario);
+                Glide.with(getApplicationContext()).load(usuario.getImagen()).into(imagenUsuarioAmigo);
 
             }
 
@@ -132,21 +118,22 @@ public class InfoUsuario extends AppCompatActivity {
 
             }
         });
+
+        botonInformacionAmigo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PantallaInfoUsuarioAmigo.class);
+                intent.putExtra("usuarioID", userID);
+                getApplicationContext().startActivity(intent);
+                finish();
+
+            }
+        });
     }
 
+    public void eliminarAmigo(){
+        myRef.child("usuario").child(userActivoID).child("amigos").child(userID).setValue(false);
+        myRef.child("usuario").child(userID).child("amigos").child(userActivoID).setValue(false);
 
-    public void anadirAmigo(Comentarios peticion){
-        String key = myRef.child("mensaje").push().getKey();
-        myRef.child("mensaje").child(key).setValue(peticion);
-
-        String keyUsuarioPedir = myRef.child("usuario").child(userID).getKey();
-        myRef.child("usuario").child(keyUsuarioPedir).child("peticion").child(userActivoID).setValue(true);
-
-        String keyUsuarioPide = myRef.child("usuario").child(userActivoID).getKey();
-        myRef.child("usuario").child(keyUsuarioPide).child("solicitud").child(userActivoID).setValue(true);
-
-
-        myRef.child("usuario").child(userID).child("mensaje").child("recibido").child(key).setValue(true);
-        myRef.child("usuario").child(userActivoID).child("mensaje").child("enviado").child(key).setValue(true);
     }
 }

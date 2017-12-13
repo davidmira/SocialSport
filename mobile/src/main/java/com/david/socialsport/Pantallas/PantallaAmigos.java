@@ -1,5 +1,6 @@
 package com.david.socialsport.Pantallas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -8,8 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.david.socialsport.Dialogs.InfoUsuarioAmigo;
 import com.david.socialsport.Fragments.PagerAdapterAmigos;
 import com.david.socialsport.Fragments.PagerAdapterMensajes;
 import com.david.socialsport.R;
@@ -32,9 +36,16 @@ public class PantallaAmigos extends AppCompatActivity
         menuBar = getSupportActionBar();
         if (menuBar != null) {
             menuBar.setDisplayHomeAsUpEnabled(true);
+
         }
 
         tabs();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_buscar, menu);
+        return true;
     }
 
     private void tabs() {
@@ -80,6 +91,10 @@ public class PantallaAmigos extends AppCompatActivity
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_buscar:
+                Intent intent = new Intent(getApplicationContext(), BuscarAmigo.class);
+                getApplicationContext().startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

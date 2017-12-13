@@ -107,12 +107,33 @@
             android:theme="@style/AppTheme" />
 
         <activity
+            android:name=".Pantallas.PantallaCrearGrupo"
+            android:label="Crear Grupo"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
             android:name=".Pantallas.PantallaMensajesPersonales"
             android:label="@string/mensajes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".Pantallas.BuscarAmigo"
+            android:label="Buscar Amigo"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".Pantallas.PantallaInfoUsuario"
+            android:label="Información Usuario"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Pantallas.PantallaInfoUsuarioAmigo"
+            android:label="Información Usuario"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Pantallas.PantallaAmigos"
             android:label="@string/amigos"
@@ -144,6 +165,10 @@
 
         <activity
             android:name=".Dialogs.InfoUsuario"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog" />
+        <activity
+            android:name=".Dialogs.InfoUsuarioAmigo"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog" />
 
