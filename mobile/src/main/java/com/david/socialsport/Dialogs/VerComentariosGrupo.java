@@ -2,22 +2,16 @@ package com.david.socialsport.Dialogs;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.david.socialsport.Adapters.AdapterComentarios;
-import com.david.socialsport.Adapters.AdapterEventos;
 import com.david.socialsport.Objetos.Comentarios;
-import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,25 +22,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by david on 20/06/2017.
  */
 
-public class VerComentarios extends Activity implements SwipeRefreshLayout.OnRefreshListener {
+public class VerComentariosGrupo extends Activity implements SwipeRefreshLayout.OnRefreshListener {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
 
     SwipeRefreshLayout swipeRefreshLayout;
     private AdapterComentarios adapter;
-    private String eventoID;
+    private String grupoID;
     private String userID;
     Comentarios comentariosUsuario;
     String idUsuari, comentarioUsuario;
@@ -67,7 +60,7 @@ public class VerComentarios extends Activity implements SwipeRefreshLayout.OnRef
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-        eventoID = getIntent().getStringExtra("eventoID");
+        grupoID = getIntent().getStringExtra("grupoID");
         userID = getIntent().getStringExtra("userID");
 
 
@@ -76,9 +69,9 @@ public class VerComentarios extends Activity implements SwipeRefreshLayout.OnRef
         emptyText = (TextView) findViewById(R.id.empty);
 
         listView = (ListView) findViewById(R.id.listaComentarios);
-
         listView.setAdapter(adapter);
         listView.setEmptyView(findViewById(android.R.id.empty));
+
 
         escribirComentario = (EditText) findViewById(R.id.escribir_comentario);
 
@@ -134,9 +127,9 @@ public class VerComentarios extends Activity implements SwipeRefreshLayout.OnRef
 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 adapter.clear();
-                DataSnapshot comentarios = dataSnapshot.child("evento").child(eventoID).child("comentarios");
+                DataSnapshot comentarios = dataSnapshot.child("grupo").child(grupoID).child("comentarios");
                 if (comentarios.exists()) {
-                    FirebaseDatabase.getInstance().getReference().child("evento").child(eventoID).child("comentarios")
+                    FirebaseDatabase.getInstance().getReference().child("grupo").child(grupoID).child("comentarios")
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -183,8 +176,8 @@ public class VerComentarios extends Activity implements SwipeRefreshLayout.OnRef
 
 
     private void crearComentario(Comentarios comentarios) {
-        String key = myRef.child("evento").child(eventoID).child("comentarios").push().getKey();
-        myRef.child("evento").child(eventoID).child("comentarios").child(key).setValue(comentarios);
+        String key = myRef.child("grupo").child(grupoID).child("comentarios").push().getKey();
+        myRef.child("grupo").child(grupoID).child("comentarios").child(key).setValue(comentarios);
     }
 
     @Override

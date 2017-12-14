@@ -2,6 +2,7 @@ package com.david.socialsport.Dialogs;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -43,6 +45,7 @@ public class VerUsuarios extends Activity {
     private String userID;
     ListView listView;
     TextView admin;
+    private FloatingActionButton invitar;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -59,6 +62,17 @@ public class VerUsuarios extends Activity {
         listView.setEmptyView(findViewById(android.R.id.empty));
 
         admin = (TextView) findViewById(R.id.textViewAdmin);
+
+        invitar = (FloatingActionButton)  findViewById(R.id.boton_invitar);
+        invitar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InvitarUsuarios.class);
+                intent.putExtra("eventoID", eventoID);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 

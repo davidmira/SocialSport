@@ -95,6 +95,7 @@ public class InfoUsuarioAmigo extends AppCompatActivity {
                 botonEliminarAmigo.setFocusable(false);
                 botonEliminarAmigo.setBackgroundColor(getResources().getColor(R.color.transparenteGris));
                 botonEliminarAmigo.setText(R.string.amigo_eliminado);
+                finish();
             }
         });
 
@@ -132,8 +133,7 @@ public class InfoUsuarioAmigo extends AppCompatActivity {
     }
 
     public void eliminarAmigo(){
-        myRef.child("usuario").child(userActivoID).child("amigos").child(userID).setValue(false);
-        myRef.child("usuario").child(userID).child("amigos").child(userActivoID).setValue(false);
-
+        myRef.child("usuario").child(userActivoID).child("amigos").child(userID).removeValue();
+        myRef.child("usuario").child(userID).child("amigos").child(userActivoID).removeValue();
     }
 }

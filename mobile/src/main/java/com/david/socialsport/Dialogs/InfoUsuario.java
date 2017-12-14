@@ -145,7 +145,6 @@ public class InfoUsuario extends AppCompatActivity {
         String keyUsuarioPide = myRef.child("usuario").child(userActivoID).getKey();
         myRef.child("usuario").child(keyUsuarioPide).child("solicitud").child(userActivoID).setValue(true);
 
-
         myRef.child("usuario").child(userID).child("mensaje").child("recibido").child(key).setValue(true);
         myRef.child("usuario").child(userActivoID).child("mensaje").child("enviado").child(key).setValue(true);
     }

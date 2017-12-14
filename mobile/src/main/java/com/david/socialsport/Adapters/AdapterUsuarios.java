@@ -40,6 +40,7 @@ public class AdapterUsuarios extends ArrayAdapter<Usuario> {
 
         Usuario usuario = getItem(position);
 
+        System.out.println("nombre: "+ usuario.getIdAmigo());
         TextView nombre = (TextView) convertView.findViewById(R.id.textViewNombreUsuario);
         nombre.setText(usuario.getNombre());
         ImageView imagen = (ImageView) convertView.findViewById(R.id.imagenUsuario);

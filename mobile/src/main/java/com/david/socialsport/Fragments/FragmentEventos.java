@@ -50,7 +50,7 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
     ListView listView;
     Evento e;
     FloatingActionButton unirse, borrar, compartir;
-    RelativeLayout tarjeta;
+    //RelativeLayout tarjeta;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -118,7 +118,7 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                             }
                         });
                         listView.setSelection(position);
-                        listView.smoothScrollToPosition(position);
+                        //listView.smoothScrollToPosition(position);
 
                         miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -127,13 +127,13 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                                 if (evento.exists()) {
                                     unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
                                     unirse.setVisibility(View.GONE);
-                                    tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
-                                    tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                                    //tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                                    //tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
                                 }else{
                                     borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
                                     compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
-                                    tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
-                                    tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
+                                    //tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                                    //tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
                                     borrar.setVisibility(View.GONE);
                                     compartir.setVisibility(View.GONE);
                                 }
@@ -211,13 +211,13 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
                                         if (evento.exists()) {
                                             unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
                                             unirse.setVisibility(View.GONE);
-                                            tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
-                                            tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                                            //tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                                            //tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
                                         }else{
                                             borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
                                             compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
-                                            tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
-                                            tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
+                                            //tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                                            //tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
                                             borrar.setVisibility(View.GONE);
                                             compartir.setVisibility(View.GONE);
                                         }
@@ -290,8 +290,8 @@ public class FragmentEventos extends Fragment implements SwipeRefreshLayout.OnRe
         unirse.setVisibility(getView().GONE);
         borrar.setVisibility(View.VISIBLE);
         compartir.setVisibility(View.VISIBLE);
-        tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
-        tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+        //tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+        //tarjeta.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
 
      /*   FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -361,12 +361,12 @@ String referencia= String.valueOf(miReferencia.child("evento").child(e.getId()).
                             unirse = (FloatingActionButton) getView().findViewById(R.id.unirse_but);
                             borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
                             compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
-                            tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
+                            //tarjeta = (RelativeLayout) getView().findViewById(R.id.verEvento);
                             adapter.notifyDataSetChanged();
                             borrar.setVisibility(getView().GONE);
                             unirse.setVisibility(View.VISIBLE);
                             compartir.setVisibility(View.GONE);
-                            tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
+                            //tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

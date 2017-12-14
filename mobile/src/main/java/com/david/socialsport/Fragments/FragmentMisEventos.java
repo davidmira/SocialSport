@@ -1,11 +1,13 @@
 package com.david.socialsport.Fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.david.socialsport.Adapters.AdapterMisEventos;
+import com.david.socialsport.Dialogs.VerComentarios;
+import com.david.socialsport.Dialogs.VerUsuarios;
 import com.david.socialsport.Objetos.Evento;
 import com.david.socialsport.Pantallas.CrearEvento;
 import com.david.socialsport.R;
@@ -44,6 +48,8 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
     SwipeRefreshLayout swipeRefreshLayout;
     private TextView emptyText;
     ListView listView;
+
+    FloatingActionButton  borrar, compartir;
 
     @Override
 
@@ -89,15 +95,50 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                AdapterMisEventos adapter = ((AdapterMisEventos) listView.getAdapter());
+                final AdapterMisEventos adapter = ((AdapterMisEventos) listView.getAdapter());
                 if (view.findViewById(R.id.expandible).getVisibility() == View.VISIBLE) {
                     adapter.collapseItem(view);
+
                 } else {
                     adapter.collapseCurrent(listView);
                     if (adapter.expandItem(position, view)) {
-
+                        view.findViewById(R.id.eliminar_but).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                eliminarSuscripcionEvento(position);
+                            }
+                        });
+                        view.findViewById(R.id.ver_participantes).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                verUsuarios(position);
+                            }
+                        });
+                        view.findViewById(R.id.ver_comentarios).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                verComentarios(position);
+                            }
+                        });
                         listView.setSelection(position);
-                        listView.smoothScrollToPosition(position);
+                        //listView.smoothScrollToPosition(position);
+
+                        miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                DataSnapshot evento = dataSnapshot.child("evento").child(adapter.getItem(position).getId()).child("usuarios").child(userID);
+
+                                    borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
+                                    compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 }
             }
@@ -139,7 +180,7 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
                 if (eventosId != null) { //se comprueba que no sea nulo, si fuese nulo el usuario no tendria ningun evento y no se hace nada
                   // for (Map.Entry<String, Boolean> entry : eventosId.entrySet()) { //se recorren las claves de los eventos y sus valores
                      //   if (entry.getValue()) {//si el valor es true el usuaio esta dentro del evento y se procede, se cogen los id de los eventos y se añaden a una lista
-                            for (String id : eventosId.keySet()) {
+                            for (final String id : eventosId.keySet()) {
                                 Evento evento = dataSnapshot.child("evento").child(id).getValue(Evento.class);
                                 if (evento != null) {
                                     evento.setId(id);
@@ -148,6 +189,24 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
                                         dataSnapshot.child("usuario").child(userID).child("evento").child(id).getRef().removeValue();
                                     }
                                     adapter.add(evento);
+
+                                    //inicializamos botones y colores de las tarjetas
+                                    miReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            DataSnapshot evento = dataSnapshot.child("evento").child(id).child("usuarios").child(userID);
+
+                                                borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
+                                                compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 } else {
                                   //  dataSnapshot.child("evento").child(entry.getKey()).child(id).getRef().removeValue();
                                 }
@@ -173,6 +232,65 @@ public class FragmentMisEventos extends Fragment implements SwipeRefreshLayout.O
             }
         });
 
+    }
+    public void verUsuarios(int position) {
+        Intent intent = new Intent(getContext(), VerUsuarios.class);
+        intent.putExtra("eventoID", adapter.getItem(position).getId());
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+
+    public void verComentarios(int position) {
+        Intent intent = new Intent(getContext(), VerComentarios.class);
+        intent.putExtra("eventoID", adapter.getItem(position).getId());
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+
+    public void eliminarSuscripcionEvento(int position) {
+
+        final Evento e = (Evento) listView.getAdapter().getItem(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        if (e.getCreadoPor().equals(userID)) {
+            builder.setMessage(R.string.evento_eliminar)
+                    .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            miReferencia.child("evento").child(e.getId()).removeValue();
+                            miReferencia.child("usuario").child(userID).child("evento").child(e.getId()).removeValue();
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        } else
+            builder.setMessage(R.string.evento_abandonar)
+                    .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            miReferencia.child("usuario").child(userID).child("evento").child(e.getId()).removeValue();
+                            //miReferencia.child("evento").child(e.getId()).child("usuarios").removeValue();
+                            miReferencia.child("evento").child(e.getId()).child("usuarios").child(userID).removeValue();
+
+                            borrar = (FloatingActionButton) getView().findViewById(R.id.eliminar_but);
+                            compartir = (FloatingActionButton) getView().findViewById(R.id.compartir_but);
+                            adapter.notifyDataSetChanged();
+                            //tarjeta.setBackgroundColor(getResources().getColor(R.color.rowBackgroun));
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
     }
 
     @Override

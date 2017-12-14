@@ -147,6 +147,12 @@
             android:theme="@style/Dialog" />
 
         <activity
+            android:name=".Dialogs.InvitarUsuarios"
+            android:label="Invitar Amigos"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog" />
+
+        <activity
             android:name=".Dialogs.DialogCambioContrasena"
             android:label="@string/cambiar_contrasena"
             android:screenOrientation="portrait"
@@ -162,7 +168,11 @@
             android:label="@string/usuarios"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog" />
-
+        <activity
+            android:name=".Dialogs.VerComentariosGrupo"
+            android:label="@string/usuarios"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog" />
         <activity
             android:name=".Dialogs.InfoUsuario"
             android:screenOrientation="portrait"

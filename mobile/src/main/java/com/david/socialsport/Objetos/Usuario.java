@@ -15,6 +15,7 @@ public class Usuario {
     private String edad;
     private String sexo;
     private String idAmigo;
+    private String idEvento;
 
 
 
@@ -98,5 +99,13 @@ public class Usuario {
 
     public void setIdAmigo(String idAmigo) {
         this.idAmigo = idAmigo;
+    }
+
+    public String getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(String idEvento) {
+        this.idEvento = idEvento;
     }
 }

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@color/rowBackgroun">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,19 +12,23 @@
         android:padding="8dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/amigos_imagen_usuario"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:id="@+id/imagen_grupo"
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
 
             <TextView
-                android:id="@+id/amigos_nombre_usuario"
+                android:id="@+id/nombre_grupo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/amigos_imagen_usuario"
+                android:layout_toRightOf="@+id/imagen_grupo"
                 android:padding="7sp"
                 android:textColor="@color/textColorPrimary"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15px"
+                />
 
 
     </RelativeLayout>
+
 </RelativeLayout>

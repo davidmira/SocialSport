@@ -1,6 +1,7 @@
 package com.david.socialsport.Objetos;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by david on 10/07/2017.
@@ -12,9 +13,11 @@ public class Grupo {
     private String imagen;
     private HashMap<String,Usuario> usuarios;
 
+    private List idUsuarios;
     public Grupo(){
 
     }
+
 
     public Grupo(String id, String nombre, String imagen) {
         this.id = id;
@@ -52,5 +55,14 @@ public class Grupo {
 
     public void setUsuarios(HashMap<String, Usuario> usuarios) {
         this.usuarios = usuarios;
+    }
+
+
+    public List getIdUsuarios() {
+        return idUsuarios;
+    }
+
+    public void setIdUsuarios(List idUsuarios) {
+        this.idUsuarios = idUsuarios;
     }
 }
