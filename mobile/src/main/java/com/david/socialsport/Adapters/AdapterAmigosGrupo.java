@@ -24,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,9 +43,13 @@ public class AdapterAmigosGrupo extends ArrayAdapter<Usuario>{
 
     private String nombreAmigo, imagenAmigo;
 
+   private ArrayList<String> idsIntegrantes;
+
     public AdapterAmigosGrupo(@NonNull Context context, Bundle savedInstanceState) {
         super(context, 0, new ArrayList<Usuario>());
         this.savedInstanceState = savedInstanceState;
+
+        setIdsIntegrantes(new ArrayList<String>());
     }
 
     public
@@ -80,9 +83,11 @@ public class AdapterAmigosGrupo extends ArrayAdapter<Usuario>{
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+                        String usuario2 = dataSnapshot.child("id").getValue(String.class);
                         if (isChecked) {
-                            String usuario2 = dataSnapshot.child("id").getValue(String.class);
-
+                            getIdsIntegrantes().add(usuario2);
+                        }else{
+                            getIdsIntegrantes().remove(usuario2);
                         }
                     }
 
@@ -117,5 +122,13 @@ public class AdapterAmigosGrupo extends ArrayAdapter<Usuario>{
         Intent intent = new Intent(getContext(), InfoUsuarioAmigo.class);
         intent.putExtra("userID", getItem(position).getIdAmigo());
         getContext().startActivity(intent);
+    }
+
+    public ArrayList<String> getIdsIntegrantes() {
+        return idsIntegrantes;
+    }
+
+    public void setIdsIntegrantes(ArrayList<String> idsIntegrantes) {
+        this.idsIntegrantes = idsIntegrantes;
     }
 }

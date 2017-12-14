@@ -1,8 +1,6 @@
 package com.david.socialsport.Objetos;
 
 
-import com.google.firebase.database.Exclude;
-
 import java.util.Date;
 
 /**
@@ -16,6 +14,7 @@ public class Comentarios {
     private String comentario;
     private Boolean peticion;
     private Date fecha_hora;
+    private String eventoId;
 
     public Comentarios() {
     }
@@ -34,6 +33,14 @@ public class Comentarios {
         this.comentario = comentario;
         this.fecha_hora=fecha_hora;
         this.peticion=peticion;
+    }
+    public Comentarios(String idUsuarioRemitente, String idUsuarioRecibe,String comentario, Date fecha_hora, Boolean peticion, String eventoId) {
+        this.idUsuarioRemitente = idUsuarioRemitente;
+        this.idUsuarioRecibe = idUsuarioRecibe;
+        this.comentario = comentario;
+        this.fecha_hora=fecha_hora;
+        this.peticion=peticion;
+        this.setEventoId(eventoId);
     }
 
 
@@ -83,5 +90,13 @@ public class Comentarios {
 
     public void setPeticion(Boolean peticion) {
         this.peticion = peticion;
+    }
+
+    public String getEventoId() {
+        return eventoId;
+    }
+
+    public void setEventoId(String eventoId) {
+        this.eventoId = eventoId;
     }
 }

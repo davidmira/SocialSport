@@ -49,6 +49,7 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
     private String nombreUsuario, imagenUsuario, usuarioEnvio;
 
     String amigo;
+    String evento;
 
 
     public AdapterMensajesPersonalesRecibidos(@NonNull Context context, Bundle savedInstanceState) {
@@ -93,32 +94,62 @@ public class AdapterMensajesPersonalesRecibidos extends ArrayAdapter<Comentarios
                 peticiones = (LinearLayout) finalConvertView.findViewById(R.id.peticion);
                 final Button botonAceptar = (Button) finalConvertView.findViewById(R.id.boton_aceptar);
                 final Button botonDeclinar = (Button) finalConvertView.findViewById(R.id.boton_declinar);
-                botonAceptar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                        myRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                System.out.println(position);
-                                usuarioEnvio = dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("nombre").getValue(String.class);
-                                textoMensaje.setText(usuarioEnvio + " " + getContext().getString(R.string.ahora_amigos));
-                                amigo=(dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("id").getValue().toString());
-                                Usuario usr = new Usuario(amigo);
-                                anadirAmigo(mensaje);
 
-                                botonAceptar.setVisibility(View.GONE);
-                                botonDeclinar.setVisibility(View.GONE);
+                   botonAceptar.setOnClickListener(new View.OnClickListener() {
+
+                       @Override
+                       public void onClick(View v) {
+                            if(mensaje.getEventoId()==null) {
+                                myRef.addValueEventListener(new ValueEventListener() {
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        System.out.println(position);
+                                        usuarioEnvio = dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("nombre").getValue(String.class);
+                                        textoMensaje.setText(usuarioEnvio + " " + getContext().getString(R.string.ahora_amigos));
+                                        amigo = (dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("id").getValue().toString());
+
+                                        Usuario usr = new Usuario(amigo);
+                                        anadirAmigo(mensaje);
+
+                                        botonAceptar.setVisibility(View.GONE);
+                                        botonDeclinar.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }else{
+                                myRef.addValueEventListener(new ValueEventListener() {
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+                                        String userID = firebaseAuth.getCurrentUser().getUid();
+
+                                        System.out.println(position);
+                                        //usuarioEnvio = dataSnapshot.child("usuario").child(mensaje.getIdUsuarioRemitente()).child("nombre").getValue(String.class);
+                                        textoMensaje.setText("Te has unido al evento");
+                                        myRef.child("usuario").child(userID).child("evento").child(mensaje.getEventoId()).setValue(true);
+                                        myRef.child("evento").child(mensaje.getEventoId()).child("usuarios").child(userID).setValue(true);
+
+                                        botonAceptar.setVisibility(View.GONE);
+                                        botonDeclinar.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                             }
+                       }
+                   });
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-                    }
-                });
 
                 botonDeclinar.setOnClickListener(new View.OnClickListener() {
                      @Override

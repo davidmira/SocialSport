@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.david.socialsport.Adapters.AdapterAmigos;
 import com.david.socialsport.Adapters.AdapterAmigosGrupo;
@@ -29,6 +30,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -44,6 +46,8 @@ public class InvitarUsuarios extends Activity {
     private String eventoID;
     private String userID;
     ListView listView;
+    Date ahoraDate;
+    Boolean peticion;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -53,8 +57,7 @@ public class InvitarUsuarios extends Activity {
         adapter = new AdapterAmigosInvitar(getApplicationContext(),savedInstanceState);
 
         eventoID = getIntent().getStringExtra("eventoID");
-        //userID = getIntent().getStringExtra("userID");
-        System.out.println(eventoID);
+        userID = getIntent().getStringExtra("userID");
         listView = (ListView) findViewById(R.id.listaUsuarios);
         listView.setAdapter(adapter);
         //listView.setEmptyView(findViewById(android.R.id.empty));
@@ -62,7 +65,24 @@ public class InvitarUsuarios extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //sacamos el amigo del adapter (pillo la referencia desde el propio listview pero deberia ser la misma que tienes en adapter)
+                 Usuario amigo = (Usuario) listView.getAdapter().getItem(position);
+                 //myRef.child("usuario").child(amigo.getIdAmigo()).child("mensajes").child("recibido").child(eventoID).setValue(true);
 
+                peticion=true;
+                String mensajeEscrito ="Le ha invitado ha unirse a un evento";
+
+                ahoraDate = new Date();
+                ahoraDate.setHours(ahoraDate.getHours());
+
+                Comentarios invitacion=new Comentarios(userID, amigo.getIdAmigo(),mensajeEscrito, ahoraDate,peticion, eventoID);
+                String key = myRef.child("mensaje").push().getKey();
+                myRef.child("mensaje").child(key).setValue(invitacion);
+
+                myRef.child("usuario").child(amigo.getIdAmigo()).child("mensaje").child("recibido").child(key).setValue(true);
+                myRef.child("usuario").child(userID).child("mensaje").child("enviado").child(key).setValue(true);
+                Toast.makeText(getBaseContext(),"Invitacion Enviada", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
 
